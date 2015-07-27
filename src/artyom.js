@@ -8,7 +8,7 @@
  * @param {type} window
  * @Description Artyom JS Core - See Documentation for further information
  * @see http://sdkcarlos.github.io/artyom.html
- * @ignore 22.07.2015 17:17
+ * @ignore 27.07.2015 17:17
  * @returns {object}
  */
 (function(window){'use strict';
