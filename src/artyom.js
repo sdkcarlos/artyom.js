@@ -63,13 +63,17 @@
                 if ('speechSynthesis' in window) {
                     if(config.lang){
                         switch(config.lang){
+                            case 'de':
                             case 'de-DE':
                                 artyomVoice = artyDeutsch;
                             break;
+                            case 'en':
                             case 'en-GB':
                                 artyomVoice = artyomEnglish;
                             break;
+                            case 'es':
                             case 'es-CO':
+                            case 'es-ES':
                                 artyomVoice = artySpanish;
                             break;
                             default:
