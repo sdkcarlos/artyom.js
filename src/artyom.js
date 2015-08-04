@@ -421,6 +421,12 @@
                      * @returns {undefined}
                      */
                     reconocimiento.onend = function() {
+                        
+                        artyom.triggerEvent("FinishRecognition",{
+                            code: "artyom_dont_listen",
+                            message: "Artyom stop listening."
+                        });
+                        
                         if(artyomProperties.continuous === true){
                             if(artyom_is_allowed === true){
                                 reconocimiento.start();
@@ -450,6 +456,11 @@
                     reconocimiento.onresult = function(event){
                         var interim_transcript = '';
                         var cantidadResultados = event.results.length;
+                        
+                        artyom.triggerEvent("Recognition",{
+                            code: "artyom_listen",
+                            message: "Artyom is listening to you."
+                        });
                         
                         if(artyomProperties.mode == "normal"){
                             for (var i = event.resultIndex; i < cantidadResultados; ++i) {	
