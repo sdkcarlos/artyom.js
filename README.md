@@ -16,5 +16,5 @@ or Start reading the wiki !
 
 TEST NOW ARTYOM PLAYGROUND !!!!!! [In Development]
 
-Test Artyom at its best now !! [Verfügbar nur in deutsch]
+Test Artyom at its best now !! [For now only in english]
 #[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)
