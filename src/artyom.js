@@ -8,7 +8,7 @@
  * @param {type} window
  * @Description Artyom JS Core - See Documentation for further information
  * @see http://sdkcarlos.github.io/artyom.html
- * @ignore 27.07.2015 17:17
+ * @ignore 22.07.2015 17:17
  * @returns {object}
  */
 (function(window){'use strict';
@@ -63,17 +63,13 @@
                 if ('speechSynthesis' in window) {
                     if(config.lang){
                         switch(config.lang){
-                            case 'de':
                             case 'de-DE':
                                 artyomVoice = artyDeutsch;
                             break;
-                            case 'en':
                             case 'en-GB':
                                 artyomVoice = artyomEnglish;
                             break;
-                            case 'es':
                             case 'es-CO':
-                            case 'es-ES':
                                 artyomVoice = artySpanish;
                             break;
                             default:
@@ -106,7 +102,22 @@
                     }
                     
                     if(artyomProperties.listen === true){
-                        artyom.hey();
+                        if(!artyom.is.active()){
+                            artyom.hey();
+                            //SetArtyomAsActive !
+                            localStorage.setItem("artyom",JSON.stringify({
+                                "active":true
+                            }));
+                            
+                            window.onbeforeunload = function(e) {
+                                localStorage.removeItem("artyom");
+                            };
+                        }else{
+                            artyom.triggerEvent("info",{
+                                code: "artyom_is_running_already",
+                                message: "Artyom is already running in other window, only 1 instance of artyom is available in the browser at time"
+                            });
+                        }
                     }
                     
                     return true;
@@ -774,6 +785,13 @@
              * Artyom Microcomparator library
              */
             artyom.is = {
+                active : function(){
+                    if(localStorage.getItem("artyom")){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                },
                 integer:function(a){return Number(a)===a&&0===a%1},"float":function(a){return a===Number(a)&&0!==a%1},"function":function(a){return"function"==typeof a?!0:!1},object:function(a){return"object"==typeof a?!0:!1},"boolean":function(a){return"boolean"==typeof a?!0:!1},array:function(a){return a.constructor===Array?!0:!1},number:function(a){return a===parseFloat(a)},odd:function(a){return artyom.is.number(a)&&1===Math.abs(a)%2},even:function(a){return artyom.is.number(a)&&0===a%2},jQueryObject:function(a){return a instanceof jQuery?!0:!1},
             };
             
@@ -794,6 +812,14 @@
                 }
                 
                 return false;
+            };
+            
+            artyom.sayRandom = function(data){
+                if(data instanceof Array){
+                    artyom.say(data[Math.floor(Math.random() * data.length)]);
+                }else{
+                    console.error("Random quotes must be in an array !");
+                }
             };
             
         return artyom;
