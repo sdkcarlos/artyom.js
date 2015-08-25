@@ -1,6 +1,6 @@
 # artyom.js
 
-![Artyom Logo](https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/src/images/artyom-logo.png)
+![Artyom Logo](https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/src/images/artyomjs-logo.png)
 
 Voice recognition javascript library. Create your own siri,google now or cortana within your website.
 
