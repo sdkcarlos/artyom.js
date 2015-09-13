@@ -2,18 +2,18 @@
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
  * Requires browser with WebKit -  This object is only supported by Google Chrome and Apple Safari.
  * 
+ * @version 0.5
  * @dependencies [artyomCommands.js]
  * @copyright 2015, Deutschland.
- * @author Carlos Delgado
+ * @author Carlos Delgado | 2015
  * @param {type} window
  * @Description Artyom JS Core - See Documentation for further information
  * @see http://sdkcarlos.github.io/artyom.html
- * @ignore 09.09.2015 14:44 
  * @returns {object}
  */
 (function(window){'use strict';
     if ('speechSynthesis' in window) {
-        speechSynthesis.getVoices();
+        speechSynthesis.getVoices(); // This is an async method so will return anything on first call. Then will return the available voices.
     }
     
     if(('webkitSpeechRecognition' in window)){
@@ -34,6 +34,19 @@
     var artySpanish = 'Google Español';
     var artyomEnglish = 'Google UK English Male';
     var artyomVoice = 'Google UK English Male';
+    var device = {
+        isMobile:false,
+        isChrome:true
+    };
+    
+    
+    if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))){
+        device.isMobile = true;
+    } 
+    
+    if(navigator.userAgent.indexOf("Chrome") == -1){
+        device.isChrome = false;
+    }
     
     function ArtyomAI(){
             if(typeof(artyCommands) !== "object"){
@@ -42,7 +55,50 @@
                 var allCommands = artyCommands.getCommands('en-GB');
             }
            
-            var artyom = {}; 
+            var artyom = {};
+            
+            artyom.device = device;
+            
+            /*
+             * Artyom can return inmediately the voices available in your browser !
+             * 
+             * @returns {Array}
+             */
+            artyom.getVoices = function(){
+                return window.speechSynthesis.getVoices();
+            };
+            
+            
+            /*
+             * Returns an array with all the available commands for artyom in the moment is executed.
+             * 
+             * @returns {Array}
+             */
+            artyom.getAvailableCommands = function(){
+                var availables = [];
+                
+                if(!allCommands){
+                    console.warn("Cannot list commands. No command has been added");
+                }
+                
+                for (var i = 0; i < allCommands.length; i++) {
+                    var command = allCommands[i];
+                    var aval = {};
+                    aval.indexes = command.indexes;
+                    
+                    if(command.smart){
+                        aval.smart = true;
+                    } 
+                    
+                    if(command.description){
+                        aval.description = command.description;
+                    }
+                    
+                    availables.push(aval);
+                }
+                
+                return availables;
+            };
             
             /**
              * Set up artyom for the application.
@@ -118,7 +174,6 @@
                     });
                     console.error('Artyom is not supported in this browser. Please consider in update for a WebKit browser like Google Chrome');
                     return false;
-                    //artyom.throw.error("Artyom is not supported in this browser. Please consider in update for a WebKit browser like Google Chrome",'Compatibility Error');
                 }
             };
             
@@ -216,74 +271,121 @@
                 }
             };
             
-            /**
-             * Artyom deliver the given message to the
-             * user.
-             * 
-             * @param {string} message
-             * @returns {undefined}
-             */
-            artyom.say = function(message,action){
-                if (artyom.speechSupported()) {
-                    var talk = function(text) {
-                        var msg = new SpeechSynthesisUtterance();
-                        msg.text = text;
-                        msg.volume = artyomProperties.volume;
-                        msg.rate = artyomProperties.speed;
+            
+            
+            if(device.isMobile){
+                /**
+                 * Artyom deliver the given message to the mobile user
+                 * 
+                 * @param {string} message
+                 * @returns {undefined}
+                 */
+                artyom.say = function(message,action){
+                    if(artyom.speechSupported()){
+                        var MobileMessage= new SpeechSynthesisUtterance();
+                        MobileMessage.text = message;
+                        MobileMessage.volume = artyomProperties.volume;
+                        MobileMessage.lang = artyomProperties.lang;
+                        
+                        MobileMessage.addEventListener('end', function () {
+                            if(typeof(action) === "function"){
+                                action();
+                            }
+                        });
+                        
+                        
+                        window.speechSynthesis.speak(MobileMessage);
+                    }
+                };
+            }else{//If is not mobile declare artyom.say to complete function
+                
+                /**
+                 * Artyom deliver the given message to the PC user
+                 * 
+                 * @param {string} message
+                 * @returns {undefined}
+                 */
+                artyom.say = function(message,callbacks){
+                    if (artyom.speechSupported()) {
+                        
+                        /**
+                         * Process string to be synthesized.
+                         * 
+                         * @param {type} text
+                         * @param {type} actualChunk
+                         * @param {type} totalChunks
+                         * @returns {undefined}
+                         */
+                        var talk = function(text,actualChunk,totalChunks) {
+                            var msg = new SpeechSynthesisUtterance();
+                            msg.text = text;
+                            msg.volume = artyomProperties.volume;
+                            msg.rate = artyomProperties.speed;
 
-                        if (artyomVoice) {
-                            msg.voice = speechSynthesis.getVoices().filter(function(voice) { 
-                                return voice.name == artyomVoice; 
-                            })[0];
-                        }
-
-                        msg.onend = function(event) {
-                            if(speechSynthesis.pending === false && speechSynthesis.speaking === false){
-                                if(typeof(action) === "function"){
-                                    action();
+                            if (artyomVoice) {
+                                msg.voice = speechSynthesis.getVoices().filter(function(voice) { 
+                                    return voice.name == artyomVoice; 
+                                })[0];
+                            }
+                            
+                            if(callbacks){
+                                if(typeof(callbacks.onEnd) == "function"){
+                                    msg.addEventListener('end', function () {//Handle onEnd callback
+                                        if((actualChunk) >= totalChunks){
+                                            callbacks.onEnd();
+                                        }
+                                    });
+                                }
+                                
+                                if(typeof(callbacks.onStart) == "function"){//Handle onStart callback
+                                    msg.addEventListener('start', function () {
+                                        if(actualChunk == 1){ // If the chunk is the first trigger the onStart event
+                                            callbacks.onStart();
+                                        }
+                                    });
                                 }
                             }
+                            
+                            artyom.debug((actualChunk) +" text chunks processed succesfully out of " + totalChunks);//Notice how many chunks were processed for the given text.
+                            window.speechSynthesis.speak(msg);
                         };
 
-                        window.speechSynthesis.speak(msg);
-                    };
-
-                    if(typeof(message.length) !== "undefined"){
-                        if(message.length > 0){
-                            var finalTextA = message.split(",");
-                            var finalTextB = message.split(".");
-
-                            /**
-                             * Leer el lote más extenso con el fin de evitar el 
-                             * bloqueo de speechSynthesis si el texto es muy extenso.
-                             */
-                            if((finalTextA.length) > (finalTextB.length)){
-                                finalTextA.forEach(function(chunk){
+                        if(typeof(message.length) !== "undefined"){
+                            if(message.length > 0){
+                                var finalTextA = message.split(",");
+                                var finalTextB = message.split(".");
+                                var definitive;
+                                
+                                //Declare final chunk container and clear any empty item !
+                                if((finalTextA.length) > (finalTextB.length)){
+                                    definitive = finalTextA.filter(function(e){return e;});
+                                }else{
+                                    definitive = finalTextB.filter(function(e){return e;});
+                                }
+                                
+                                //Process given text into chunks !
+                                definitive.forEach(function(chunk,index){
+                                    var numberOfChunk = (index + 1);
+                                    
                                     if(chunk){
-                                        talk(chunk);
+                                        talk(chunk,numberOfChunk,definitive.length);
                                     }
                                 });
+
+                                artyom.triggerEvent("saySomething");
                             }else{
-                                finalTextB.forEach(function(chunk){
-                                    if(chunk){
-                                        talk(chunk);
-                                    }
-                                });
+                                artyom.debug("Artyom expects a string to say ... none given.",'warn');
                             }
-
-                            artyom.triggerEvent("saySomething");
-
                         }else{
-                            artyom.debug("Artyom expects a string to say ... none given.",'warn');
+                            artyom.debug("Artyom expects a string to say ... "+typeof(message)+" given.",'warn');
                         }
-                    }else{
-                        artyom.debug("Artyom expects a string to say ... undefined given.",'warn');
                     }
-                }
-            };
+                };
+            }
+            
             
             /**
-             * Test artyom in the browser
+             * Test artyom in the browser.
              * 
              * @returns {undefined}
              */
@@ -313,10 +415,7 @@
              * @returns {Boolean}
              */
             artyom.speechSupported = function(){
-                if ('speechSynthesis' in window) {
-                    return true;
-                }
-                return false;
+                return 'speechSynthesis' in window;
             };
             
             /**
@@ -325,10 +424,7 @@
              * @returns {Boolean}
              */
             artyom.recognizingSupported = function(){
-                if ('webkitSpeechRecognition' in window) {
-                    return true;
-                }
-                return false;
+                return 'webkitSpeechRecognition' in window;
             };
             
             /**
@@ -535,22 +631,13 @@
                     
                     if(artyomProperties.recognizing){
                         reconocimiento.stop();
-                        artyom.debug("Reconocimiento de voz detenido.");
+                        artyom.debug("Voice recognition stopped");
                     }else{
                         try{
                             reconocimiento.start();
                             ignore_onend = false;
                         }catch(e){
-                            artyom.notice({
-                                callback : function(){
-                                    alertify.notify('Restart', 'custom', 15, function(){
-                                        location.reload();
-                                    });
-                                },
-                                es : "Error fatal 01: Ya hay una instancia de artyom ejecutandose. Es recomendable reiniciar la conexión. Haga clic en el banner para reiniciarla ahora.",
-                                de : "Schwerwiegender Fehler 01: Es gibt bereits eine Instanz von artyom laufen in die background.It ist empfehlenswert, um die Verbindung neu starten Klicken Sie auf das Banner, um die Verbindung neu zu starten.",
-                                en : "Fatal Error 01 :There's already a instance of me running in the background sor. It's recommendable to restart the connection. Click the banner to restart the connection"
-                            });
+                            console.warn("Fatal Error 01 :There's already a instance of me running in the background . It's recommendable to restart Google Chrome to fix this issue.");
                         }
                     }
             };
@@ -559,21 +646,31 @@
             /**
              * Simulate a voice command via JS
              * 
+             * @example artyom.doInstruction("Hello"); Will execute the action of hello command
              * @param {type} sentence
              * @returns {undefined}
              */
             artyom.doInstruction = function(sentence){
                 if((!sentence) || (typeof(sentence) !== "string")){
                     console.warn("Cannot execute a non string command");
-                    return;
+                    return false;
                 }
-                var a = artyom.execute(sentence);
-                if(typeof(a) === "object"){
-                    if(a.objeto){
-                        a.objeto.action(a.indice);
+                
+                var foundCommand = artyom.execute(sentence);//Command founded object
+                
+                if(typeof(foundCommand) === "object"){
+                    if(foundCommand.objeto){
+                        if(foundCommand.objeto.smart){
+                            foundCommand.objeto.action(foundCommand.indice,foundCommand.wildcard.item,foundCommand.wildcard.full);//Execute Smart command
+                        }else{
+                            foundCommand.objeto.action(foundCommand.indice);//Execute Normal command
+                        }
+                        
+                        return true;
                     }
                 }else{
                     console.warn("No command founded trying with "+sentence);
+                    return false;
                 }
             };
             
@@ -769,7 +866,7 @@
             
             //If @global[debug] == true | Display a message in the console.
             artyom.debug=function(e,o){if(artyomProperties.debug===!0)switch(o){case"error":console.error(e);break;case"warn":console.warn(e);case"info":console.info(e);break;default:console.log(e)}};
-            
+           
             /**
              * Artyom Microcomparator library
              */
@@ -796,12 +893,33 @@
                 return false;
             };
             
+            /**
+             * Says a random quote and returns it's object
+             * 
+             * @param {type} data
+             * @returns {object}
+             */
             artyom.sayRandom = function(data){
                 if(data instanceof Array){
-                    artyom.say(data[Math.floor(Math.random() * data.length)]);
+                    var index = Math.floor(Math.random() * data.length);
+                    artyom.say(data[index]);
+                    return {
+                        text:data[index],
+                        index:index
+                    };
                 }else{
                     console.error("Random quotes must be in an array !");
+                    return null;
                 }
+            };
+            
+            /**
+             * Returns a string with artyom actual version.
+             * 
+             * @returns {String}
+             */
+            artyom.getVersion = function(){
+                return "0.5";
             };
             
         return artyom;
