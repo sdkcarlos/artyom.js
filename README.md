@@ -13,14 +13,15 @@ Artyom still in constantly update.
 visit the webpage for more info:
 It's recomendable to download always the latest version of artyom anyway check the changes in order to update from a previous version.
 
+#[Visit the Main Page of Artyom - See the latest features](http://sdkcarlos.github.io/sites/artyom.html)
 
-#[Download Artyom Now (CommandsFile with 3 demo)](https://github.com/sdkcarlos/artyom.js/raw/master/public/artyom-source.zip)
+##[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
+
+##[Or see the downloadable demo online](https://sdkcarlos.github.io/demo-sites/artyom-demo-continuous.html)
 
 You need more functions, methods for this library ? Just ask for it ! in issues section
 
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
-
-#[See artyom in action (English,Spanish)](http://sdkcarlos.github.io/sites/artyom.html)
 
 or Start reading the wiki !
 
@@ -28,5 +29,5 @@ or Start reading the wiki !
 
 TEST NOW ARTYOM PLAYGROUND !!!!!! [In Development]
 
-Test Artyom at its best now !! [For now only in english]
+Test Artyom In continuous mode inmediatelly [For now only in english]
 #[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)
