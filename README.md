@@ -5,6 +5,7 @@
 ## Latest news
 
 
+- **Artyom V 0.5.1 Released !** (01.10.2015 09:38 Berlin/Europe)
 - **Artyom V 0.5 Released !** (13.09.2015 14:12 Berlin/Europe)
 
 Voice recognition javascript library. Create your own siri,google now or cortana within your website.
@@ -32,6 +33,8 @@ You need more functions, methods for this library ? Just ask for it ! in issues 
 
 
 #[Open Wiki (tutorial, documentation)](https://github.com/sdkcarlos/artyom.js/wiki)
+#[Read the GitBook Too !](https://sdkcarlos.gitbooks.io/artyom/content/index.html)
+
 
 
 #[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)

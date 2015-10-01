@@ -1,6 +1,6 @@
 {
   "name": "artyom",
-  "version": "0.5",
+  "version": "0.5.1",
   "description": "Create your own voice assistant with artyom.js",
   "main": "src/artyom.js",
   "repository": {
