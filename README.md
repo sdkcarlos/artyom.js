@@ -25,9 +25,20 @@ It's recomendable to download always the latest version of artyom anyway check t
 
 #[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
 
+
 #[Or see the downloadable demo online](https://sdkcarlos.github.io/demo-sites/artyom-demo-continuous.html)
 
 You need more functions, methods for this library ? Just ask for it ! in issues section
+
+#Install
+ 
+You can get it on npm.
+
+```shell
+npm install artyom.js
+```
+Or visit the webpage for the artyom download
+
 
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
 
