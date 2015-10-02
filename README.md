@@ -49,3 +49,30 @@ Or visit the webpage for the artyom download
 
 
 #[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)
+
+
+#Changelog
+
+For see the complete changes, go to the website and see the Changelog Window
+
+- **0.5.1**
+
+Artyom supports now more languages : Italiano,Français,Japanese 日本人 and US Voice for en-US region.
+
+Enhanced detectErrors method. Check why artyom is not working or other warnings on your browser easily!
+
+- **0.5**
+
+Removed support for previous versions of artyom
+
+Artyom speech synthesis IMPROVED
+
+Get the loaded commands of artyom (artyom.getAvailableCommands())
+
+Get available voices with Synchronous Method (artyom.getVoices)
+
+Added SECURE onStart and onEnd callbacks to artyom.say()
+
+Simulate a voice command without microphone with artyom.doInstruction("Hello")
+
+artyom.sayRandom() have a new structure, check documentation
