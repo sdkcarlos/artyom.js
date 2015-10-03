@@ -1,5 +1,3 @@
-# artyom.js
-
 ![Artyom Logo](https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/src/images/artyomjs-logo.png)
 
 ## Latest news
@@ -20,15 +18,7 @@ It's recomendable to download always the latest version of artyom anyway check t
   <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/d46abc3b00c548fec3439282f89a7516b005c178/sites/artyom-resources/images/artyom-ironman.gif" alt="Artyom example use"/>
 </p>
  
-
 #[Visit the Main Page of Artyom - See the latest features](http://sdkcarlos.github.io/sites/artyom.html)
-
-#[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
-
-
-#[Or see the downloadable demo online](https://sdkcarlos.github.io/demo-sites/artyom-demo-continuous.html)
-
-You need more functions, methods for this library ? Just ask for it ! in issues section
 
 #Install
  
@@ -40,9 +30,16 @@ npm install artyom.js
 Or visit the webpage for the artyom download
 
 
+
+#[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
+
+
+#[Or see the downloadable demo online](https://sdkcarlos.github.io/demo-sites/artyom-demo-continuous.html)
+
+You need more functions, methods for this library ? Just ask for it ! in issues section
+
+
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
-
-
 #[Open Wiki (tutorial, documentation)](https://github.com/sdkcarlos/artyom.js/wiki)
 #[Read the GitBook Too !](https://sdkcarlos.gitbooks.io/artyom/content/index.html)
 
