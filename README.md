@@ -29,7 +29,7 @@ npm install artyom.js
 ```
 Or visit the webpage for the artyom download
 
-
+#[Read the official documentation of Artyom](https://sdkcarlos.gitbooks.io/artyom/content/index.html)
 
 #[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
 
@@ -41,9 +41,6 @@ You need more functions, methods for this library ? Just ask for it ! in issues 
 
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
 #[Open Wiki (tutorial, documentation)](https://github.com/sdkcarlos/artyom.js/wiki)
-#[Read the GitBook Too !](https://sdkcarlos.gitbooks.io/artyom/content/index.html)
-
-
 
 #[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)
 
