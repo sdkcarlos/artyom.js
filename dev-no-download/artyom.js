@@ -61,10 +61,6 @@
             var artyomCommands = [];
             artyom.device = device;
             
-            if(typeof(artyCommands) !== "undefined"){
-                console.warn("The old-way of add commands (artyCommands) in artyom is obsolete and affects artyom performance,use artyom.addCommands instead [The commands structure is the same]. This warning will be removed in the next version");
-            }
-            
             /*
              * Artyom can return inmediately the voices available in your browser !
              * 
