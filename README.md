@@ -1,6 +1,8 @@
 ![Artyom Logo](https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/src/images/artyomjs-logo.png)
 
 ## Latest news
+##[Read the official documentation of Artyom](https://sdkcarlos.gitbooks.io/artyom/content/index.html)
+
 The user of artyom is encouraged to use its latest version.
 
 - **Artyom V 0.6 Released !** (06.10.2015 10:56 Berlin/Europe)
@@ -18,19 +20,19 @@ It's recomendable to download always the latest version of artyom anyway check t
 <p align="center">
   <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/d46abc3b00c548fec3439282f89a7516b005c178/sites/artyom-resources/images/artyom-ironman.gif" alt="Artyom example use"/>
 </p>
- 
-#[Visit the Main Page of Artyom - See the latest features](http://sdkcarlos.github.io/sites/artyom.html)
 
-#Install
+## Demostrations
+###[Homepage](http://sdkcarlos.github.io/sites/artyom.html)
+###[Sticky Notes Demo ALL Languages](https://sdkcarlos.github.io/demo-sites/artyom/artyom_sticky_notes.html)
+
+#Installation
  
 You can get it on npm.
 
 ```shell
 npm install artyom.js
 ```
-Or visit the webpage for the artyom download
-
-#[Read the official documentation of Artyom](https://sdkcarlos.gitbooks.io/artyom/content/index.html)
+Or download a zip package here [Download .zip](https://github.com/sdkcarlos/artyom.js/raw/master/public/artyom-source.zip)
 
 #[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
 
