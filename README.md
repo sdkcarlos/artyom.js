@@ -1,8 +1,9 @@
 ![Artyom Logo](https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/src/images/artyomjs-logo.png)
 
 ## Latest news
+The user of artyom is encouraged to use its latest version.
 
-
+- **Artyom V 0.6 Released !** (06.10.2015 10:56 Berlin/Europe)
 - **Artyom V 0.5.1 Released !** (01.10.2015 09:38 Berlin/Europe)
 - **Artyom V 0.5 Released !** (13.09.2015 14:12 Berlin/Europe)
 
