@@ -48,7 +48,17 @@ You need more functions, methods for this library ? Just ask for it ! in issues 
 
 #Changelog
 
-For see the complete changes, go to the website and see the Changelog Window
+For see the complete changes, go to the website and see the Changelog Window and the documentation
+
+- **0.6**
+
+The old way to add commands is not supported anymore, use **artyom.addCommands** instead, the commands structure still the same
+
+Remove the commands of artyom with **artyom.emptyCommands**
+
+Redirect the recognized text of artyom as you like with **artyom.redirectRecognizedTextOutput**
+
+Artyom is a native locked object, that means you cannot extend the original artyom object, create an extension of artyom with **artyom.extension.MyNewProperty = function(){//DoSomething}**
 
 - **0.5.1**
 
