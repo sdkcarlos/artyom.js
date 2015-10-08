@@ -2,7 +2,7 @@
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
  * Requires browser with WebKit -  This object is only supported by Google Chrome and Apple Safari.
  * 
- * @version 0.6
+ * @version DEVELOPMENT_DO_NOT_USE
  * @copyright 2015, Deutschland.
  * @author Carlos Delgado | 2015
  * @param {type} window
@@ -50,7 +50,7 @@
     
     if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0,4))){
         device.isMobile = true;
-    } 
+    }
     
     if(navigator.userAgent.indexOf("Chrome") == -1){
         device.isChrome = false;
@@ -229,6 +229,27 @@
             };
             
             /**
+             * Remove the commands of artyom
+             * 
+             * @param {type} identifier
+             * @returns {undefined}
+             */
+            artyom.removeCommands = function(identifier){
+                if(typeof(identifier) === "string"){
+                    var toDelete = [];
+                    
+                    for(var i = 0;i < artyomCommands.length;i++){
+                        var command = artyomCommands[i];
+                        if(command.indexes.indexOf(identifier)){
+                            toDelete.push(i);
+                        }
+                    }
+                    
+                    console.log(toDelete);
+                }
+            };
+            
+            /**
              * Removes all the commands added to artyom.
              * 
              * @returns {Array|window.artyom.min_L14.ArtyomAI.artyom.emptyCommands.artyomCommands}#
@@ -344,87 +365,87 @@
             };
             
             /**
-             * Artyom deliver the given message to the PC user
+             * Talks a text according to the given parameters.
+             * 
+             * @private
+             * @param {type} text
+             * @param {type} actualChunk
+             * @param {type} totalChunks
+             * @returns {undefined}
+             */
+            var artyom_talk = function(text,actualChunk,totalChunks,callbacks) {
+                var msg = new SpeechSynthesisUtterance();
+                msg.text = text;
+                msg.volume = artyomProperties.volume;
+                msg.rate = artyomProperties.speed;
+
+                if (artyomVoice) {
+                    msg.voice = speechSynthesis.getVoices().filter(function(voice) { 
+                        return voice.name == artyomVoice; 
+                    })[0];
+                }
+
+                if(callbacks){
+                    if(typeof(callbacks.onEnd) == "function"){
+                        msg.addEventListener('end', function () {//Handle onEnd callback
+                            if((actualChunk) >= totalChunks){
+                                callbacks.onEnd();
+                            }
+                        });
+                    }
+
+                    if(typeof(callbacks.onStart) == "function"){//Handle onStart callback
+                        msg.addEventListener('start', function () {
+                            if(actualChunk == 1){ // If the chunk is the first trigger the onStart event
+                                callbacks.onStart();
+                            }
+                        });
+                    }
+                }
+                artyom.debug((actualChunk) +" text chunks processed succesfully out of " + totalChunks);//Notice how many chunks were processed for the given text.
+                window.speechSynthesis.speak(msg);
+            };
+            
+            /**
+             * artyom.say process the given text into chunks and execute
+             * the private function artyom_talk
              * 
              * @param {string} message
              * @returns {undefined}
              */
             artyom.say = function(message,callbacks){
-                    if (artyom.speechSupported()) {
-                        
-                        /**
-                         * Process string to be synthesized.
-                         * 
-                         * @param {type} text
-                         * @param {type} actualChunk
-                         * @param {type} totalChunks
-                         * @returns {undefined}
-                         */
-                        var talk = function(text,actualChunk,totalChunks) {
-                            var msg = new SpeechSynthesisUtterance();
-                            msg.text = text;
-                            msg.volume = artyomProperties.volume;
-                            msg.rate = artyomProperties.speed;
+                if (artyom.speechSupported()) {
+                    if(typeof(message.length) !== "undefined"){
+                        if(message.length > 0){
+                            var finalTextA = message.split(",");
+                            var finalTextB = message.split(".");
+                            var definitive;
 
-                            if (artyomVoice) {
-                                msg.voice = speechSynthesis.getVoices().filter(function(voice) { 
-                                    return voice.name == artyomVoice; 
-                                })[0];
-                            }
-                            
-                            if(callbacks){
-                                if(typeof(callbacks.onEnd) == "function"){
-                                    msg.addEventListener('end', function () {//Handle onEnd callback
-                                        if((actualChunk) >= totalChunks){
-                                            callbacks.onEnd();
-                                        }
-                                    });
-                                }
-                                
-                                if(typeof(callbacks.onStart) == "function"){//Handle onStart callback
-                                    msg.addEventListener('start', function () {
-                                        if(actualChunk == 1){ // If the chunk is the first trigger the onStart event
-                                            callbacks.onStart();
-                                        }
-                                    });
-                                }
-                            }
-                            
-                            artyom.debug((actualChunk) +" text chunks processed succesfully out of " + totalChunks);//Notice how many chunks were processed for the given text.
-                            window.speechSynthesis.speak(msg);
-                        };
-
-                        if(typeof(message.length) !== "undefined"){
-                            if(message.length > 0){
-                                var finalTextA = message.split(",");
-                                var finalTextB = message.split(".");
-                                var definitive;
-                                
-                                //Declare final chunk container and clear any empty item !
-                                if((finalTextA.length) > (finalTextB.length)){
-                                    definitive = finalTextA.filter(function(e){return e;});
-                                }else{
-                                    definitive = finalTextB.filter(function(e){return e;});
-                                }
-                                
-                                //Process given text into chunks !
-                                definitive.forEach(function(chunk,index){
-                                    var numberOfChunk = (index + 1);
-                                    
-                                    if(chunk){
-                                        talk(chunk,numberOfChunk,definitive.length);
-                                    }
-                                });
-
-                                artyom_triggerEvent("saySomething");
+                            //Declare final chunk container and clear any empty item !
+                            if((finalTextA.length) > (finalTextB.length)){
+                                definitive = finalTextA.filter(function(e){return e;});
                             }else{
-                                artyom.debug("Artyom expects a string to say ... none given.",'warn');
+                                definitive = finalTextB.filter(function(e){return e;});
                             }
+
+                            //Process given text into chunks !
+                            definitive.forEach(function(chunk,index){
+                                var numberOfChunk = (index + 1);
+
+                                if(chunk){
+                                    artyom_talk(chunk,numberOfChunk,definitive.length,callbacks);
+                                }
+                            });
+
+                            artyom_triggerEvent("saySomething");
                         }else{
-                            artyom.debug("Artyom expects a string to say ... "+typeof(message)+" given.",'warn');
+                            artyom.debug("Artyom expects a string to say ... none given.",'warn');
                         }
+                    }else{
+                        artyom.debug("Artyom expects a string to say ... "+typeof(message)+" given.",'warn');
                     }
-                };
+                }
+            };
             
             
             /**
@@ -685,15 +706,30 @@
                     }
             };
             
+            /**
+             * Simulate a voice command via JS
+             * 
+             * @deprecated use artyom.simulateInstruction instead
+             */
+            artyom.doInstruction = function(sentence){
+                console.warn("The name of the function artyom.doInstruction is deprecated and will be removed in the next version of artyom, please use artyom.simulateInstruction instead.");
+                
+                if((!sentence) || (typeof(sentence) !== "string")){
+                    console.warn("Cannot execute a non string command");
+                    return false;
+                }
+                
+                return artyom.simulateInstruction(sentence);
+            };
             
             /**
              * Simulate a voice command via JS
              * 
-             * @example artyom.doInstruction("Hello"); Will execute the action of hello command
+             * @example artyom.simulateInstruction("Hello"); Will execute the action of hello command
              * @param {type} sentence
              * @returns {undefined}
              */
-            artyom.doInstruction = function(sentence){
+            artyom.simulateInstruction = function(sentence){
                 if((!sentence) || (typeof(sentence) !== "string")){
                     console.warn("Cannot execute a non string command");
                     return false;
@@ -719,6 +755,7 @@
             /**
              * Returns an object with data of the matched element
              * 
+             * @private
              * @param {string} comando
              * @returns {Boolean || Function}
              */
@@ -910,9 +947,7 @@
              * @param {type} callback
              * @returns {}
              */
-            artyom.detectErrors = function(callback){
-                navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-                
+            artyom.detectErrors = function(){
                 if((window.location.origin) == "file://"){
                     console.error("Fatal Error Detected : It seems you're running the artyom demo from a local file ! The SpeechRecognitionAPI Needs to be hosted someway (server as http or https). Artyom will NOT work here, Sorry.");
                     return {
@@ -933,21 +968,15 @@
                     console.warn("Artyom is not running in HTTPS protocol,running in protocol : "+window.location.protocol+" that means the browser will ask the permission of microphone too often. You need a HTTPS Connection if you want artyom in continuous mode !");
                 }
                 
-                if (navigator.getUserMedia) {
-                    navigator.getUserMedia({ audio: true },
-                        null,
-                        function(err) {
-                            if(typeof(callback) == "function"){
-                                callback(err);
-                            }
-                        }
-                    );
-            
-                    return {};
-                } else {
-                    console.log("Artyom couldn't found more errors in this browser.");
-                    return false;
+                if (!navigator.getUserMedia) {
+                    console.error("Fatal Error Detected: It seems no microphone is available for the speechRecognition ");
+                    return {
+                        code:"artyom_error_no_microphone",
+                        message: "Fatal Error Detected: It seems no microphone is available for the speechRecognition  "
+                    };
                 }
+                
+                return false;
             };
             
             
@@ -1088,7 +1117,7 @@
              * @returns {String}
              */
             artyom.getVersion = function(){
-                return "0.6";
+                return "DEVELOPMENT_DO_NOT_USE";
             };
             
         return artyom;
@@ -1097,6 +1126,6 @@
     if(typeof(artyom) === 'undefined'){
         window.artyom = Object.preventExtensions(new ArtyomAI()); 
     }else{
-        console.warn("Artyom seems to be loaded twice, it will work anyway but is recommendable for increase the visualization time of your document");
+        console.warn("Artyom seems to be loaded twice, it will work anyway because it will be not declared twice but is recommendable for increase the visualization time of your document");
     }
 })(window);
