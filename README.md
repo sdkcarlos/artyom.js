@@ -45,42 +45,6 @@ You need more functions, methods for this library ? Just ask for it ! in issues 
 
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
 #[Open Wiki (tutorial, documentation)](https://github.com/sdkcarlos/artyom.js/wiki)
-
 #[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)
-
-
-#Changelog
-
-For see the complete changes, go to the website and see the Changelog Window and the documentation
-
-- **0.6**
-
-The old way to add commands is not supported anymore, use **artyom.addCommands** instead, the commands structure still the same
-
-Remove the commands of artyom with **artyom.emptyCommands**
-
-Redirect the recognized text of artyom as you like with **artyom.redirectRecognizedTextOutput**
-
-Artyom is a native locked object, that means you cannot extend the original artyom object, create an extension of artyom with **artyom.extension.MyNewProperty = function(){//DoSomething}**
-
-- **0.5.1**
-
-Artyom supports now more languages : Italiano,Français,Japanese 日本人 and US Voice for en-US region.
-
-Enhanced detectErrors method. Check why artyom is not working or other warnings on your browser easily!
-
-- **0.5**
-
-Removed support for previous versions of artyom
-
-Artyom speech synthesis IMPROVED
-
-Get the loaded commands of artyom (artyom.getAvailableCommands())
-
-Get available voices with Synchronous Method (artyom.getVoices)
-
-Added SECURE onStart and onEnd callbacks to artyom.say()
-
-Simulate a voice command without microphone with artyom.doInstruction("Hello")
-
-artyom.sayRandom() have a new structure, check documentation
+#[See changelog](https://sdkcarlos.gitbooks.io/artyom/content/chapters/official_changelog.html)
+ 
