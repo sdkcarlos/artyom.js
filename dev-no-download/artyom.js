@@ -228,11 +228,11 @@
                 return true;
             };
             
-            /**
-             * Remove the commands of artyom
+             /**
+             * Remove the commands of artyom with indexes that matches with the given text
              * 
              * @param {type} identifier
-             * @returns {undefined}
+             * @returns {array}
              */
             artyom.removeCommands = function(identifier){
                 if(typeof(identifier) === "string"){
@@ -245,8 +245,12 @@
                         }
                     }
                     
-                    console.log(toDelete);
+                    for(var o = 0;o < toDelete.length;o++){
+                        artyomCommands.splice(o, 1);
+                    }
                 }
+                
+                return toDelete;
             };
             
             /**
