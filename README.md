@@ -48,3 +48,13 @@ You need more functions, methods for this library ? Just ask for it ! in issues 
 #[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)
 #[See changelog](https://sdkcarlos.gitbooks.io/artyom/content/chapters/official_changelog.html)
  
+Artyom offers **COMPLETE** Support for the following languages 
+
+| |Description |Codes for initialization|
+------------- | ------------- | ------------- |
+|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-usa.png" alt="Supported language"/>| English (USA)<br/>English (Great Britain) Great Britain <br/> United States of America | en-US<br/>en-GB<br/>en |
+|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-spanish.png" alt="Supported language"/>| Español |es-CO<br/>es-ES<br/>es |
+|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-german.png" alt="Supported language"/>| Deutsch | de-DE<br/>de |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-italy.png" alt="Supported language"/> | Italiano |it-IT |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-france.png" alt="Supported language"/> | Français |fr-FR<br/>fr |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-japan.png" alt="Supported language"/> | Japanese 日本人 | ja-JP<br/>jp |
