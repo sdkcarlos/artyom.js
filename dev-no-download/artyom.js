@@ -1096,6 +1096,61 @@
                 };
             };
             
+            
+            /**
+             * A voice prompt will be executed.
+             * 
+             * @param {type} config
+             * @returns {undefined}
+             */
+            artyom.newPrompt = function(config){
+                if(typeof(config) !== "object"){
+                    console.error("Expected the prompt configuration.");
+                }
+                
+                var copyActualCommands = Object.assign([], artyomCommands);
+                artyom.emptyCommands();
+                
+                var promptCommand = {
+                    description:"Setting the artyom commands only for the prompt. The commands will be restored after the prompt finishes",
+                    indexes:config.options,
+                    action:function(i,wildcard){
+                        artyomCommands = copyActualCommands;
+                        var toExe = config.onMatch(i,wildcard);
+
+                        if(typeof(toExe) !== "function"){
+                            console.error("onMatch function expects a returning function to be executed");
+                            return;
+                        }
+                        
+                        toExe();
+                    }
+                };
+                
+                if(config.smart){
+                    promptCommand.smart = true;
+                }
+                
+                artyom.addCommands(promptCommand);
+
+                if(typeof(config.beforePrompt) !== "undefined"){
+                    config.beforePrompt();
+                }
+                
+                artyom.say(config.question,{
+                    onStart:function(){
+                        if(typeof(config.onStartPrompt) !== "undefined"){
+                            config.onStartPrompt();
+                        }
+                    },
+                    onEnd:function(){
+                        if(typeof(config.onEndPrompt) !== "undefined"){
+                            config.onEndPrompt();
+                        }
+                    }
+                });
+            };
+            
             /**
              * Extend the functions of artyom as you like !
              * 
