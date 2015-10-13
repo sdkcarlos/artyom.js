@@ -19,7 +19,7 @@ It's recomendable to download always the latest version of artyom anyway check t
 ###Who does not want to develop their own "artificial intelligence"? Well Artyom can help you with a Voice Controlled Web!
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/d46abc3b00c548fec3439282f89a7516b005c178/sites/artyom-resources/images/artyom-ironman.gif" alt="Artyom example use"/>
+  <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/artyom_make_sandwich.jpg" alt="Artyom example use"/>
 </p>
 
 ## Demostrations
