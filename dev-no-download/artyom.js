@@ -16,32 +16,40 @@
     
     if(('webkitSpeechRecognition' in window)){
         var reconocimiento = new webkitSpeechRecognition();
-        var artyomProperties = {
-            lang:'en-GB',
-            recognizing:false,
-            continuous:false,
-            speed:1,
-            volume:1,
-            listen:true,
-            mode:"normal",
-            debug:false,
-            helpers:{
-                redirectRecognizedTextOutput:null
-            }
-        };
-        // Allow to artyom continue with tasks
-        var artyomFlags = {
-            restartRecognition:false
-        };
     }
     
-    var artyDeutsch = 'Google Deutsch';
-    var artySpanish = 'Google Español';
-    var artyFrance = 'Google Français';
-    var artyItaliano = 'Google Italiano';
-    var artyJapanese = 'Google 日本人';
-    var artyUSA = 'Google US English';
-    var artyomEnglish = 'Google UK English Male';
+    var artyomProperties = {
+        lang:'en-GB',
+        recognizing:false,
+        continuous:false,
+        speed:1,
+        volume:1,
+        listen:true,
+        mode:"normal",
+        debug:false,
+        helpers:{
+            redirectRecognizedTextOutput:null
+        }
+    };
+    // Allow to artyom continue with tasks
+    var artyomFlags = {
+        restartRecognition:false,
+        playingAudio : null
+    };
+    
+    var artyomLanguages = {
+        german: "Google Deutsch",
+        spanish: "Google español",
+        italian: "Google italiano",
+        japanese : "Google 日本人",
+        englishUSA : "Google US English",
+        englishGB : "Google UK English Male",
+        brasilian : "Google português do Brasil",
+        russia:"Google русский",
+        holand:"Google Nederlands",
+        france : "Google français"
+    };
+    
     var artyomVoice = 'Google UK English Male';
     var device = {
         isMobile:false,
@@ -113,81 +121,87 @@
                     return;
                 }
                 
-                if ('speechSynthesis' in window) {
-                    if(config.lang){
-                        switch(config.lang){
-                            case 'de':
-                            case 'de-DE':
-                                artyomVoice = artyDeutsch;
-                            break;
-                            case 'en-GB':
-                                artyomVoice = artyomEnglish;
-                            break;
-                            case 'es':
-                            case 'es-CO':
-                            case 'es-ES':
-                                artyomVoice = artySpanish;
-                            break;
-                            case "en":
-                            case 'en-US':
-                                artyomVoice = artyUSA;
-                            break;
-                            case 'fr':
-                            case 'fr-FR':
-                                artyomVoice = artyFrance;
-                            break;
-                            case 'it':
-                            case 'it-IT':
-                                artyomVoice = artyItaliano;
-                            break;
-                            case 'jp':
-                            case 'ja-JP':
-                                artyomVoice = artyJapanese;
-                            break;
-                            default:
-                                console.info("The given language for artyom is not supported yet. English has been set to default");
-                            break;
-                        }
-                        artyomProperties.lang = config.lang;
+                if(config.lang){
+                    switch(config.lang){
+                        case 'de':
+                        case 'de-DE':
+                            artyomVoice = artyomLanguages.german;
+                        break;
+                        case 'en-GB':
+                            artyomVoice = artyomLanguages.englishGB;
+                        break;
+                        case "pt":
+                        case "pt-br":
+                        case "pt-PT":
+                            artyomVoice = artyomLanguages.brasilian;
+                        break;
+                        case "ru":
+                        case "ru-RU":
+                            artyomVoice = artyomLanguages.russia;
+                        break;
+                        case "nl":
+                        case "nl-NL":
+                            artyomVoice = artyomLanguages.holand;
+                        break;
+                        case 'es':
+                        case 'es-CO':
+                        case 'es-ES':
+                            artyomVoice = artyomLanguages.spanish;
+                        break;
+                        case "en":
+                        case 'en-US':
+                            artyomVoice = artyomLanguages.englishUSA;
+                        break;
+                        case 'fr':
+                        case 'fr-FR':
+                            artyomVoice = artyomLanguages.france;
+                        break;
+                        case 'it':
+                        case 'it-IT':
+                            artyomVoice = artyomLanguages.italian;
+                        break;
+                        case 'jp':
+                        case 'ja-JP':
+                            artyomVoice = artyomLanguages.japanese;
+                        break;
+                        default:
+                            console.info("The given language for artyom is not supported yet. English has been set to default");
+                        break;
                     }
-                    
-                    if(config.continuous){
-                        artyomProperties.continuous = true;
-                        artyomFlags.restartRecognition = true;
-                    }else{
-                        artyomProperties.continuous = false;
-                        artyomFlags.restartRecognition = false;
-                    }
-                    
-                    if(artyom.is.number(config.speed)){
-                        artyomProperties.speed = config.speed;
-                    }
-                    
-                    if(artyom.is.number(config.volume)){
-                        artyomProperties.volume = config.volume;
-                    }
-                    
-                    artyomProperties.listen = config.listen;
-                    
-                    artyomProperties.debug = config.debug;
-                    
-                    if(config.mode){
-                        artyomProperties.mode = config.mode;
-                    }
-                    
-                    if(artyomProperties.listen === true){
-                        artyom_hey();
-                    }
-                    
-                    return true;
-                }else{
-                    artyom_triggerEvent("error",{
-                        code: "artyom_unsupported",
-                        message: "Artyom is not supported in this browser. Please consider in update for a WebKit browser like Google Chrome"
-                    });
-                    console.error('Artyom is not supported in this browser. Please consider in update for a WebKit browser like Google Chrome');
-                    return false;
+                    artyomProperties.lang = config.lang;
                 }
+
+                if(config.continuous){
+                    artyomProperties.continuous = true;
+                    artyomFlags.restartRecognition = true;
+                }else{
+                    artyomProperties.continuous = false;
+                    artyomFlags.restartRecognition = false;
+                }
+
+                if(artyom.is.number(config.speed)){
+                    artyomProperties.speed = config.speed;
+                }
+
+                if(artyom.is.number(config.volume)){
+                    artyomProperties.volume = config.volume;
+                }
+
+                artyomProperties.listen = config.listen;
+
+                if(config.debug !== "undefined"){
+                    artyomProperties.debug = config.debug;
+                }
+
+                if(config.mode){
+                    artyomProperties.mode = config.mode;
+                }
+
+                if(artyomProperties.listen === true){
+                    artyom_hey();
+                }
+
+                return true;
             };
             
             /**
@@ -269,10 +283,20 @@
              * @returns {undefined}
              */
             artyom.shutUp = function(){
-                do {
-                    window.speechSynthesis.cancel();
+                if ('speechSynthesis' in window) {
+                    do {
+                        window.speechSynthesis.cancel();
+                    }
+                    while (window.speechSynthesis.pending === true);
+                }else{
+                    if(artyomFlags.playingAudio != null){
+                        try{
+                            artyomFlags.playingAudio.pause();
+                        }catch(e){}
+                        
+                        artyomFlags.playingAudio = null;
+                    }
                 }
-                while (window.speechSynthesis.pending === true);
             };
             
             /**
@@ -340,6 +364,15 @@
                     case 'Google US English':
                         return "en-US";
                     break;
+                    case 'Google português do Brasil':
+                        return "pt";
+                    break;
+                    case 'Google русский':
+                        return "ru";
+                    break;
+                    case 'Google Nederlands':
+                        return "nl";
+                    break;
                     }
                 }
                 
@@ -364,6 +397,15 @@
                     break;
                     case 'Google US English':
                         return "en-US";
+                    break;
+                    case 'Google português do Brasil':
+                        return "pt-BR";
+                    break;
+                    case 'Google русский':
+                        return "ru-RU";
+                    break;
+                    case 'Google Nederlands':
+                        return "nl-NL";
                     break;
                 }
             };
@@ -417,8 +459,8 @@
              * @param {string} message
              * @returns {undefined}
              */
-            artyom.say = function(message,callbacks){
-                if (artyom.speechSupported()) {
+            if ('speechSynthesis' in window) {
+                artyom.say = function(message,callbacks){
                     if(typeof(message.length) !== "undefined"){
                         if(message.length > 0){
                             var finalTextA = message.split(",");
@@ -448,9 +490,41 @@
                     }else{
                         artyom.debug("Artyom expects a string to say ... "+typeof(message)+" given.",'warn');
                     }
+                };
+            }else{
+                if(typeof(Audio) !== "undefined"){
+                    artyom.say = function(message,callbacks){
+                        if(message.length >= 102){
+                            console.error("Error: Long texts are only supported by Google Chrome, consider in split this string and execute it with short text. This may be fixed in Artyom 0.9");
+                            return false;
+                        }
+                        
+                        var url = 'http://ourcodeworld/free-apis/artyom-speak?q='+encodeURIComponent(message)+"&lang="+artyom.getLanguage("short");
+                        var ArtyomGenSay = new Audio(url);
+                        if(callbacks){
+                            ArtyomGenSay.onplay = function(){
+                                if(callbacks.onStart){
+                                    callbacks.onStart();
+                                }
+                            };
+
+                            ArtyomGenSay.onended = function(){
+                                if(callbacks.onEnd){
+                                    callbacks.onEnd();
+                                }
+                                
+                                artyomFlags.playingAudio = null;
+                            };
+                        }
+                        
+                        artyomFlags.playingAudio = ArtyomGenSay;
+                        
+                        ArtyomGenSay.play();
+                    };
+                }else{
+                    console.warn("Artyom cannot talk in this browser because Audio API is not supported in this browser and the speechSynthesis neither.");
                 }
-            };
-            
+            }
             
             /**
              * Test artyom in the browser.
@@ -485,7 +559,13 @@
              * @returns {Boolean}
              */
             artyom.speechSupported = function(){
-                return 'speechSynthesis' in window;
+                if('speechSynthesis' in window){
+                    return true;
+                }else if(typeof(Audio) !== "undefined"){
+                    return true;
+                }
+                
+                return false;
             };
             
             /**

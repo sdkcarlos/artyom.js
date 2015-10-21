@@ -2,7 +2,7 @@
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
  * Requires browser with WebKit -  This object is only supported by Google Chrome and Apple Safari.
  * 
- * @version 0.7
+ * @version 0.7.1
  * @copyright 2015, Deutschland.
  * @author Carlos Delgado | 2015
  * @param {type} window
@@ -36,9 +36,9 @@
     }
     
     var artyDeutsch = 'Google Deutsch';
-    var artySpanish = 'Google Español';
-    var artyFrance = 'Google Français';
-    var artyItaliano = 'Google Italiano';
+    var artySpanish = 'Google español';
+    var artyFrance = 'Google français';
+    var artyItaliano = 'Google italiano';
     var artyJapanese = 'Google 日本人';
     var artyUSA = 'Google US English';
     var artyomEnglish = 'Google UK English Male';
@@ -322,16 +322,16 @@
                     case 'Google UK English Male':
                         return "en-GB";
                     break;
-                    case 'Google Español':
+                    case 'Google español':
                         return "es";
                     break;
                     case 'Google Deutsch':
                         return "de";
                     break;
-                    case 'Google Français':
+                    case 'Google français':
                         return "fr";
                     break;
-                    case 'Google Italiano':
+                    case 'Google italiano':
                         return "it";
                     break;
                     case 'Google 日本人':
@@ -347,16 +347,16 @@
                     case 'Google UK English Male':
                         return "en-GB";
                     break;
-                    case 'Google Español':
+                    case 'Google español':
                         return "es-CO";
                     break;
                     case 'Google Deutsch':
                         return "de-DE";
                     break;
-                    case 'Google Français':
+                    case 'Google français':
                         return "fr-FR";
                     break;
-                    case 'Google Italiano':
+                    case 'Google italiano':
                         return "it-IT";
                     break;
                     case 'Google 日本人':
@@ -1176,7 +1176,7 @@
              * @returns {String}
              */
             artyom.getVersion = function(){
-                return "0.7";
+                return "0.7.1";
             };
             
         return artyom;
