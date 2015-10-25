@@ -5,7 +5,8 @@
 
 The user of artyom is encouraged to use its latest version.
 
-- **Artyom V 0.7.1 Released !** (21.10.2015 19:15 Berlin/Europe)
+- **Artyom V 0.8 Released !** (25.10.2015 14:02 Berlin/Europe)
+- Artyom V 0.7.1 Released ! (21.10.2015 19:15 Berlin/Europe)
 - Artyom V 0.7 Released ! (13.10.2015 12:32 Berlin/Europe)
 - Artyom V 0.6 Released ! (06.10.2015 10:56 Berlin/Europe)
 - Artyom V 0.5.1 Released ! (01.10.2015 09:38 Berlin/Europe)
