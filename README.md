@@ -60,3 +60,6 @@ Artyom offers **COMPLETE** Support for the following languages
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-italy.png" alt="Supported language"/> | Italiano |it-IT |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-france.png" alt="Supported language"/> | Français |fr-FR<br/>fr |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-japan.png" alt="Supported language"/> | Japanese 日本人 | ja-JP<br/>jp |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-russia.png" alt="Supported language"/> | Russian | ru-RU<br/>ru |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-brasil.png" alt="Supported language"/> | Brazil | pt-PT<br/>pt |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-netherlands.png" alt="Supported language"/> | Dutch (netherlands)| nl-NL<br/>nl |
