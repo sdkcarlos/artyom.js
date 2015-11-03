@@ -1,8 +1,8 @@
 /**
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
- * Requires browser with WebKit -  This object is only supported by Google Chrome and Apple Safari.
+ * Requires browser with WebKit -  This object is only supported by Google Chrome (Desktop and Android Version)
  * 
- * @version 0.8
+ * @version 0.9
  * @copyright 2015, Deutschland.
  * @author Carlos Delgado | 2015
  * @param {type} window
@@ -28,8 +28,10 @@
         mode:"normal",
         debug:false,
         helpers:{
-            redirectRecognizedTextOutput:null
-        }
+            redirectRecognizedTextOutput:null,
+            lastSay:null
+        },
+        executionKeyword:null
     };
     // Allow to artyom continue with tasks
     var artyomFlags = {
@@ -180,6 +182,10 @@
 
                 if(artyom.is.number(config.speed)){
                     artyomProperties.speed = config.speed;
+                }
+                
+                if(config.executionKeyword){
+                    artyomProperties.executionKeyword = config.executionKeyword;
                 }
 
                 if(artyom.is.number(config.volume)){
@@ -473,13 +479,36 @@
                                     artyom_talk(chunk,numberOfChunk,definitive.length,callbacks);
                                 }
                             });
-
+                            
+                            artyomProperties.helpers.lastSay = {
+                                text: message,
+                                date: new Date()
+                            };
+                            
                             artyom_triggerEvent("saySomething");
                         }else{
                             artyom.debug("Artyom expects a string to say ... none given.",'warn');
                         }
                     }else{
                         artyom.debug("Artyom expects a string to say ... "+typeof(message)+" given.",'warn');
+                    }
+                }
+            };
+            
+            /**
+             * Repeats the last sentence that artyom said.
+             * Useful in noisy environments.
+             * 
+             * @returns {artyomProperties.helpers.lastSay|artyom_L12.artyomProperties.helpers.lastSay}
+             */
+            artyom.repeatLastSay = function(returnObject){
+                var last = artyomProperties.helpers.lastSay;
+                
+                if(returnObject){
+                    return last;
+                }else{
+                    if(last != null){
+                        artyom.say(last.text);
                     }
                 }
             };
@@ -672,6 +701,28 @@
                                     if(typeof(artyomProperties.helpers.redirectRecognizedTextOutput) === "function"){
                                         artyomProperties.helpers.redirectRecognizedTextOutput(identificated,false);
                                     }
+                                    
+                                    if(typeof(artyomProperties.executionKeyword) === "string"){
+                                        if(identificated.indexOf(artyomProperties.executionKeyword) != -1){
+                                            var comando = artyom_execute(identificated.replace(artyomProperties.executionKeyword,'').trim());
+                                            
+                                            if((comando !== false) && (artyomProperties.recognizing == true)){
+                                                artyom.debug("<< Executing command ordered by ExecutionKeyword >>",'info');
+                                                reconocimiento.stop();
+                                                artyomProperties.recognizing = false;
+
+                                                //Executing Command Action
+                                                if(comando.wildcard){
+                                                    comando.objeto.action(comando.indice,comando.wildcard.item,comando.wildcard.full);
+                                                }else{
+                                                    comando.objeto.action(comando.indice);
+                                                }
+
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    
                                     artyom.debug("Normal mode : " + identificated);
                                 }
                             }
@@ -796,7 +847,7 @@
              * @returns {Boolean || Function}
              */
             var artyom_execute = function(voz){
-                if(!voz){console.error("Internal error: Execution of empty command");return false;}
+                if(!voz){console.warn("Internal error: Execution of empty command");return false;}
                 
                 artyom.debug(">> " +voz);//Show tps in consola
                 
@@ -1208,7 +1259,7 @@
              * @returns {String}
              */
             artyom.getVersion = function(){
-                return "0.8";
+                return "0.9";
             };
             
         return artyom;
