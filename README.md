@@ -1,7 +1,7 @@
 ![Artyom Logo](https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/src/images/artyomjs-logo.png)
 
 ## Latest news
-##[Read the official documentation of Artyom](https://sdkcarlos.gitbooks.io/artyom/content/index.html)
+##[Read the official documentation of Artyom](http://ourcodeworld.com/projects/projects-documentation/1/list/artyom-js)
 
 The user of artyom is encouraged to use its latest version.
 
@@ -49,7 +49,7 @@ You need more functions, methods for this library ? Just ask for it ! in issues 
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
 #[Open Wiki (tutorial, documentation)](https://github.com/sdkcarlos/artyom.js/wiki)
 #[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)
-#[See changelog](https://sdkcarlos.gitbooks.io/artyom/content/chapters/official_changelog.html)
+#[See changelog](http://ourcodeworld.com/projects/projects-documentation/2/read-doc/official-changelog/artyom-js)
  
 Artyom offers **COMPLETE** Support for the following languages 
 
