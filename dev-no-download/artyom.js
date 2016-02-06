@@ -48,7 +48,9 @@
         brasilian : "Google português do Brasil",
         russia:"Google русский",
         holand:"Google Nederlands",
-        france : "Google français"
+        france : "Google français",
+        polski: "Google polski",
+        indonesia: "Google Bahasa Indonesia"
     };
     
     var artyomVoice = 'Google UK English Male';
@@ -164,6 +166,14 @@
                         case 'jp':
                         case 'ja-JP':
                             artyomVoice = artyomLanguages.japanese;
+                        break;
+                        case 'id':
+                        case 'id-ID':
+                            artyomVoice = artyomLanguages.indonesia;
+                        break;
+                        case 'pl':
+                        case 'pl-PL':
+                            artyomVoice = artyomLanguages.polski;
                         break;
                         default:
                             console.info("The given language for artyom is not supported yet. English has been set to default");
@@ -370,6 +380,12 @@
                     case 'Google Nederlands':
                         return "nl";
                     break;
+                    case 'Google polski':
+                        return "pl";
+                    break;
+                    case 'Google Bahasa Indonesia':
+                        return "id";
+                    break;
                     }
                 }
                 
@@ -403,6 +419,12 @@
                     break;
                     case 'Google Nederlands':
                         return "nl-NL";
+                    break;
+                    case 'Google polski':
+                        return "pl-PL";
+                    break;
+                    case 'Google Bahasa Indonesia':
+                        return "id-ID";
                     break;
                 }
             };
