@@ -5,13 +5,9 @@
 
 The user of artyom is encouraged to use its latest version.
 
-- **Artyom V 0.9 Released !**
+- **Artyom V 0.9.1 Released ! (10.02.2016 16:16 Berlin/Europe)**
+- Artyom V 0.9 Released ! (09.11.2015 14:00 Berlin/Europe)
 - Artyom V 0.8 Released ! (25.10.2015 14:02 Berlin/Europe)
-- Artyom V 0.7.1 Released ! (21.10.2015 19:15 Berlin/Europe)
-- Artyom V 0.7 Released ! (13.10.2015 12:32 Berlin/Europe)
-- Artyom V 0.6 Released ! (06.10.2015 10:56 Berlin/Europe)
-- Artyom V 0.5.1 Released ! (01.10.2015 09:38 Berlin/Europe)
-- Artyom V 0.5 Released ! (13.09.2015 14:12 Berlin/Europe)
 
 Voice recognition javascript library. Create your own siri,google now or cortana within your website.
 
@@ -64,3 +60,5 @@ Artyom offers **COMPLETE** Support for the following languages
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-russia.png" alt="Supported language"/> | Russian | ru-RU<br/>ru |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-brasil.png" alt="Supported language"/> | Brazil | pt-PT<br/>pt |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-netherlands.png" alt="Supported language"/> | Dutch (netherlands)| nl-NL<br/>nl |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-poland.png" alt="Supported language"/> | Polski (polonia)| pl-PL<br/>nl |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-indonesia.png" alt="Supported language"/> | Indonesian (Indonesia)| id-ID<br/>nl |
