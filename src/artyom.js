@@ -1,8 +1,8 @@
 /**
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
- * Requires browser with WebKit -  This object is only supported by Google Chrome (Desktop and Android Version)
+ * Requires browser with WebKit -  This object is only supported by Google Chrome and Apple Safari.
  * 
- * @version 0.9
+ * @version 0.9.1
  * @copyright 2015, Deutschland.
  * @author Carlos Delgado | 2015
  * @param {type} window
@@ -48,7 +48,9 @@
         brasilian : "Google português do Brasil",
         russia:"Google русский",
         holand:"Google Nederlands",
-        france : "Google français"
+        france : "Google français",
+        polski: "Google polski",
+        indonesia: "Google Bahasa Indonesia"
     };
     
     var artyomVoice = 'Google UK English Male';
@@ -164,6 +166,14 @@
                         case 'jp':
                         case 'ja-JP':
                             artyomVoice = artyomLanguages.japanese;
+                        break;
+                        case 'id':
+                        case 'id-ID':
+                            artyomVoice = artyomLanguages.indonesia;
+                        break;
+                        case 'pl':
+                        case 'pl-PL':
+                            artyomVoice = artyomLanguages.polski;
                         break;
                         default:
                             console.info("The given language for artyom is not supported yet. English has been set to default");
@@ -370,6 +380,12 @@
                     case 'Google Nederlands':
                         return "nl";
                     break;
+                    case 'Google polski':
+                        return "pl";
+                    break;
+                    case 'Google Bahasa Indonesia':
+                        return "id";
+                    break;
                     }
                 }
                 
@@ -403,6 +419,12 @@
                     break;
                     case 'Google Nederlands':
                         return "nl-NL";
+                    break;
+                    case 'Google polski':
+                        return "pl-PL";
+                    break;
+                    case 'Google Bahasa Indonesia':
+                        return "id-ID";
                     break;
                 }
             };
@@ -1259,7 +1281,7 @@
              * @returns {String}
              */
             artyom.getVersion = function(){
-                return "0.9";
+                return "0.9.1";
             };
             
         return artyom;
