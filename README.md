@@ -2,12 +2,12 @@
 
 ## Latest news
 ##[Read the official documentation of Artyom](http://ourcodeworld.com/projects/projects-documentation/1/list/artyom-js)
+##[Read the official FAQ](http://ourcodeworld.com/projects/projects-faq/1/list/artyom-js)
 
 The user of artyom is encouraged to use its latest version.
 
 - **Artyom V 0.9.1 Released ! (10.02.2016 16:16 Berlin/Europe)**
 - Artyom V 0.9 Released ! (09.11.2015 14:00 Berlin/Europe)
-- Artyom V 0.8 Released ! (25.10.2015 14:02 Berlin/Europe)
 
 Voice recognition javascript library. Create your own siri,google now or cortana within your website.
 
@@ -36,15 +36,12 @@ Or download a zip package here [Download .zip](https://github.com/sdkcarlos/arty
 
 #[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
 
-
 #[Or see the downloadable demo online](https://sdkcarlos.github.io/demo-sites/artyom-demo-continuous.html)
 
 You need more functions, methods for this library ? Just ask for it ! in issues section
 
-
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
-#[Open Wiki (tutorial, documentation)](https://github.com/sdkcarlos/artyom.js/wiki)
-#[Artyom Online Playground](https://sdkcarlos.github.io/sites/artyomplayground.html)
+#[Open Wiki (tutorial, documentation)](http://ourcodeworld.com/projects/projects-documentation/1/list/artyom-js)
 #[See changelog](http://ourcodeworld.com/projects/projects-documentation/2/read-doc/official-changelog/artyom-js)
  
 Artyom offers **COMPLETE** Support for the following languages 
