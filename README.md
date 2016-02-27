@@ -3,6 +3,7 @@
 ## Latest news
 ##[Read the official documentation of Artyom](http://ourcodeworld.com/projects/projects-documentation/1/list/artyom-js)
 ##[Read the official FAQ](http://ourcodeworld.com/projects/projects-faq/1/list/artyom-js)
+##[Test the continuous mode here](https://sdkcarlos.github.io/jarvis.html)
 
 The user of artyom is encouraged to use its latest version.
 
@@ -23,6 +24,7 @@ It's recomendable to download always the latest version of artyom anyway check t
 
 ## Demostrations
 ###[Homepage](http://sdkcarlos.github.io/sites/artyom.html)
+###[JARVIS Continuous mode](https://sdkcarlos.github.io/jarvis.html)
 ###[Sticky Notes Demo ALL Languages](https://sdkcarlos.github.io/demo-sites/artyom/artyom_sticky_notes.html)
 
 #Installation
