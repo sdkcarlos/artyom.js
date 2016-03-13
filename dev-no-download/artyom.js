@@ -452,7 +452,8 @@
 
                 if(callbacks){
                     if(typeof(callbacks.onEnd) == "function"){
-                        msg.addEventListener('end', function () {//Handle onEnd callback
+                        // Handle onEnd callback
+                        msg.addEventListener('end', function () {
                             if((actualChunk) >= totalChunks){
                                 callbacks.onEnd();
                             }
@@ -467,6 +468,7 @@
                         });
                     }
                 }
+                
                 artyom.debug((actualChunk) +" text chunks processed succesfully out of " + totalChunks);//Notice how many chunks were processed for the given text.
                 window.speechSynthesis.speak(msg);
             };
@@ -480,7 +482,7 @@
              */
             artyom.say = function(message,callbacks){
                 if (artyom.speechSupported()) {
-                    if(typeof(message.length) !== "undefined"){
+                    if(typeof(message) == 'string'){
                         if(message.length > 0){
                             var finalTextA = message.split(",");
                             var finalTextB = message.split(".");
@@ -509,10 +511,10 @@
                             
                             artyom_triggerEvent("saySomething");
                         }else{
-                            artyom.debug("Artyom expects a string to say ... none given.",'warn');
+                            console.log("Artyom expects a string to say ... none given.",'warn');
                         }
                     }else{
-                        artyom.debug("Artyom expects a string to say ... "+typeof(message)+" given.",'warn');
+                        console.log("Artyom expects a string to say ... "+typeof(message)+" given.",'warn');
                     }
                 }
             };
@@ -668,7 +670,7 @@
                         if(artyomFlags.restartRecognition === true){
                             if(artyom_is_allowed === true){
                                 reconocimiento.start();
-                                artyom.debug("Artyom initialization finished. Restarting","info");
+                                artyom.debug("Continuous mode enabled, restarting","info");
                             }else{
                                 console.error("Verify the microphone and check for the table of errors in sdkcarlos.github.io/sites/artyom.html to solve your problem. If you want to give your user a message when an error appears add an artyom listener");
                             }
@@ -699,13 +701,13 @@
                                 if (event.results[i].isFinal) {
                                     var comando = artyom_execute(identificated.trim());
                                     
-                                    //Redirect output when necesary
+                                    // Redirect output when necesary
                                     if(typeof(artyomProperties.helpers.redirectRecognizedTextOutput) === "function"){
                                         artyomProperties.helpers.redirectRecognizedTextOutput(identificated,true);
                                     }
                                     
                                     if((comando !== false) && (artyomProperties.recognizing == true)){
-                                        artyom.debug("<< Executing Matching Recognition in normal mode>>");
+                                        artyom.debug("<< Executing Matching Recognition in normal mode >>","info");
                                         reconocimiento.stop();
                                         artyomProperties.recognizing = false;
                                         
@@ -761,7 +763,7 @@
                                     }
                                     
                                     if((comando !== false) && (artyomProperties.recognizing == true)){
-                                        artyom.debug("<< Executing Matching Recognition in quick mode>>");
+                                        artyom.debug("<< Executing Matching Recognition in quick mode >>","info");
                                         reconocimiento.stop();
                                         artyomProperties.recognizing = false;
                                         
@@ -783,7 +785,7 @@
                                     }
                                     
                                     if((comando !== false) && (artyomProperties.recognizing == true)){
-                                        artyom.debug("<< Executing Matching Recognition in quick mode>>");
+                                        artyom.debug("<< Executing Matching Recognition in quick mode >>","info");
                                         reconocimiento.stop();
                                         artyomProperties.recognizing = false;
 
@@ -805,7 +807,7 @@
                     
                     if(artyomProperties.recognizing){
                         reconocimiento.stop();
-                        artyom.debug("Voice recognition stopped");
+                        artyom.debug("Event reached : onStop");
                     }else{
                         try{
                             reconocimiento.start();
@@ -813,22 +815,6 @@
                             console.warn("Fatal Error There's already a instance of me running in the background . It's recommendable to restart Google Chrome to fix this issue.");
                         }
                     }
-            };
-            
-            /**
-             * Simulate a voice command via JS
-             * 
-             * @deprecated use artyom.simulateInstruction instead
-             */
-            artyom.doInstruction = function(sentence){
-                console.warn("The name of the function artyom.doInstruction is deprecated and will be removed in the next version of artyom, please use artyom.simulateInstruction instead.");
-                
-                if((!sentence) || (typeof(sentence) !== "string")){
-                    console.warn("Cannot execute a non string command");
-                    return false;
-                }
-                
-                return artyom.simulateInstruction(sentence);
             };
             
             /**
@@ -849,8 +835,10 @@
                 if(typeof(foundCommand) === "object"){
                     if(foundCommand.objeto){
                         if(foundCommand.objeto.smart){
-                            foundCommand.objeto.action(foundCommand.indice,foundCommand.wildcard.item,foundCommand.wildcard.full);//Execute Smart command
+                            artyom.debug('Smart command matches with simulation, executing',"info");
+                            foundCommand.objeto.action(foundCommand.indice,foundCommand.wildcard.item,foundCommand.wildcard.full);
                         }else{
+                            artyom.debug('Command matches with simulation, executing',"info");
                             foundCommand.objeto.action(foundCommand.indice);//Execute Normal command
                         }
                         return true;
@@ -1030,16 +1018,16 @@
                 if(artyomProperties.debug === true){
                     switch(o){
                         case"error":
-                            console.error(e);
+                            console.log('%cArtyom.js: '+e, 'background: #C12127; color: #FFFFFF');
                         break;
                         case"warn":
                             console.warn(e);
                         break;
                         case"info":
-                            console.info(e);
+                            console.log('%cArtyom.js: '+e, 'background: #4285F4; color: #FFFFFF');
                         break;
                         default:
-                            console.log(e);
+                            console.log('%cArtyom.js: '+e, 'background: #005454; color: #BFF8F8');
                         break;
                     }
                 }
@@ -1077,14 +1065,6 @@
                     console.warn("Artyom is not running in HTTPS protocol,running in protocol : "+window.location.protocol+" that means the browser will ask the permission of microphone too often. You need a HTTPS Connection if you want artyom in continuous mode !");
                 }
                 
-                if (!navigator.getUserMedia) {
-                    console.error("Fatal Error Detected: It seems no microphone is available for the speechRecognition ");
-                    return {
-                        code:"artyom_error_no_microphone",
-                        message: "Fatal Error Detected: It seems no microphone is available for the speechRecognition  "
-                    };
-                }
-                
                 return false;
             };
             
@@ -1101,7 +1081,9 @@
                     console.warn("Expected function to handle the recognized text ...");
                     return false;
                 }
+                
                 artyomProperties.helpers.redirectRecognizedTextOutput = action;
+                
                 return true;
             };
             
@@ -1276,6 +1258,17 @@
             };
             
             /**
+             * This function will return the webkitSpeechRecognition object used by artyom
+             * retrieve it only to debug on it or get some values, do not make changes directly
+             * 
+             * @warning do not change values of this variable
+             * @returns {window.artyom.min_L12.reconocimiento|webkitSpeechRecognition|artyom.min_L12.reconocimiento}
+             */
+            artyom.getNativeApi = function(){
+                return reconocimiento;
+            };
+            
+            /**
              * Returns a string with artyom actual version.
              * 
              * @returns {String}
@@ -1290,6 +1283,6 @@
     if(typeof(artyom) === 'undefined'){
         window.artyom = Object.preventExtensions(new ArtyomAI()); 
     }else{
-        console.warn("Artyom seems to be loaded twice, it will work anyway because it will be not declared twice but is recommendable for increase the visualization time of your document");
+        console.warn("Artyom is being loaded twice in your document or you're injecting the artyom script via console (injected webkitSpeechRecognition will not work due to security reasons)");
     }
 })(window);
