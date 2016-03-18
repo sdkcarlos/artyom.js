@@ -34,6 +34,12 @@ You can get it on npm.
 ```shell
 npm install artyom.js
 ```
+
+And bower.
+
+```shell
+bower install artyom.js
+```
 Or download a zip package here [Download .zip](https://github.com/sdkcarlos/artyom.js/raw/master/public/artyom-source.zip)
 
 #[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
