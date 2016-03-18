@@ -1018,7 +1018,7 @@
                 if(artyomProperties.debug === true){
                     switch(o){
                         case"error":
-                            console.log('%cArtyom.js: '+e, 'background: #C12127; color: #FFFFFF');
+                            console.log('%cArtyom.js '+e, 'background: #C12127; color: #FFFFFF');
                         break;
                         case"warn":
                             console.warn(e);
@@ -1027,7 +1027,7 @@
                             console.log('%cArtyom.js: '+e, 'background: #4285F4; color: #FFFFFF');
                         break;
                         default:
-                            console.log('%cArtyom.js: '+e, 'background: #005454; color: #BFF8F8');
+                            console.log('%cArtyom.js %c'+e, 'background: #005454; color: #BFF8F8','color:black;');
                         break;
                     }
                 }
