@@ -7,8 +7,8 @@
 
 The user of artyom is encouraged to use its latest version.
 
-- **Artyom V 0.9.1 Released ! (10.02.2016 16:16 Berlin/Europe)**
-- Artyom V 0.9 Released ! (09.11.2015 14:00 Berlin/Europe)
+- **Artyom V 0.9.2 Released ! (10.05.2016 19:46 Berlin/Europe)**
+- Artyom V 0.9.1 Released ! (10.02.2016 16:16 Berlin/Europe)
 
 Voice recognition javascript library. Create your own siri,google now or cortana within your website.
 
@@ -42,10 +42,6 @@ bower install artyom.js
 ```
 Or download a zip package here [Download .zip](https://github.com/sdkcarlos/artyom.js/raw/master/public/artyom-source.zip)
 
-#[Download a simple project with artyom in continuous Mode](https://github.com/sdkcarlos/sdkcarlos.github.io/raw/master/demo-sites/artyom-continuous-demo.zip)
-
-#[Or see the downloadable demo online](https://sdkcarlos.github.io/demo-sites/artyom-demo-continuous.html)
-
 You need more functions, methods for this library ? Just ask for it ! in issues section
 
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
@@ -67,3 +63,4 @@ Artyom offers **COMPLETE** Support for the following languages
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-netherlands.png" alt="Supported language"/> | Dutch (netherlands)| nl-NL<br/>nl |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-poland.png" alt="Supported language"/> | Polski (polonia)| pl-PL<br/>pl |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-indonesia.png" alt="Supported language"/> | Indonesian (Indonesia)| id-ID<br/>id |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-china.png" alt="Supported language"/> | Chinese (Cantonese[ 粤語（香港）] <br/> Mandarin[普通话（中国大陆）])| Cantonese<br/>zh-HK<br/> Mandarin<br />zh-CN|
