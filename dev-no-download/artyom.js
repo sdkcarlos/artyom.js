@@ -3,14 +3,18 @@
  * Artyom only works in browsers based in Chromium (Google Chrome or Electron)
  *
  * @version 0.9.2
- * @author Carlos Delgado | 2015
+ * @copyright Carlos Delgado 2016
+ * @author Carlos Delgado - www.ourcodeworld.com
  * @param {type} window
  * @see http://sdkcarlos.github.io/artyom.html
  * @returns Artyom
  */
 (function (window) {'use strict';
+
+    // getVoices is an asynchronous native method. At firs time it will ALWAYS return an empty array
+    // after it will return an array with all the available voices in the browser
     if ('speechSynthesis' in window) {
-        speechSynthesis.getVoices(); // This is an async method so will return anything on first call. Then will return the available voices.
+        speechSynthesis.getVoices();
     }
 
     if (('webkitSpeechRecognition' in window)) {
@@ -71,20 +75,28 @@
     function ArtyomAI() {
         var artyom = {};
         var artyomCommands = [];
+
+        /**
+         * Contains some basic information that artyom needs to know as the type of device and browser
+         * @since 0.5.1
+         * @type {Object}
+         */
         artyom.device = device;
 
-        /*
-         * Artyom can return inmediately the voices available in your browser !
+        /**
+         * Artyom can return inmediately the voices available in your browser.
          *
+         * @readonly
          * @returns {Array}
          */
         artyom.getVoices = function () {
             return window.speechSynthesis.getVoices();
         };
 
-        /*
-         * Returns an array with all the available commands for artyom in the moment is executed.
+        /**
+         * Returns an array with all the available commands for artyom.
          *
+         * @readonly
          * @returns {Array}
          */
         artyom.getAvailableCommands = function () {
@@ -116,8 +128,8 @@
          * or notice the user if artyom is not supported in the actual
          * browser
          *
-         * @param {type} language
-         * @returns {undefined}
+         * @param {Object} config
+         * @returns {Boolean}
          */
         artyom.initialize = function (config) {
             if (typeof (config) !== "object") {
@@ -125,7 +137,7 @@
                 return;
             }
 
-            if (config.lang) {
+            if (config.hasOwnProperty("lang")) {
                 switch (config.lang) {
                     case 'de':
                     case 'de-DE':
@@ -189,19 +201,21 @@
                 artyomProperties.lang = config.lang;
             }
 
-            if (config.continuous) {
-                artyomProperties.continuous = true;
-                artyomFlags.restartRecognition = true;
-            } else {
-                artyomProperties.continuous = false;
-                artyomFlags.restartRecognition = false;
+            if (config.hasOwnProperty("continuous")) {
+                if (config.continuous) {
+                    artyomProperties.continuous = true;
+                    artyomFlags.restartRecognition = true;
+                } else {
+                    artyomProperties.continuous = false;
+                    artyomFlags.restartRecognition = false;
+                }
             }
 
             if (artyom.is.number(config.speed)) {
                 artyomProperties.speed = config.speed;
             }
 
-            if (config.executionKeyword) {
+            if (config.hasOwnProperty("executionKeyword")) {
                 artyomProperties.executionKeyword = config.executionKeyword;
             }
 
@@ -209,10 +223,14 @@
                 artyomProperties.volume = config.volume;
             }
 
-            artyomProperties.listen = config.listen;
+            if(config.hasOwnProperty("listen")){
+                artyomProperties.listen = config.listen;
+            }
 
-            if (config.debug !== "undefined") {
+            if(config.hasOwnProperty("debug")){
                 artyomProperties.debug = config.debug;
+            }else{
+                console.warn("The initialization doesn't provide how the debug mode should be handled. Is recommendable to set this value either to true or false.");
             }
 
             if (config.mode) {
@@ -227,30 +245,38 @@
         };
 
         /**
-         * Force artyom to stop listen even if
-         * is in continuos mode.
+         * Force artyom to stop listen even if is in continuos mode.
          *
          * @returns {Boolean}
          */
         artyom.fatality = function () {
-            //if config is continuous mode, deactivate anyway.
-            artyomFlags.restartRecognition = false;
-            reconocimiento.stop();
-            return true;
+            try{
+                // if config is continuous mode, deactivate anyway.
+                artyomFlags.restartRecognition = false;
+                reconocimiento.stop();
+                return true;
+            }catch(e){
+                console.log(e);
+                return false;
+            }
         };
 
         /**
-         * Since artyom v0.6, the commands can only be added via artyom.addCommands due to performance enhance.
-         * This function can be executed at any time and replaces the old file and function
-         * artyCommands.extend
-         * You can even add commands while artyom is running !
+         * Add dinamically commands to artyom using
+         * You can even add commands while artyom is active.
          *
-         * @param {type} param
+         * @since 0.6
+         * @param {Object | Array[Objects]} param
          * @returns {undefined}
          */
         artyom.addCommands = function (param) {
             var _processObject = function (obj) {
-                artyomCommands.push(obj);
+                if(obj.hasOwnProperty("indexes")){
+                    artyomCommands.push(obj);
+                }else{
+                    console.error("The following command doesn't provide any index to execute :");
+                    console.dir(obj);
+                }
             };
 
             if (param instanceof Array) {
@@ -291,8 +317,8 @@
 
         /**
          * Removes all the commands added to artyom.
-         *
-         * @returns {Array|window.artyom.min_L14.ArtyomAI.artyom.emptyCommands.artyomCommands}#
+         * @since 0.6
+         * @returns {Array}
          */
         artyom.emptyCommands = function () {
             return artyomCommands = [];
@@ -313,8 +339,7 @@
         };
 
         /**
-         * Returns an object with the actual properties
-         * of artyom.
+         * Returns an object with the actual properties of artyom.
          *
          * @returns {object}
          */
@@ -349,8 +374,9 @@
 
         /**
          * Returns the language of artyom according to initialize function.
-         * if initialize not used returns english
+         * if initialize not used returns english.
          *
+         * @param {Boolean} short If the first parameter set to true, if the language has a short code, it will be returned.
          * @returns {String}
          */
         artyom.getLanguage = function (short) {
@@ -423,9 +449,9 @@
          * Talks a text according to the given parameters.
          *
          * @private
-         * @param {type} text
-         * @param {type} actualChunk
-         * @param {type} totalChunks
+         * @param {String} text Text to be spoken
+         * @param {Int} actualChunk Number of chunk of the
+         * @param {Int} totalChunks
          * @returns {undefined}
          */
         var artyom_talk = function (text, actualChunk, totalChunks, callbacks) {
@@ -467,7 +493,8 @@
          * artyom.say process the given text into chunks and execute
          * the private function artyom_talk
          *
-         * @param {string} message
+         * @param {String} message Text to be spoken
+         * @param {Object} callbacks
          * @returns {undefined}
          */
         artyom.say = function (message, callbacks) {
@@ -501,10 +528,10 @@
 
                         artyom_triggerEvent("saySomething");
                     } else {
-                        console.log("Artyom expects a string to say ... none given.", 'warn');
+                        console.warn("Artyom expects a string to say ... none given.");
                     }
                 } else {
-                    console.log("Artyom expects a string to say ... " + typeof (message) + " given.", 'warn');
+                    console.warn("Artyom expects a string to say ... " + typeof (message) + " given.");
                 }
             }
         };
@@ -513,7 +540,7 @@
          * Repeats the last sentence that artyom said.
          * Useful in noisy environments.
          *
-         * @returns {artyomProperties.helpers.lastSay|artyom_L12.artyomProperties.helpers.lastSay}
+         * @returns {Object}
          */
         artyom.repeatLastSay = function (returnObject) {
             var last = artyomProperties.helpers.lastSay;
@@ -1088,8 +1115,8 @@
          * Allows to retrieve the recognized spoken text of artyom
          * and do something with it everytime something is recognized
          *
-         * @param {type} action
-         * @returns {undefined}
+         * @param {String} action
+         * @returns {Boolean}
          */
         artyom.redirectRecognizedTextOutput = function (action) {
             if (typeof (action) != "function") {
@@ -1258,14 +1285,17 @@
         };
 
         /**
-         * Extend the functions of artyom as you like !
+         * Extend the functions of artyom as you like.
          *
-         * It's no possible to add properties to the artyom object
-         * If you need to extend the artyom functions you can easily
-         * extend the "extensions" properties.
+         * It's no possible to add properties to the artyom object as artyom is a non-extensible object.
+         * If you need to extend the artyom functions you can easily extend the "extensions" properties.
          *
-         * artyom.extensions.cores = 15;
-         *
+         * @example <caption>Creating a custom artyom method</caption>
+         * // creates artyom.extensions.hello method
+         * artyom.extensions.hello = function(){
+         *   artyom.say("Hello !");
+         * };
+         * @since 0.5
          * @returns {artyom.extensions}
          */
         artyom.extensions = function () {
@@ -1276,7 +1306,9 @@
          * This function will return the webkitSpeechRecognition object used by artyom
          * retrieve it only to debug on it or get some values, do not make changes directly
          *
-         * @warning do not change values of this variable
+         * @readonly
+         * @since 0.9.2
+         * @summary Retrieve the native webkitSpeechRecognition object
          * @returns webkitSpeechRecognition
          */
         artyom.getNativeApi = function () {
@@ -1284,8 +1316,24 @@
         };
 
         /**
-         * Returns a string with artyom actual version.
+         * This function returns a boolean according to the SpeechRecognition status
+         * if artyom is listening, will return true.
          *
+         * Note: This is not a feature of SpeechRecognition, therefore this value hangs on
+         * the fiability of the onStart and onEnd events of the SpeechRecognition
+         *
+         * @since 0.9.3
+         * @summary Returns true if SpeechRecognition is active
+         * @returns {Boolean}
+         */
+        artyom.isActive = function(){
+            return artyomProperties.recognizing;
+        };
+
+        /**
+         * Returns a string with the actual version of Artyom script.
+         *
+         * @summary Returns the actual version of artyom
          * @returns {String}
          */
         artyom.getVersion = function () {
