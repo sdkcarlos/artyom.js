@@ -36,11 +36,32 @@
         },
         executionKeyword: null
     };
-    // Allow to artyom continue with tasks
+
+    /**
+     * Due to problems with the javascript garbage collector the SpeechSynthesisUtterance object
+     * onEnd event doesn't get triggered sometimes. Therefore we need to keep the reference of the
+     * object inside this global array variable.
+     *
+     * @see https://bugs.chromium.org/p/chromium/issues/detail?id=509488
+     * @global
+     */
+    var artyom_garbage_collector = [];
+
+    /**
+     * @var artyomFlags {object}
+     * @global
+     */
     var artyomFlags = {
         restartRecognition: false
     };
 
+    /**
+     * This object contains all available languages that support speechSynthesis and SpeechRecognition
+     * on the Google Chrome browser. Those identifiers will be used to select the voice on artyom.say
+     *
+     * @var artyomLanguages {object}
+     * @global
+     */
     var artyomLanguages = {
         german: "Google Deutsch",
         spanish: "Google español",
@@ -127,7 +148,7 @@
          * This function will set the default language used by artyom
          * or notice the user if artyom is not supported in the actual
          * browser
-         *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/15/read-doc/artyom-initialize/artyom-js
          * @param {Object} config
          * @returns {Boolean}
          */
@@ -470,6 +491,7 @@
                 if (typeof (callbacks.onEnd) == "function") {
                     // Handle onEnd callback
                     msg.addEventListener('end', function () {
+                        console.info("");
                         if ((actualChunk) >= totalChunks) {
                             callbacks.onEnd.call(msg);
                         }
@@ -485,7 +507,9 @@
                 }
             }
 
-            artyom.debug((actualChunk) + " text chunks processed succesfully out of " + totalChunks);//Notice how many chunks were processed for the given text.
+            //Notice how many chunks were processed for the given text.
+            artyom.debug((actualChunk) + " text chunk processed succesfully out of " + totalChunks);
+            artyom_garbage_collector.push(msg);
             window.speechSynthesis.speak(msg);
         };
 
@@ -1083,6 +1107,7 @@
          * Artyom have it's own diagnostics.
          * Run this function in order to detect why artyom is not initialized.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/5/read-doc/artyom-detecterrors/artyom-js
          * @param {type} callback
          * @returns {}
          */
