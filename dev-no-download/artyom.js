@@ -2,7 +2,7 @@
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
  * Artyom only works in browsers based in Chromium (Google Chrome or Electron)
  *
- * @version 0.9.2
+ * @version DEVELOPMENT_DO_NOT_USE
  * @copyright Carlos Delgado 2016
  * @author Carlos Delgado - www.ourcodeworld.com
  * @param {type} window
