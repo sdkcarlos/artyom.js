@@ -2,7 +2,7 @@
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
  * Artyom only works in browsers based in Chromium (Google Chrome or Electron)
  *
- * @version 0.9.3
+ * @version 0.9.5
  * @copyright Carlos Delgado 2016
  * @author Carlos Delgado - www.ourcodeworld.com
  * @param {type} window
@@ -1337,7 +1337,7 @@
          * Note: This is not a feature of SpeechRecognition, therefore this value hangs on
          * the fiability of the onStart and onEnd events of the SpeechRecognition
          *
-         * @since 0.9.3
+         * @since 0.9.5
          * @summary Returns true if SpeechRecognition is active
          * @returns {Boolean}
          */
@@ -1352,7 +1352,7 @@
          * Note: This is not a feature of speechSynthesis, therefore this value hangs on
          * the fiability of the onStart and onEnd events of the speechSynthesis
          *
-         * @since 0.9.3
+         * @since 0.9.5
          * @summary Returns true if speechSynthesis is active
          * @returns {Boolean}
          */
@@ -1387,7 +1387,7 @@
          * @returns {String}
          */
         artyom.getVersion = function () {
-            return "0.9.3";
+            return "0.9.5";
         };
 
         return artyom;

@@ -7,7 +7,7 @@
 
 The user of artyom is encouraged to use its latest version.
 
-- **Artyom V 0.9.3 Released ! (31.05.2016 14:45 Berlin/Europe)**
+- **Artyom V 0.9.5 Released ! (31.05.2016 14:45 Berlin/Europe)**
 - Artyom V 0.9.2 Released ! (10.05.2016 19:46 Berlin/Europe)
 
 Voice recognition javascript library. Create your own siri,google now or cortana within your website.
