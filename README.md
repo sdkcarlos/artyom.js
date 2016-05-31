@@ -7,8 +7,8 @@
 
 The user of artyom is encouraged to use its latest version.
 
-- **Artyom V 0.9.2 Released ! (10.05.2016 19:46 Berlin/Europe)**
-- Artyom V 0.9.1 Released ! (10.02.2016 16:16 Berlin/Europe)
+- **Artyom V 0.9.3 Released ! (31.05.2016 14:45 Berlin/Europe)**
+- Artyom V 0.9.2 Released ! (10.05.2016 19:46 Berlin/Europe)
 
 Voice recognition javascript library. Create your own siri,google now or cortana within your website.
 
@@ -28,7 +28,7 @@ It's recomendable to download always the latest version of artyom anyway check t
 ###[Sticky Notes Demo ALL Languages](https://sdkcarlos.github.io/demo-sites/artyom/artyom_sticky_notes.html)
 
 #Installation
- 
+
 You can get it on npm.
 
 ```shell
@@ -47,8 +47,8 @@ You need more functions, methods for this library ? Just ask for it ! in issues 
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
 #[Open Wiki (tutorial, documentation)](http://ourcodeworld.com/projects/projects-documentation/1/list/artyom-js)
 #[See changelog](http://ourcodeworld.com/projects/projects-documentation/2/read-doc/official-changelog/artyom-js)
- 
-Artyom offers **COMPLETE** Support for the following languages 
+
+Artyom offers **COMPLETE** Support for the following languages
 
 | |Description |Codes for initialization|
 ------------- | ------------- | ------------- |

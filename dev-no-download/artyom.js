@@ -10,7 +10,6 @@
  * @returns Artyom
  */
 (function (window) {'use strict';
-
     // getVoices is an asynchronous native method. At firs time it will ALWAYS return an empty array
     // after it will return an array with all the available voices in the browser
     if ('speechSynthesis' in window) {
@@ -27,14 +26,15 @@
         continuous: false,
         speed: 1,
         volume: 1,
-        listen: true,
+        listen: false,
         mode: "normal",
         debug: false,
         helpers: {
             redirectRecognizedTextOutput: null,
             lastSay: null
         },
-        executionKeyword: null
+        executionKeyword: null,
+        speaking:false
     };
 
     /**
@@ -357,6 +357,8 @@
                     window.speechSynthesis.cancel();
                 } while (window.speechSynthesis.pending === true);
             }
+
+            artyomProperties.speaking = false;
         };
 
         /**
@@ -481,34 +483,45 @@
             msg.volume = artyomProperties.volume;
             msg.rate = artyomProperties.speed;
 
+            // Select the voice according to the selected
             if (artyomVoice) {
                 msg.voice = speechSynthesis.getVoices().filter(function (voice) {
                     return voice.name == artyomVoice;
                 })[0];
             }
 
-            if (callbacks) {
-                if (typeof (callbacks.onEnd) == "function") {
-                    // Handle onEnd callback
-                    msg.addEventListener('end', function () {
-                        console.info("");
-                        if ((actualChunk) >= totalChunks) {
-                            callbacks.onEnd.call(msg);
-                        }
-                    });
-                }
-
-                if (typeof (callbacks.onStart) == "function") {//Handle onStart callback
-                    msg.addEventListener('start', function () {
-                        if (actualChunk == 1) { // If the chunk is the first trigger the onStart event
+            // If is first text chunk (onStart)
+            if (actualChunk == 1) {
+                msg.addEventListener('start', function () {
+                    // Set artyom is talking
+                    artyomProperties.speaking = true;
+                    // Trigger the onStart callback if exists
+                    if (callbacks) {
+                        if (typeof(callbacks.onStart) == "function") {
                             callbacks.onStart.call(msg);
                         }
-                    });
-                }
+                    }
+                });
             }
 
-            //Notice how many chunks were processed for the given text.
+            // If is final text chunk (onEnd)
+            if ((actualChunk) >= totalChunks) {
+                msg.addEventListener('end', function () {
+                    // Set artyom is talking
+                    artyomProperties.speaking = false;
+                    // Trigger the onEnd callback if exists.
+                    if(callbacks){
+                        if(typeof(callbacks.onEnd) == "function"){
+                            callbacks.onEnd.call(msg);
+                        }
+                    }
+                });
+            }
+
+            // Notice how many chunks were processed for the given text.
             artyom.debug((actualChunk) + " text chunk processed succesfully out of " + totalChunks);
+            // Important : Save the SpeechSynthesisUtterance object in memory, otherwise it will get lost
+            // thanks to the Garbage collector of javascript
             artyom_garbage_collector.push(msg);
             window.speechSynthesis.speak(msg);
         };
@@ -545,6 +558,7 @@
                             }
                         });
 
+                        // Save the spoken text into the lastSay object of artyom
                         artyomProperties.helpers.lastSay = {
                             text: message,
                             date: new Date()
@@ -564,6 +578,7 @@
          * Repeats the last sentence that artyom said.
          * Useful in noisy environments.
          *
+         * @param {Boolean} returnObject If set to true, an object with the text and the timestamp when was executed will be returned.
          * @returns {Object}
          */
         artyom.repeatLastSay = function (returnObject) {
@@ -579,33 +594,6 @@
         };
 
         /**
-         * Test artyom in the browser.
-         *
-         * @returns {undefined}
-         */
-        artyom.test = function () {
-            if (('webkitSpeechRecognition' in window)) {
-                alert("I can hear you ! Initialize me now.");
-                artyom.initialize({
-                    lang: "en-GB",
-                    listen: false
-                });
-            } else {
-                alert("Artyom can't listen to you in this browser. Speech Recognition is not supported in this browser.");
-            }
-
-            if ('speechSynthesis' in window) {
-                artyom.say("1,2,3,4,5,6,7,8,9,10. Well, all is in order here.", {
-                    onEnd: function () {
-                        alert("The test of speech is over.");
-                    }
-                });
-            } else {
-                alert("Artyom can't say nothing in this browser. Speech Synthesis is not supported in this browser.");
-            }
-        };
-
-        /**
          * verify if artyom can talk or not.
          *
          * @returns {Boolean}
@@ -615,9 +603,8 @@
         };
 
         /**
-         * verify if artyom can listen you or not.
+         * Verify if the browser supports webkitSpeechRecognition.
          *
-         * @public
          * @returns {Boolean}
          */
         artyom.recognizingSupported = function () {
@@ -721,7 +708,7 @@
             };
 
             /**
-             * Procesar cada reconocimiento de voz.
+             * Process the recognition event.
              *
              * @param {type} event
              * @returns {undefined}
@@ -744,7 +731,7 @@
                         if (event.results[i].isFinal) {
                             var comando = artyom_execute(identificated.trim());
 
-                            // Redirect output when necesary
+                            // Redirect the output of the text if necessary
                             if (typeof (artyomProperties.helpers.redirectRecognizedTextOutput) === "function") {
                                 artyomProperties.helpers.redirectRecognizedTextOutput(identificated, true);
                             }
@@ -754,9 +741,10 @@
                                 reconocimiento.stop();
                                 artyomProperties.recognizing = false;
 
-                                //Executing Command Action
+                                // Execute the command if smart
                                 if (comando.wildcard) {
                                     comando.objeto.action(comando.indice, comando.wildcard.item, comando.wildcard.full);
+                                // Execute a normal command
                                 } else {
                                     comando.objeto.action(comando.indice);
                                 }
@@ -855,7 +843,7 @@
                 try {
                     reconocimiento.start();
                 } catch (e) {
-                    console.warn("Fatal Error There's already a instance of me running in the background . It's recommendable to restart Google Chrome to fix this issue.");
+                    console.warn("Fatal Error There's already a instance of webkitSpeechRecognition in the background. It's recommendable to restart Google Chrome to fix this issue.");
                 }
             }
         };
@@ -1112,19 +1100,21 @@
          * @returns {}
          */
         artyom.detectErrors = function () {
-            if ((window.location.origin) == "file://") {
-                console.error("Fatal Error Detected : It seems you're running the artyom demo from a local file ! The SpeechRecognitionAPI Needs to be hosted someway (server as http or https). Artyom will NOT work here, Sorry.");
+            if ((window.location.protocol) == "file:") {
+                var message = "Fatal Error Detected : It seems you're running the artyom demo from a local file ! The SpeechRecognitionAPI Needs to be hosted someway (server as http or https). Artyom will NOT work here, Sorry.";
+                console.error(message);
                 return {
                     code: "artyom_error_localfile",
-                    message: "Fatal Error Detected : It seems you're running the artyom demo from a local file ! The SpeechRecognitionAPI Needs to be hosted someway (server as http or https). Artyom will NOT work here, Sorry."
+                    message: message
                 };
             }
 
             if (!artyom.device.isChrome) {
-                console.error("Fatal Error Detected: You are not running Google Chrome ! SpeechRecognitionAPI and SpeechSynthesisAPI is only available in google chrome ! ");
+                var message = "Fatal Error Detected: You are not running Google Chrome ! SpeechRecognitionAPI and SpeechSynthesisAPI is only available in google chrome ! ";
+                console.error(message);
                 return {
                     code: "artyom_error_browser_unsupported",
-                    message: "Fatal Error Detected: You are not running Google Chrome ! SpeechRecognitionAPI and SpeechSynthesisAPI is only available in google chrome ! "
+                    message: message
                 };
             }
 
@@ -1334,7 +1324,7 @@
          * @readonly
          * @since 0.9.2
          * @summary Retrieve the native webkitSpeechRecognition object
-         * @returns webkitSpeechRecognition
+         * @returns {Object webkitSpeechRecognition}
          */
         artyom.getNativeApi = function () {
             return reconocimiento;
@@ -1351,8 +1341,43 @@
          * @summary Returns true if SpeechRecognition is active
          * @returns {Boolean}
          */
-        artyom.isActive = function(){
+        artyom.isRecognizing = function(){
             return artyomProperties.recognizing;
+        };
+
+        /**
+         * This function returns a boolean according to the speechSynthesis status
+         * if artyom is speaking, will return true.
+         *
+         * Note: This is not a feature of speechSynthesis, therefore this value hangs on
+         * the fiability of the onStart and onEnd events of the speechSynthesis
+         *
+         * @since 0.9.3
+         * @summary Returns true if speechSynthesis is active
+         * @returns {Boolean}
+         */
+        artyom.isSpeaking = function(){
+            return artyomProperties.speaking;
+        };
+
+        /**
+         * The SpeechSynthesisUtterance objects are stored in the artyom_garbage_collector variable
+         * to prevent the wrong behaviour of artyom.say.
+         * Use this method to clear all spoken SpeechSynthesisUtterance unused objects.
+         *
+         * @returns {Boolean}
+         */
+        artyom.clearGarbageCollection = function(){
+            return artyom_garbage_collector = [];
+        };
+
+        /**
+         * Returns the SpeechSynthesisUtterance garbageobjects.
+         *
+         * @returns {Array}
+         */
+        artyom.getGarbageCollection = function(){
+            return artyom_garbage_collector;
         };
 
         /**

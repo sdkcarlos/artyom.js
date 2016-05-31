@@ -1,20 +1,18 @@
-/**
- * artyom.js can't do anything without commands , this file will set up
- * artyom for it's final use
- * 
- * @dependencies [artyom.js]
- * @copyright 2015, Deutschland.
- * @author Carlos Delgado
- * @param {type} window
- * @Description Artyom JS Core - See Documentation for further information
- * @see http://sdkcarlos.github.io/artyom.html
- * @ignore 08.10.2015 17:17
- * @returns {object}
- */
-
+ /**
+  * Artyom commands examples. Just add this file after artyom is loaded in your document.
+  * You can save all your commands in this file or simply follow the workflow :
+  *
+  * @example artyom.addCommands({CommandObject})
+  * @version 0.9.3
+  * @copyright Carlos Delgado 2016
+  * @author Carlos Delgado - www.ourcodeworld.com
+  * @param {type} window
+  * @see http://sdkcarlos.github.io/artyom.html
+  * @returns Artyom
+  */
 (function(window){
     'use strict';
-    
+
     /**
      * Example Artyom Commands
      * @type Array
@@ -24,19 +22,27 @@
         {
             indexes: ['hello'],
             action : function(i){
-                artyom.say("How's going !");
+                artyom.say("Hello, how are you? My name is Artyom.",{
+                    onStart: function(){
+                        console.log("Speaking presentation");
+                    },
+                    onEnd: function(){
+                        console.log("All that i've to say has been said.");
+                    }
+                });
             }
         },
         //Smart Command Example
         {
             indexes: ['pronunciate * please'],
             smart:true,
-            action : function(i){
-                artyom.say("How's going !");
+            action : function(i,wildcard,recognized_text){
+                console.log("Recognized : " + recognized_text,"Wildcard : "+wildcard);
+                artyom.say(wildcard);
             }
         }
         //Continue adding your own commands here
     ];
-    
+
     artyom.addCommands(artyomCommands);
 })(window);
