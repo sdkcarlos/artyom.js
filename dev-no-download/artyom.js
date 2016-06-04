@@ -79,6 +79,16 @@
         cantoneseChinese: "Google 粤語（香港）"
     };
 
+    var artyom_global_events = {
+        ERROR: "ERROR",
+        SPEECH_SYNTHESIS_START: "SPEECH_SYNTHESIS_START",
+        SPEECH_SYNTHESIS_END: "SPEECH_SYNTHESIS_END",
+        TEXT_RECOGNIZED: "TEXT_RECOGNIZED",
+        COMMAND_RECOGNITION_START : "COMMAND_RECOGNITION_START",
+        COMMAND_RECOGNITION_END: "COMMAND_RECOGNITION_END",
+        COMMAND_MATCHED: "COMMAND_MATCHED"
+    };
+
     var artyomVoice = 'Google UK English Male';
     var device = {
         isMobile: false,
@@ -359,6 +369,7 @@
             }
 
             artyomProperties.speaking = false;
+            artyom.clearGarbageCollection();
         };
 
         /**
@@ -495,6 +506,9 @@
                 msg.addEventListener('start', function () {
                     // Set artyom is talking
                     artyomProperties.speaking = true;
+                    // Trigger the onSpeechSynthesisStart event
+                    artyom.debug("Event reached : SPEECH_SYNTHESIS_START");
+                    artyom_triggerEvent(artyom_global_events.SPEECH_SYNTHESIS_START);
                     // Trigger the onStart callback if exists
                     if (callbacks) {
                         if (typeof(callbacks.onStart) == "function") {
@@ -509,6 +523,9 @@
                 msg.addEventListener('end', function () {
                     // Set artyom is talking
                     artyomProperties.speaking = false;
+                    // Trigger the onSpeechSynthesisEnd event
+                    artyom.debug("Event reached : SPEECH_SYNTHESIS_END");
+                    artyom_triggerEvent(artyom_global_events.SPEECH_SYNTHESIS_END);
                     // Trigger the onEnd callback if exists.
                     if(callbacks){
                         if(typeof(callbacks.onEnd) == "function"){
@@ -563,8 +580,6 @@
                             text: message,
                             date: new Date()
                         };
-
-                        artyom_triggerEvent("saySomething");
                     } else {
                         console.warn("Artyom expects a string to say ... none given.");
                     }
@@ -629,7 +644,8 @@
             reconocimiento.lang = artyomProperties.lang;
 
             reconocimiento.onstart = function () {
-                artyom.debug("Event reached : onStart");
+                artyom.debug("Event reached : COMMAND_RECOGNITION_START");
+                artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_START);
                 artyomProperties.recognizing = true;
                 artyom_is_allowed = true;
             };
@@ -641,40 +657,23 @@
              * @returns {undefined}
              */
             reconocimiento.onerror = function (event) {
-                if (event.error == 'network') {
-                    artyom_triggerEvent("error", {
-                        code: "network",
-                        message: "Artyom needs internet to work properly"
-                    });
-                }
-
-                if (event.error == 'no-speech') {
-                    if (artyomProperties.continuous === false) {
-                        artyom_triggerEvent("info", {
-                            code: "info_no_speech",
-                            message: "Artyom didn't hear anything. It will take a break."
-                        });
-                    }
-                }
+                artyom_triggerEvent(artyom_global_events.ERROR,{
+                    code: event.error
+                });
 
                 if (event.error == 'audio-capture') {
                     artyom_is_allowed = false;
-                    artyom_triggerEvent("error", {
-                        code: "audio-capture",
-                        message: "There's not any audiocapture device installed on this computer."
-                    });
-
                 }
 
                 if (event.error == 'not-allowed') {
                     artyom_is_allowed = false;
                     if (event.timeStamp - start_timestamp < 100) {
-                        artyom_triggerEvent("error", {
+                        artyom_triggerEvent(artyom_global_events.ERROR, {
                             code: "info_blocked",
                             message: "Artyom needs the permision of the microphone, is blocked."
                         });
                     } else {
-                        artyom_triggerEvent("error", {
+                        artyom_triggerEvent(artyom_global_events.ERROR, {
                             code: "info_denied",
                             message: "Artyom needs the permision of the microphone, is denied"
                         });
@@ -689,12 +688,6 @@
              * @returns {undefined}
              */
             reconocimiento.onend = function () {
-
-                artyom_triggerEvent("FinishRecognition", {
-                    code: "artyom_dont_listen",
-                    message: "Artyom stop listening."
-                });
-
                 if (artyomFlags.restartRecognition === true) {
                     if (artyom_is_allowed === true) {
                         reconocimiento.start();
@@ -702,6 +695,16 @@
                     } else {
                         console.error("Verify the microphone and check for the table of errors in sdkcarlos.github.io/sites/artyom.html to solve your problem. If you want to give your user a message when an error appears add an artyom listener");
                     }
+
+                    artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_END,{
+                        code: "continuous_mode_enabled",
+                        message: "OnEnd event reached with continuous mode"
+                    });
+                }else{
+                    artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_END,{
+                        code: "continuous_mode_disabled",
+                        message: "OnEnd event reached without continuous mode"
+                    });
                 }
 
                 artyomProperties.recognizing = false;
@@ -715,15 +718,13 @@
              */
             reconocimiento.onresult = function (event) {
                 if (!artyomCommands.length) {
+                    artyom.debug("No commands to process.");
                     return;
                 }
 
                 var cantidadResultados = event.results.length;
 
-                artyom_triggerEvent("Recognition", {
-                    code: "artyom_listen",
-                    message: "Artyom is listening to you."
-                });
+                artyom_triggerEvent(artyom_global_events.TEXT_RECOGNIZED);
 
                 if (artyomProperties.mode == "normal") {
                     for (var i = event.resultIndex; i < cantidadResultados; ++i) {
@@ -838,7 +839,8 @@
 
             if (artyomProperties.recognizing) {
                 reconocimiento.stop();
-                artyom.debug("Event reached : onStop");
+                artyom.debug("Event reached : COMMAND_RECOGNITION_END");
+                artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_END);
             } else {
                 try {
                     reconocimiento.start();
@@ -952,6 +954,7 @@
                 }
 
                 if (encontrado >= 0) {
+                    artyom_triggerEvent(artyom_global_events.COMMAND_MATCHED);
                     return {
                         indice: encontrado,
                         objeto: instruction,
@@ -993,6 +996,7 @@
                 }
 
                 if (encontrado >= 0) {
+                    artyom_triggerEvent(artyom_global_events.COMMAND_MATCHED);
                     return {
                         indice: encontrado,
                         objeto: instruction
@@ -1031,6 +1035,7 @@
                 }
 
                 if (encontrado >= 0) {
+                    artyom_triggerEvent(artyom_global_events.COMMAND_MATCHED);
                     return {
                         indice: encontrado,
                         objeto: instruction
