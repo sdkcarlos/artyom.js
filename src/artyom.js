@@ -2,7 +2,7 @@
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
  * Artyom only works in browsers based in Chromium (Google Chrome or Electron)
  *
- * @version 0.9.5
+ * @version 0.9.6
  * @copyright Carlos Delgado 2016
  * @author Carlos Delgado - www.ourcodeworld.com
  * @param {type} window
@@ -79,6 +79,16 @@
         cantoneseChinese: "Google 粤語（香港）"
     };
 
+    var artyom_global_events = {
+        ERROR: "ERROR",
+        SPEECH_SYNTHESIS_START: "SPEECH_SYNTHESIS_START",
+        SPEECH_SYNTHESIS_END: "SPEECH_SYNTHESIS_END",
+        TEXT_RECOGNIZED: "TEXT_RECOGNIZED",
+        COMMAND_RECOGNITION_START : "COMMAND_RECOGNITION_START",
+        COMMAND_RECOGNITION_END: "COMMAND_RECOGNITION_END",
+        COMMAND_MATCHED: "COMMAND_MATCHED"
+    };
+
     var artyomVoice = 'Google UK English Male';
     var device = {
         isMobile: false,
@@ -99,6 +109,8 @@
 
         /**
          * Contains some basic information that artyom needs to know as the type of device and browser
+         *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/6/read-doc/artyom-device/artyom-js
          * @since 0.5.1
          * @type {Object}
          */
@@ -108,6 +120,7 @@
          * Artyom can return inmediately the voices available in your browser.
          *
          * @readonly
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/14/read-doc/artyom-getvoices/artyom-js
          * @returns {Array}
          */
         artyom.getVoices = function () {
@@ -117,6 +130,7 @@
         /**
          * Returns an array with all the available commands for artyom.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/10/read-doc/artyom-getavailablecommands/artyom-js
          * @readonly
          * @returns {Array}
          */
@@ -160,53 +174,40 @@
 
             if (config.hasOwnProperty("lang")) {
                 switch (config.lang) {
-                    case 'de':
-                    case 'de-DE':
+                    case 'de':case 'de-DE':
                         artyomVoice = artyomLanguages.german;
                         break;
                     case 'en-GB':
                         artyomVoice = artyomLanguages.englishGB;
                         break;
-                    case "pt":
-                    case "pt-br":
-                    case "pt-PT":
+                    case "pt":case "pt-br":case "pt-PT":
                         artyomVoice = artyomLanguages.brasilian;
                         break;
-                    case "ru":
-                    case "ru-RU":
+                    case "ru":case "ru-RU":
                         artyomVoice = artyomLanguages.russia;
                         break;
-                    case "nl":
-                    case "nl-NL":
+                    case "nl":case "nl-NL":
                         artyomVoice = artyomLanguages.holand;
                         break;
-                    case 'es':
-                    case 'es-CO':
-                    case 'es-ES':
+                    case 'es':case 'es-CO':case 'es-ES':
                         artyomVoice = artyomLanguages.spanish;
                         break;
-                    case "en":
-                    case 'en-US':
+                    case "en":case 'en-US':
                         artyomVoice = artyomLanguages.englishUSA;
                         break;
-                    case 'fr':
-                    case 'fr-FR':
+                    case 'fr':case 'fr-FR':
                         artyomVoice = artyomLanguages.france;
                         break;
-                    case 'it':
-                    case 'it-IT':
+                    case 'it':case 'it-IT':
                         artyomVoice = artyomLanguages.italian;
                         break;
-                    case 'jp':
-                    case 'ja-JP':
+                    case 'jp':case 'ja-JP':
                         artyomVoice = artyomLanguages.japanese;
                         break;
-                    case 'id':
-                    case 'id-ID':
+                    case 'id':case 'id-ID':
                         artyomVoice = artyomLanguages.indonesia;
                         break;
-                    case 'pl':
-                    case 'pl-PL':
+                    case 'pl':case 'pl-PL':
                         artyomVoice = artyomLanguages.polski;
                         break;
                     case 'zh-CN':
@@ -216,7 +217,7 @@
                         artyomVoice = artyomLanguages.cantoneseChinese;
                         break;
                     default:
-                        console.info("The given language for artyom is not supported yet. English has been set to default");
+                        console.warn("The given language for artyom is not supported yet. English has been set to default");
                         break;
                 }
                 artyomProperties.lang = config.lang;
@@ -268,6 +269,7 @@
         /**
          * Force artyom to stop listen even if is in continuos mode.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/9/read-doc/artyom-fatality/artyom-js
          * @returns {Boolean}
          */
         artyom.fatality = function () {
@@ -286,6 +288,7 @@
          * Add dinamically commands to artyom using
          * You can even add commands while artyom is active.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/4/read-doc/artyom-addcommands/artyom-js
          * @since 0.6
          * @param {Object | Array[Objects]} param
          * @returns {undefined}
@@ -312,8 +315,9 @@
         };
 
         /**
-         * Remove the commands of artyom with indexes that matches with the given text
+         * Remove the commands of artyom with indexes that matches with the given text.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/19/read-doc/artyom-removecommands/artyom-js
          * @param {type} identifier
          * @returns {array}
          */
@@ -337,7 +341,9 @@
         };
 
         /**
-         * Removes all the commands added to artyom.
+         * Removes all the added commands of artyom.
+         *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/7/read-doc/artyom-emptycommands/artyom-js
          * @since 0.6
          * @returns {Array}
          */
@@ -349,6 +355,7 @@
         /**
          * Stops the actual and pendings messages that artyom have to say.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/23/read-doc/artyom-shutup/artyom-js
          * @returns {undefined}
          */
         artyom.shutUp = function () {
@@ -359,11 +366,13 @@
             }
 
             artyomProperties.speaking = false;
+            artyom.clearGarbageCollection();
         };
 
         /**
          * Returns an object with the actual properties of artyom.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/12/read-doc/artyom-getproperties/artyom-js
          * @returns {object}
          */
         artyom.getProperties = function () {
@@ -383,22 +392,24 @@
         };
 
         /**
-         * Create a listener when an artyom action is called
+         * Create a listener when an artyom action is called.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/24/read-doc/artyom-when/artyom-js
          * @param {type} event
          * @param {type} action
          * @returns {undefined}
          */
         artyom.when = function (event, action) {
-            document.addEventListener(event, function (e) {
+            return document.addEventListener(event, function (e) {
                 action(e.detail);
             }, false);
         };
 
         /**
          * Returns the language of artyom according to initialize function.
-         * if initialize not used returns english.
+         * if initialize not used returns english GB.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/11/read-doc/artyom-getlanguage/artyom-js
          * @param {Boolean} short If the first parameter set to true, if the language has a short code, it will be returned.
          * @returns {String}
          */
@@ -495,6 +506,9 @@
                 msg.addEventListener('start', function () {
                     // Set artyom is talking
                     artyomProperties.speaking = true;
+                    // Trigger the onSpeechSynthesisStart event
+                    artyom.debug("Event reached : " + artyom_global_events.SPEECH_SYNTHESIS_START);
+                    artyom_triggerEvent(artyom_global_events.SPEECH_SYNTHESIS_START);
                     // Trigger the onStart callback if exists
                     if (callbacks) {
                         if (typeof(callbacks.onStart) == "function") {
@@ -509,6 +523,9 @@
                 msg.addEventListener('end', function () {
                     // Set artyom is talking
                     artyomProperties.speaking = false;
+                    // Trigger the onSpeechSynthesisEnd event
+                    artyom.debug("Event reached : " + artyom_global_events.SPEECH_SYNTHESIS_END);
+                    artyom_triggerEvent(artyom_global_events.SPEECH_SYNTHESIS_END);
                     // Trigger the onEnd callback if exists.
                     if(callbacks){
                         if(typeof(callbacks.onEnd) == "function"){
@@ -527,9 +544,9 @@
         };
 
         /**
-         * artyom.say process the given text into chunks and execute
-         * the private function artyom_talk
+         * Process the given text into chunks and execute the private function artyom_talk
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/20/read-doc/artyom-say/artyom-js
          * @param {String} message Text to be spoken
          * @param {Object} callbacks
          * @returns {undefined}
@@ -563,8 +580,6 @@
                             text: message,
                             date: new Date()
                         };
-
-                        artyom_triggerEvent("saySomething");
                     } else {
                         console.warn("Artyom expects a string to say ... none given.");
                     }
@@ -578,6 +593,7 @@
          * Repeats the last sentence that artyom said.
          * Useful in noisy environments.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/25/read-doc/artyom-repeatlastsay/artyom-js
          * @param {Boolean} returnObject If set to true, an object with the text and the timestamp when was executed will be returned.
          * @returns {Object}
          */
@@ -594,8 +610,9 @@
         };
 
         /**
-         * verify if artyom can talk or not.
+         * Verify if the browser supports speechSynthesis.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/40/read-doc/artyom-speechsupported/artyom-js
          * @returns {Boolean}
          */
         artyom.speechSupported = function () {
@@ -605,6 +622,7 @@
         /**
          * Verify if the browser supports webkitSpeechRecognition.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/39/read-doc/artyom-recognizingsupported/artyom-js
          * @returns {Boolean}
          */
         artyom.recognizingSupported = function () {
@@ -629,7 +647,8 @@
             reconocimiento.lang = artyomProperties.lang;
 
             reconocimiento.onstart = function () {
-                artyom.debug("Event reached : onStart");
+                artyom.debug("Event reached : " + artyom_global_events.COMMAND_RECOGNITION_START);
+                artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_START);
                 artyomProperties.recognizing = true;
                 artyom_is_allowed = true;
             };
@@ -641,41 +660,25 @@
              * @returns {undefined}
              */
             reconocimiento.onerror = function (event) {
-                if (event.error == 'network') {
-                    artyom_triggerEvent("error", {
-                        code: "network",
-                        message: "Artyom needs internet to work properly"
-                    });
-                }
-
-                if (event.error == 'no-speech') {
-                    if (artyomProperties.continuous === false) {
-                        artyom_triggerEvent("info", {
-                            code: "info_no_speech",
-                            message: "Artyom didn't hear anything. It will take a break."
-                        });
-                    }
-                }
+                // Dispath error globally (artyom.when)
+                artyom_triggerEvent(artyom_global_events.ERROR,{
+                    code: event.error
+                });
 
                 if (event.error == 'audio-capture') {
                     artyom_is_allowed = false;
-                    artyom_triggerEvent("error", {
-                        code: "audio-capture",
-                        message: "There's not any audiocapture device installed on this computer."
-                    });
-
                 }
 
                 if (event.error == 'not-allowed') {
                     artyom_is_allowed = false;
                     if (event.timeStamp - start_timestamp < 100) {
-                        artyom_triggerEvent("error", {
-                            code: "info_blocked",
+                        artyom_triggerEvent(artyom_global_events.ERROR, {
+                            code: "info-blocked",
                             message: "Artyom needs the permision of the microphone, is blocked."
                         });
                     } else {
-                        artyom_triggerEvent("error", {
-                            code: "info_denied",
+                        artyom_triggerEvent(artyom_global_events.ERROR, {
+                            code: "info-denied",
                             message: "Artyom needs the permision of the microphone, is denied"
                         });
                     }
@@ -689,12 +692,6 @@
              * @returns {undefined}
              */
             reconocimiento.onend = function () {
-
-                artyom_triggerEvent("FinishRecognition", {
-                    code: "artyom_dont_listen",
-                    message: "Artyom stop listening."
-                });
-
                 if (artyomFlags.restartRecognition === true) {
                     if (artyom_is_allowed === true) {
                         reconocimiento.start();
@@ -702,30 +699,42 @@
                     } else {
                         console.error("Verify the microphone and check for the table of errors in sdkcarlos.github.io/sites/artyom.html to solve your problem. If you want to give your user a message when an error appears add an artyom listener");
                     }
+
+                    artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_END,{
+                        code: "continuous_mode_enabled",
+                        message: "OnEnd event reached with continuous mode"
+                    });
+                }else{
+                    artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_END,{
+                        code: "continuous_mode_disabled",
+                        message: "OnEnd event reached without continuous mode"
+                    });
                 }
 
                 artyomProperties.recognizing = false;
             };
 
             /**
-             * Process the recognition event.
+             * Declare the processor dinamycally according to the mode of artyom
+             * to increase the performance.
              *
-             * @param {type} event
-             * @returns {undefined}
+             * @type {Function}
+             * @return
              */
-            reconocimiento.onresult = function (event) {
-                if (!artyomCommands.length) {
-                    return;
-                }
+            var onResultProcessor;
 
-                var cantidadResultados = event.results.length;
+            // Process the recognition in normal mode
+            if(artyomProperties.mode == "normal"){
+                onResultProcessor = function(event){
+                    if (!artyomCommands.length) {
+                        artyom.debug("No commands to process in normal mode.");
+                        return;
+                    }
 
-                artyom_triggerEvent("Recognition", {
-                    code: "artyom_listen",
-                    message: "Artyom is listening to you."
-                });
+                    var cantidadResultados = event.results.length;
 
-                if (artyomProperties.mode == "normal") {
+                    artyom_triggerEvent(artyom_global_events.TEXT_RECOGNIZED);
+
                     for (var i = event.resultIndex; i < cantidadResultados; ++i) {
                         var identificated = event.results[i][0].transcript;
                         if (event.results[i].isFinal) {
@@ -781,7 +790,21 @@
                             artyom.debug("Normal mode : " + identificated);
                         }
                     }
-                } else if (artyomProperties.mode == "quick") {
+                }
+            }
+
+            // Process the recognition in quick mode
+            if(artyomProperties.mode == "quick"){
+                onResultProcessor = function(event){
+                    if (!artyomCommands.length) {
+                        artyom.debug("No commands to process.");
+                        return;
+                    }
+
+                    var cantidadResultados = event.results.length;
+
+                    artyom_triggerEvent(artyom_global_events.TEXT_RECOGNIZED);
+
                     for (var i = event.resultIndex; i < cantidadResultados; ++i) {
                         var identificated = event.results[i][0].transcript;
 
@@ -834,16 +857,29 @@
                         artyom.debug("Quick mode : " + identificated);
                     }
                 }
-            };
+            }
+
+            /**
+             * Process the recognition event with the previously
+             * declared processor function.
+             *
+             * @param {type} event
+             * @returns {undefined}
+             */
+            reconocimiento.onresult = onResultProcessor;
 
             if (artyomProperties.recognizing) {
                 reconocimiento.stop();
-                artyom.debug("Event reached : onStop");
+                artyom.debug("Event reached : " + artyom_global_events.COMMAND_RECOGNITION_END);
+                artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_END);
             } else {
                 try {
                     reconocimiento.start();
                 } catch (e) {
-                    console.warn("Fatal Error There's already a instance of webkitSpeechRecognition in the background. It's recommendable to restart Google Chrome to fix this issue.");
+                    artyom_triggerEvent(artyom_global_events.ERROR,{
+                        code: "recognition_overlap",
+                        message: "A webkitSpeechRecognition instance has been started while there's already running. Is recommendable to restart the Browser"
+                    });
                 }
             }
         };
@@ -851,7 +887,7 @@
         /**
          * Simulate a voice command via JS
          *
-         * @example artyom.simulateInstruction("Hello"); Will execute the action of hello command
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/22/read-doc/artyom-simulateinstruction/artyom-js
          * @param {type} sentence
          * @returns {undefined}
          */
@@ -952,6 +988,7 @@
                 }
 
                 if (encontrado >= 0) {
+                    artyom_triggerEvent(artyom_global_events.COMMAND_MATCHED);
                     return {
                         indice: encontrado,
                         objeto: instruction,
@@ -993,6 +1030,7 @@
                 }
 
                 if (encontrado >= 0) {
+                    artyom_triggerEvent(artyom_global_events.COMMAND_MATCHED);
                     return {
                         indice: encontrado,
                         objeto: instruction
@@ -1031,6 +1069,7 @@
                 }
 
                 if (encontrado >= 0) {
+                    artyom_triggerEvent(artyom_global_events.COMMAND_MATCHED);
                     return {
                         indice: encontrado,
                         objeto: instruction
@@ -1044,6 +1083,7 @@
         /**
          * Displays a message in the console if the artyom propery DEBUG is set to true.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/38/read-doc/artyom-debug/artyom-js
          * @param {type} e
          * @param {type} o
          * @returns {undefined}
@@ -1337,7 +1377,7 @@
          * Note: This is not a feature of SpeechRecognition, therefore this value hangs on
          * the fiability of the onStart and onEnd events of the SpeechRecognition
          *
-         * @since 0.9.5
+         * @since 0.9.3
          * @summary Returns true if SpeechRecognition is active
          * @returns {Boolean}
          */
@@ -1352,7 +1392,7 @@
          * Note: This is not a feature of speechSynthesis, therefore this value hangs on
          * the fiability of the onStart and onEnd events of the speechSynthesis
          *
-         * @since 0.9.5
+         * @since 0.9.3
          * @summary Returns true if speechSynthesis is active
          * @returns {Boolean}
          */
@@ -1381,13 +1421,26 @@
         };
 
         /**
+         * Shortcut method to enable the artyom debug on the fly.
+         *
+         * @returns {Array}
+         */
+        artyom.setDebug = function(status){
+            if(status){
+                return artyomProperties.debug = true;
+            }else{
+                return artyomProperties.debug = false;
+            }
+        };
+
+        /**
          * Returns a string with the actual version of Artyom script.
          *
          * @summary Returns the actual version of artyom
          * @returns {String}
          */
         artyom.getVersion = function () {
-            return "0.9.5";
+            return "0.9.6";
         };
 
         return artyom;

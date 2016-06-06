@@ -109,6 +109,8 @@
 
         /**
          * Contains some basic information that artyom needs to know as the type of device and browser
+         *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/6/read-doc/artyom-device/artyom-js
          * @since 0.5.1
          * @type {Object}
          */
@@ -118,6 +120,7 @@
          * Artyom can return inmediately the voices available in your browser.
          *
          * @readonly
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/14/read-doc/artyom-getvoices/artyom-js
          * @returns {Array}
          */
         artyom.getVoices = function () {
@@ -127,6 +130,7 @@
         /**
          * Returns an array with all the available commands for artyom.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/10/read-doc/artyom-getavailablecommands/artyom-js
          * @readonly
          * @returns {Array}
          */
@@ -170,53 +174,40 @@
 
             if (config.hasOwnProperty("lang")) {
                 switch (config.lang) {
-                    case 'de':
-                    case 'de-DE':
+                    case 'de':case 'de-DE':
                         artyomVoice = artyomLanguages.german;
                         break;
                     case 'en-GB':
                         artyomVoice = artyomLanguages.englishGB;
                         break;
-                    case "pt":
-                    case "pt-br":
-                    case "pt-PT":
+                    case "pt":case "pt-br":case "pt-PT":
                         artyomVoice = artyomLanguages.brasilian;
                         break;
-                    case "ru":
-                    case "ru-RU":
+                    case "ru":case "ru-RU":
                         artyomVoice = artyomLanguages.russia;
                         break;
-                    case "nl":
-                    case "nl-NL":
+                    case "nl":case "nl-NL":
                         artyomVoice = artyomLanguages.holand;
                         break;
-                    case 'es':
-                    case 'es-CO':
-                    case 'es-ES':
+                    case 'es':case 'es-CO':case 'es-ES':
                         artyomVoice = artyomLanguages.spanish;
                         break;
-                    case "en":
-                    case 'en-US':
+                    case "en":case 'en-US':
                         artyomVoice = artyomLanguages.englishUSA;
                         break;
-                    case 'fr':
-                    case 'fr-FR':
+                    case 'fr':case 'fr-FR':
                         artyomVoice = artyomLanguages.france;
                         break;
-                    case 'it':
-                    case 'it-IT':
+                    case 'it':case 'it-IT':
                         artyomVoice = artyomLanguages.italian;
                         break;
-                    case 'jp':
-                    case 'ja-JP':
+                    case 'jp':case 'ja-JP':
                         artyomVoice = artyomLanguages.japanese;
                         break;
-                    case 'id':
-                    case 'id-ID':
+                    case 'id':case 'id-ID':
                         artyomVoice = artyomLanguages.indonesia;
                         break;
-                    case 'pl':
-                    case 'pl-PL':
+                    case 'pl':case 'pl-PL':
                         artyomVoice = artyomLanguages.polski;
                         break;
                     case 'zh-CN':
@@ -226,7 +217,7 @@
                         artyomVoice = artyomLanguages.cantoneseChinese;
                         break;
                     default:
-                        console.info("The given language for artyom is not supported yet. English has been set to default");
+                        console.warn("The given language for artyom is not supported yet. English has been set to default");
                         break;
                 }
                 artyomProperties.lang = config.lang;
@@ -278,6 +269,7 @@
         /**
          * Force artyom to stop listen even if is in continuos mode.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/9/read-doc/artyom-fatality/artyom-js
          * @returns {Boolean}
          */
         artyom.fatality = function () {
@@ -296,6 +288,7 @@
          * Add dinamically commands to artyom using
          * You can even add commands while artyom is active.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/4/read-doc/artyom-addcommands/artyom-js
          * @since 0.6
          * @param {Object | Array[Objects]} param
          * @returns {undefined}
@@ -322,8 +315,9 @@
         };
 
         /**
-         * Remove the commands of artyom with indexes that matches with the given text
+         * Remove the commands of artyom with indexes that matches with the given text.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/19/read-doc/artyom-removecommands/artyom-js
          * @param {type} identifier
          * @returns {array}
          */
@@ -347,7 +341,9 @@
         };
 
         /**
-         * Removes all the commands added to artyom.
+         * Removes all the added commands of artyom.
+         *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/7/read-doc/artyom-emptycommands/artyom-js
          * @since 0.6
          * @returns {Array}
          */
@@ -359,6 +355,7 @@
         /**
          * Stops the actual and pendings messages that artyom have to say.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/23/read-doc/artyom-shutup/artyom-js
          * @returns {undefined}
          */
         artyom.shutUp = function () {
@@ -375,6 +372,7 @@
         /**
          * Returns an object with the actual properties of artyom.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/12/read-doc/artyom-getproperties/artyom-js
          * @returns {object}
          */
         artyom.getProperties = function () {
@@ -394,8 +392,9 @@
         };
 
         /**
-         * Create a listener when an artyom action is called
+         * Create a listener when an artyom action is called.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/24/read-doc/artyom-when/artyom-js
          * @param {type} event
          * @param {type} action
          * @returns {undefined}
@@ -408,8 +407,9 @@
 
         /**
          * Returns the language of artyom according to initialize function.
-         * if initialize not used returns english.
+         * if initialize not used returns english GB.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/11/read-doc/artyom-getlanguage/artyom-js
          * @param {Boolean} short If the first parameter set to true, if the language has a short code, it will be returned.
          * @returns {String}
          */
@@ -544,9 +544,9 @@
         };
 
         /**
-         * artyom.say process the given text into chunks and execute
-         * the private function artyom_talk
+         * Process the given text into chunks and execute the private function artyom_talk
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/20/read-doc/artyom-say/artyom-js
          * @param {String} message Text to be spoken
          * @param {Object} callbacks
          * @returns {undefined}
@@ -593,6 +593,7 @@
          * Repeats the last sentence that artyom said.
          * Useful in noisy environments.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/25/read-doc/artyom-repeatlastsay/artyom-js
          * @param {Boolean} returnObject If set to true, an object with the text and the timestamp when was executed will be returned.
          * @returns {Object}
          */
@@ -609,8 +610,9 @@
         };
 
         /**
-         * verify if artyom can talk or not.
+         * Verify if the browser supports speechSynthesis.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/40/read-doc/artyom-speechsupported/artyom-js
          * @returns {Boolean}
          */
         artyom.speechSupported = function () {
@@ -620,6 +622,7 @@
         /**
          * Verify if the browser supports webkitSpeechRecognition.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/39/read-doc/artyom-recognizingsupported/artyom-js
          * @returns {Boolean}
          */
         artyom.recognizingSupported = function () {
@@ -884,7 +887,7 @@
         /**
          * Simulate a voice command via JS
          *
-         * @example artyom.simulateInstruction("Hello"); Will execute the action of hello command
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/22/read-doc/artyom-simulateinstruction/artyom-js
          * @param {type} sentence
          * @returns {undefined}
          */
@@ -1080,6 +1083,7 @@
         /**
          * Displays a message in the console if the artyom propery DEBUG is set to true.
          *
+         * @tutorial http://ourcodeworld.com/projects/projects-documentation/38/read-doc/artyom-debug/artyom-js
          * @param {type} e
          * @param {type} o
          * @returns {undefined}
@@ -1414,6 +1418,19 @@
          */
         artyom.getGarbageCollection = function(){
             return artyom_garbage_collector;
+        };
+
+        /**
+         * Shortcut method to enable the artyom debug on the fly.
+         *
+         * @returns {Array}
+         */
+        artyom.setDebug = function(status){
+            if(status){
+                return artyomProperties.debug = true;
+            }else{
+                return artyomProperties.debug = false;
+            }
         };
 
         /**

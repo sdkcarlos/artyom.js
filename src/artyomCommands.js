@@ -3,7 +3,6 @@
   * You can save all your commands in this file or simply follow the workflow :
   *
   * @example artyom.addCommands({CommandObject})
-  * @version 0.9.3
   * @copyright Carlos Delgado 2016
   * @author Carlos Delgado - www.ourcodeworld.com
   * @param {type} window
