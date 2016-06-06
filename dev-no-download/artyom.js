@@ -401,7 +401,7 @@
          * @returns {undefined}
          */
         artyom.when = function (event, action) {
-            document.addEventListener(event, function (e) {
+            return document.addEventListener(event, function (e) {
                 action(e.detail);
             }, false);
         };
@@ -507,7 +507,7 @@
                     // Set artyom is talking
                     artyomProperties.speaking = true;
                     // Trigger the onSpeechSynthesisStart event
-                    artyom.debug("Event reached : SPEECH_SYNTHESIS_START");
+                    artyom.debug("Event reached : " + artyom_global_events.SPEECH_SYNTHESIS_START);
                     artyom_triggerEvent(artyom_global_events.SPEECH_SYNTHESIS_START);
                     // Trigger the onStart callback if exists
                     if (callbacks) {
@@ -524,7 +524,7 @@
                     // Set artyom is talking
                     artyomProperties.speaking = false;
                     // Trigger the onSpeechSynthesisEnd event
-                    artyom.debug("Event reached : SPEECH_SYNTHESIS_END");
+                    artyom.debug("Event reached : " + artyom_global_events.SPEECH_SYNTHESIS_END);
                     artyom_triggerEvent(artyom_global_events.SPEECH_SYNTHESIS_END);
                     // Trigger the onEnd callback if exists.
                     if(callbacks){
@@ -644,7 +644,7 @@
             reconocimiento.lang = artyomProperties.lang;
 
             reconocimiento.onstart = function () {
-                artyom.debug("Event reached : COMMAND_RECOGNITION_START");
+                artyom.debug("Event reached : " + artyom_global_events.COMMAND_RECOGNITION_START);
                 artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_START);
                 artyomProperties.recognizing = true;
                 artyom_is_allowed = true;
@@ -657,6 +657,7 @@
              * @returns {undefined}
              */
             reconocimiento.onerror = function (event) {
+                // Dispath error globally (artyom.when)
                 artyom_triggerEvent(artyom_global_events.ERROR,{
                     code: event.error
                 });
@@ -669,12 +670,12 @@
                     artyom_is_allowed = false;
                     if (event.timeStamp - start_timestamp < 100) {
                         artyom_triggerEvent(artyom_global_events.ERROR, {
-                            code: "info_blocked",
+                            code: "info-blocked",
                             message: "Artyom needs the permision of the microphone, is blocked."
                         });
                     } else {
                         artyom_triggerEvent(artyom_global_events.ERROR, {
-                            code: "info_denied",
+                            code: "info-denied",
                             message: "Artyom needs the permision of the microphone, is denied"
                         });
                     }
@@ -711,22 +712,26 @@
             };
 
             /**
-             * Process the recognition event.
+             * Declare the processor dinamycally according to the mode of artyom
+             * to increase the performance.
              *
-             * @param {type} event
-             * @returns {undefined}
+             * @type {Function}
+             * @return
              */
-            reconocimiento.onresult = function (event) {
-                if (!artyomCommands.length) {
-                    artyom.debug("No commands to process.");
-                    return;
-                }
+            var onResultProcessor;
 
-                var cantidadResultados = event.results.length;
+            // Process the recognition in normal mode
+            if(artyomProperties.mode == "normal"){
+                onResultProcessor = function(event){
+                    if (!artyomCommands.length) {
+                        artyom.debug("No commands to process in normal mode.");
+                        return;
+                    }
 
-                artyom_triggerEvent(artyom_global_events.TEXT_RECOGNIZED);
+                    var cantidadResultados = event.results.length;
 
-                if (artyomProperties.mode == "normal") {
+                    artyom_triggerEvent(artyom_global_events.TEXT_RECOGNIZED);
+
                     for (var i = event.resultIndex; i < cantidadResultados; ++i) {
                         var identificated = event.results[i][0].transcript;
                         if (event.results[i].isFinal) {
@@ -782,7 +787,21 @@
                             artyom.debug("Normal mode : " + identificated);
                         }
                     }
-                } else if (artyomProperties.mode == "quick") {
+                }
+            }
+
+            // Process the recognition in quick mode
+            if(artyomProperties.mode == "quick"){
+                onResultProcessor = function(event){
+                    if (!artyomCommands.length) {
+                        artyom.debug("No commands to process.");
+                        return;
+                    }
+
+                    var cantidadResultados = event.results.length;
+
+                    artyom_triggerEvent(artyom_global_events.TEXT_RECOGNIZED);
+
                     for (var i = event.resultIndex; i < cantidadResultados; ++i) {
                         var identificated = event.results[i][0].transcript;
 
@@ -835,17 +854,29 @@
                         artyom.debug("Quick mode : " + identificated);
                     }
                 }
-            };
+            }
+
+            /**
+             * Process the recognition event with the previously
+             * declared processor function.
+             *
+             * @param {type} event
+             * @returns {undefined}
+             */
+            reconocimiento.onresult = onResultProcessor;
 
             if (artyomProperties.recognizing) {
                 reconocimiento.stop();
-                artyom.debug("Event reached : COMMAND_RECOGNITION_END");
+                artyom.debug("Event reached : " + artyom_global_events.COMMAND_RECOGNITION_END);
                 artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_END);
             } else {
                 try {
                     reconocimiento.start();
                 } catch (e) {
-                    console.warn("Fatal Error There's already a instance of webkitSpeechRecognition in the background. It's recommendable to restart Google Chrome to fix this issue.");
+                    artyom_triggerEvent(artyom_global_events.ERROR,{
+                        code: "recognition_overlap",
+                        message: "A webkitSpeechRecognition instance has been started while there's already running. Is recommendable to restart the Browser"
+                    });
                 }
             }
         };
