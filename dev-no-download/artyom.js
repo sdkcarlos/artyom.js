@@ -34,7 +34,8 @@
             lastSay: null
         },
         executionKeyword: null,
-        speaking:false
+        speaking:false,
+        obeying:true
     };
 
     /**
@@ -686,7 +687,7 @@
             };
 
             /**
-             * Check if continuous mode is active and restar the recognition.
+             * Check if continuous mode is active and restart the recognition.
              * Throw events too.
              *
              * @returns {undefined}
@@ -866,7 +867,13 @@
              * @param {type} event
              * @returns {undefined}
              */
-            reconocimiento.onresult = onResultProcessor;
+            reconocimiento.onresult = function(event){
+                if(artyomProperties.obeying){
+                    onResultProcessor(event);
+                }else{
+                    artyom.debug("Artyom is not obeying","warn");
+                }
+            };
 
             if (artyomProperties.recognizing) {
                 reconocimiento.stop();
@@ -929,7 +936,7 @@
                 return false;
             }
 
-            artyom.debug(">> " + voz);//Show tps in consola
+            artyom.debug(">> " + voz);
 
             /** @3
              * Artyom needs time to think that
@@ -1431,6 +1438,34 @@
             }else{
                 return artyomProperties.debug = false;
             }
+        };
+
+        /**
+         * Pause the processing of commands. Artyom still listening in the background
+         * and it can be resumed after a couple of seconds.
+         *
+         * @returns {Boolean}
+         */
+        artyom.dontObey = function(){
+            return artyomProperties.obeying = false;
+        };
+
+        /**
+         * Allow artyom to obey commands again.
+         *
+         * @returns {Boolean}
+         */
+        artyom.obey = function(){
+            return artyomProperties.obeying = true;
+        };
+
+        /**
+         * A boolean to check if artyom is obeying commands or not.
+         *
+         * @returns {Boolean}
+         */
+        artyom.isObeying = function(){
+            return artyomProperties.obeying;
         };
 
         /**
