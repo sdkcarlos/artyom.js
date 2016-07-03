@@ -34,6 +34,7 @@
             lastSay: null
         },
         executionKeyword: null,
+        obeyKeyword: null,
         speaking:false,
         obeying:true
     };
@@ -240,6 +241,10 @@
 
             if (config.hasOwnProperty("executionKeyword")) {
                 artyomProperties.executionKeyword = config.executionKeyword;
+            }
+
+            if (config.hasOwnProperty("obeyKeyword")) {
+                artyomProperties.obeyKeyword = config.obeyKeyword;
             }
 
             if (artyom.is.number(config.volume)) {
@@ -871,7 +876,29 @@
                 if(artyomProperties.obeying){
                     onResultProcessor(event);
                 }else{
+                    // Handle obeyKeyword if exists and artyom is not obeying
+                    if(!artyomProperties.obeyKeyword){
+                        return;
+                    }
+
+                    var temporal = "";
+                    var interim = "";
+
+                    for (var i = 0; i < event.results.length; ++i) {
+                        if (event.results[i].final) {
+                            temporal += event.results[i][0].transcript;
+                        } else {
+                            interim += event.results[i][0].transcript;
+                        }
+                    }
+
                     artyom.debug("Artyom is not obeying","warn");
+
+                    // If the obeyKeyword is found in the recognized text
+                    // enable command recognition again
+                    if(((interim).indexOf(artyomProperties.obeyKeyword) > -1) || (temporal).indexOf(artyomProperties.obeyKeyword) > -1){
+                        artyomProperties.obeying = true;
+                    }
                 }
             };
 
