@@ -7,23 +7,22 @@
 ##[Read the official FAQ](http://ourcodeworld.com/projects/projects-faq/1/list/artyom-js)
 ##[Test the continuous mode here](https://sdkcarlos.github.io/jarvis.html)
 
-The user of artyom is encouraged to use its latest version.
+Use always the latest version of artyom.
 
-- **Artyom V 0.9.6 Released ! (06.06.2016 10:08 Berlin/Europe)**
-- Artyom V 0.9.5 Released ! (31.05.2016 14:45 Berlin/Europe)
-- Artyom V 0.9.2 Released ! (10.05.2016 19:46 Berlin/Europe)
+- **Artyom V 0.9.7 Released ! (25.07.2016 15:26 Berlin/Europe)**
+- Artyom V 0.9.6 Released ! (06.06.2016 10:08 Berlin/Europe)
 
 Voice recognition javascript library. Create your own siri,google now or cortana within your website.
 
-Artyom is constantly maintained and updated with new gadgets. It's recomendable to download always the latest version of artyom anyway check the changes in order to update from a previous version.
+Artyom is constantly maintained and updated with new gadgets.
 
-###Who does not want to develop their own "artificial intelligence"? Well Artyom can help you with a Voice Controlled Web!
+### Voice commands (with speech recognition) and speech synthesis made easy.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/artyom_make_sandwich.jpg" alt="Artyom example use" width="256"/>
 </p>
 
-## Demonstrations
+## Demostrations
 ###[Homepage](http://sdkcarlos.github.io/sites/artyom.html)
 ###[JARVIS Continuous mode](https://sdkcarlos.github.io/jarvis.html)
 ###[Sticky Notes Demo ALL Languages](https://sdkcarlos.github.io/demo-sites/artyom/artyom_sticky_notes.html)
@@ -42,8 +41,6 @@ And bower.
 bower install artyom.js
 ```
 Or download a zip package here [Download .zip](https://github.com/sdkcarlos/artyom.js/raw/master/public/artyom-source.zip)
-
-Do you need more functions, methods for this library ? Just ask for it ! in issues section
 
 #[Ask for a method , problems, questions etc ...](https://github.com/sdkcarlos/artyom.js/issues)
 #[Open Wiki (tutorial, documentation)](http://ourcodeworld.com/projects/projects-documentation/1/list/artyom-js)

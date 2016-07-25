@@ -1,9 +1,8 @@
 /**
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
- * Artyom only works in browsers based in Chromium (Google Chrome or Electron)
  *
  * @version DEVELOPMENT_DO_NOT_USE
- * @copyright Carlos Delgado 2016
+ * @copyright Copyright (c) 2016 Copyright Our Code World All Rights Reserved.
  * @author Carlos Delgado - www.ourcodeworld.com
  * @param {type} window
  * @see http://sdkcarlos.github.io/artyom.html
@@ -31,6 +30,7 @@
         debug: false,
         helpers: {
             redirectRecognizedTextOutput: null,
+            remoteProcessorHandler:null,
             lastSay: null
         },
         executionKeyword: null,
@@ -78,7 +78,8 @@
         polski: "Google polski",
         indonesia: "Google Bahasa Indonesia",
         mandarinChinese: "Google 普通话（中国大陆）",
-        cantoneseChinese: "Google 粤語（香港）"
+        cantoneseChinese: "Google 粤語（香港）",
+        native: "native"
     };
 
     var artyom_global_events = {
@@ -218,6 +219,9 @@
                     case 'zh-HK':
                         artyomVoice = artyomLanguages.cantoneseChinese;
                         break;
+                    case 'native':
+                        artyomVoice = artyomLanguages.native;
+                        break;
                     default:
                         console.warn("The given language for artyom is not supported yet. English has been set to default");
                         break;
@@ -235,7 +239,7 @@
                 }
             }
 
-            if (artyom.is.number(config.speed)) {
+            if (config.hasOwnProperty("speed")) {
                 artyomProperties.speed = config.speed;
             }
 
@@ -247,7 +251,7 @@
                 artyomProperties.obeyKeyword = config.obeyKeyword;
             }
 
-            if (artyom.is.number(config.volume)) {
+            if (config.hasOwnProperty("volume")) {
                 artyomProperties.volume = config.volume;
             }
 
@@ -412,47 +416,13 @@
         };
 
         /**
-         * Returns the language of artyom according to initialize function.
+         * Returns the code language of artyom according to initialize function.
          * if initialize not used returns english GB.
          *
          * @tutorial http://ourcodeworld.com/projects/projects-documentation/11/read-doc/artyom-getlanguage/artyom-js
-         * @param {Boolean} short If the first parameter set to true, if the language has a short code, it will be returned.
          * @returns {String}
          */
-        artyom.getLanguage = function (short) {
-            if (short) {
-                switch (artyomVoice) {
-                    case 'Google UK English Male':
-                        return "en-GB";
-                    case 'Google español':
-                        return "es";
-                    case 'Google Deutsch':
-                        return "de";
-                    case 'Google français':
-                        return "fr";
-                    case 'Google italiano':
-                        return "it";
-                    case 'Google 日本人':
-                        return "jp";
-                    case 'Google US English':
-                        return "en-US";
-                    case 'Google português do Brasil':
-                        return "pt";
-                    case 'Google русский':
-                        return "ru";
-                    case 'Google Nederlands':
-                        return "nl";
-                    case 'Google polski':
-                        return "pl";
-                    case 'Google Bahasa Indonesia':
-                        return "id";
-                    case 'Google 普通话（中国大陆）':
-                        return "zh-CN";
-                    case 'Google 粤語（香港）':
-                        return "zh-HK";
-                }
-            }
-
+        artyom.getLanguage = function () {
             switch (artyomVoice) {
                 case 'Google UK English Male':
                     return "en-GB";
@@ -482,6 +452,8 @@
                     return "zh-CN";
                 case 'Google 粤語（香港）':
                     return "zh-HK";
+                case 'native':
+                    return "native";
             }
         };
 
@@ -865,6 +837,29 @@
                 }
             }
 
+            // Process the recognition in remote mode
+            if(artyomProperties.mode == "remote"){
+                onResultProcessor = function(event){
+
+                    var cantidadResultados = event.results.length;
+
+                    artyom_triggerEvent(artyom_global_events.TEXT_RECOGNIZED);
+
+                    if (typeof (artyomProperties.helpers.remoteProcessorHandler) !== "function") {
+                        return artyom.debug("The remoteProcessorService is undefined.","warn");
+                    }
+
+                    for (var i = event.resultIndex; i < cantidadResultados; ++i) {
+                        var identificated = event.results[i][0].transcript;
+
+                        artyomProperties.helpers.remoteProcessorHandler({
+                            text: identificated,
+                            isFinal:event.results[i].isFinal
+                        });
+                    }
+                }
+            }
+
             /**
              * Process the recognition event with the previously
              * declared processor function.
@@ -1141,29 +1136,6 @@
             }
         };
 
-        artyom.is = {
-            integer: function (a) {
-                return Number(a) === a && 0 === a % 1
-            }, "float": function (a) {
-                return a === Number(a) && 0 !== a % 1
-            }, "function": function (a) {
-                return"function" == typeof a ? !0 : !1
-            }, object: function (a) {
-                return"object" == typeof a ? !0 : !1
-            }, "boolean": function (a) {
-                return"boolean" == typeof a ? !0 : !1
-            }, array: function (a) {
-                return a.constructor === Array ? !0 : !1
-            }, number: function (a) {
-                return a === parseFloat(a)
-            }, odd: function (a) {
-                return artyom.is.number(a) && 1 === Math.abs(a) % 2
-            }, even: function (a) {
-                return artyom.is.number(a) && 0 === a % 2
-            }, jQueryObject: function (a) {
-                return a instanceof jQuery ? !0 : !1
-            },
-        };
 
         /**
          * Artyom have it's own diagnostics.
@@ -1503,6 +1475,18 @@
          */
         artyom.getVersion = function () {
             return "DEVELOPMENT_DO_NOT_USE";
+        };
+
+        /**
+         * Process the recognized text if artyom is active
+         * in remote mode.
+         *
+         * @returns {Boolean}
+         */
+        artyom.remoteProcessorService = function(action){
+            artyomProperties.helpers.remoteProcessorHandler = action;
+
+            return true;
         };
 
         return artyom;
