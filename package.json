@@ -1,6 +1,6 @@
 {
   "name": "artyom.js",
-  "version": "0.9.7",
+  "version": "1.0.0",
   "description": "Artyom is a Robust Wrapper of the Google Chrome SpeechSynthesis and SpeechRecognition that allows you to create a virtual assistent",
   "main": "artyom.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "googleNow"
   ],
   "author": "Carlos Delgado",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sdkcarlos/artyom.js/issues"
   },

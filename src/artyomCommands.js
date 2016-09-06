@@ -44,4 +44,18 @@
     ];
 
     artyom.addCommands(artyomCommands);
+
+    /**
+     * Or use the shorter and cleaner method :
+     */
+
+    artyom.on(['Good morning']).then(function(i){
+        alert("Good morning ! How are you?");
+    });
+
+    artyom.on(['Repeat after me *'] , true).then(function(i, wildcard){
+        alert("You've said " + wildcard);
+    });
+
+    console.log(artyom.getAvailableCommands());
 })(window);

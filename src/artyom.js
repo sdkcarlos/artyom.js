@@ -1,21 +1,21 @@
 /**
  * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
  *
- * @version 0.9.7
+ * @version 1.0.0
  * @copyright Copyright (c) 2016 Copyright Our Code World All Rights Reserved.
  * @author Carlos Delgado - www.ourcodeworld.com
  * @param {type} window
- * @see http://sdkcarlos.github.io/artyom.html
+ * @see https://sdkcarlos.github.io/sites/artyom.html
  * @returns Artyom
  */
 (function (window) {'use strict';
     // getVoices is an asynchronous native method. At firs time it will ALWAYS return an empty array
     // after it will return an array with all the available voices in the browser
-    if ('speechSynthesis' in window) {
+    if (window.hasOwnProperty('speechSynthesis')) {
         speechSynthesis.getVoices();
     }
 
-    if (('webkitSpeechRecognition' in window)) {
+    if (window.hasOwnProperty('webkitSpeechRecognition')) {
         var reconocimiento = new webkitSpeechRecognition();
     }
 
@@ -30,13 +30,14 @@
         debug: false,
         helpers: {
             redirectRecognizedTextOutput: null,
-            remoteProcessorHandler:null,
+            remoteProcessorHandler: null,
             lastSay: null
         },
         executionKeyword: null,
         obeyKeyword: null,
-        speaking:false,
-        obeying:true
+        speaking: false,
+        obeying: true,
+        soundex: false
     };
 
     /**
@@ -98,7 +99,7 @@
         isChrome: true
     };
 
-    if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4))) {
+    if( navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)){
         device.isMobile = true;
     }
 
@@ -106,9 +107,36 @@
         device.isChrome = false;
     }
 
-    function ArtyomAI() {
+    function ArtyomInternals() {
+        /**
+         * Javascript implementation of the soundex algorithm.
+         * @see https://gist.github.com/shawndumas/1262659
+         * @returns {String}
+         */
+        this.soundex = function(s) {
+            var a = s.toLowerCase().split(''),
+                f = a.shift(),
+                r = '',
+                codes={a:"",e:"",i:"",o:"",u:"",b:1,f:1,p:1,v:1,c:2,g:2,j:2,k:2,q:2,s:2,x:2,z:2,d:3,t:3,l:4,m:5,n:5,r:6};
+
+            r = f +
+                a
+                .map(function(v, i, a) {
+                    return codes[v]
+                })
+                .filter(function(v, i, a) {
+                    return ((i === 0) ? v !== codes[f] : v !== a[i - 1]);
+                })
+                .join('');
+
+            return (r + '000').slice(0, 4).toUpperCase();
+        };
+    }
+
+    function Artyom() {
         var artyom = {};
         var artyomCommands = [];
+        var artyomInternals = new ArtyomInternals();
 
         /**
          * Contains some basic information that artyom needs to know as the type of device and browser
@@ -241,6 +269,10 @@
 
             if (config.hasOwnProperty("speed")) {
                 artyomProperties.speed = config.speed;
+            }
+
+            if (config.hasOwnProperty("soundex")) {
+                artyomProperties.soundex = config.soundex;
             }
 
             if (config.hasOwnProperty("executionKeyword")) {
@@ -1106,6 +1138,41 @@
                 }
             }//End Step 3
 
+            /**
+             * If the soundex options is enabled, proceed to process the commands in case that any of the previous
+             * ways of processing (exact, lowercase and command in quote) didn't match anything.
+             * Based on the soundex algorithm match a command if the spoken text is similar to any of the artyom commands.
+             * Example :
+             * If you have a command with "Open Wallmart" and "Open Willmar" is recognized, the open wallmart command will be triggered.
+             * soundex("Open Wallmart") == soundex("Open Willmar") <= true
+             *
+             */
+            if(artyomProperties.soundex){
+                for (var i = 0; i < artyomCommands.length; i++) {
+                    var instruction = artyomCommands[i];
+                    var opciones = instruction.indexes;
+                    var encontrado = -1;
+
+                    for (var c = 0; c < opciones.length; c++) {
+                        var opcion = opciones[c];
+                        if (instruction.smart) {
+                            continue;//Jump wildcard commands
+                        }
+
+                        if(artyomInternals.soundex(voz) == artyomInternals.soundex(opcion)){
+                            artyom.debug(">> Matched Soundex command '"+opcion+"' AGAINST '"+voz+"' with index "+ c , "info");
+                            encontrado = parseInt(c);
+                            artyom_triggerEvent(artyom_global_events.COMMAND_MATCHED);
+
+                            return {
+                                indice: encontrado,
+                                objeto: instruction
+                            };
+                        }
+                    }
+                }
+            }
+
             return false;
         };
 
@@ -1440,8 +1507,7 @@
         };
 
         /**
-         * Pause the processing of commands. Artyom still listening in the background
-         * and it can be resumed after a couple of seconds.
+         * Pause the processing of commands. Artyom still listening in the background and it can be resumed after a couple of seconds.
          *
          * @returns {Boolean}
          */
@@ -1474,12 +1540,37 @@
          * @returns {String}
          */
         artyom.getVersion = function () {
-            return "0.9.7";
+            return "1.0.0";
         };
 
         /**
-         * Process the recognized text if artyom is active
-         * in remote mode.
+         * Add commands like an artisan. If you use artyom for simple tasks
+         * then probably you don't like to write a lot to achieve it.
+         *
+         * Use the artisan syntax to write less, but with the same accuracy.
+         *
+         * @disclaimer Not a promise-based implementation, just syntax.
+         * @returns {Boolean}
+         */
+        artyom.on = function(indexes,smart){
+            return {
+                then: function(action){
+                    var command = {
+                        indexes:indexes,
+                        action: action
+                    };
+
+                    if(smart){
+                        command.smart = true;
+                    }
+
+                    artyom.addCommands(command);
+                }
+            };
+        };
+
+        /**
+         * Process the recognized text if artyom is active in remote mode.
          *
          * @returns {Boolean}
          */
@@ -1493,8 +1584,9 @@
     }
 
     if (typeof (artyom) === 'undefined') {
-        window.artyom = Object.preventExtensions(new ArtyomAI());
+        window.artyom = Object.preventExtensions(new Artyom());
     } else {
-        console.warn("Artyom is being loaded twice in your document or you're injecting the artyom script via console (injected webkitSpeechRecognition will not work due to security reasons)");
+        console.info("Artyom has been already defined in the Window");
     }
+
 })(window);
