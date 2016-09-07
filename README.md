@@ -70,6 +70,12 @@ Artyom provides **complete** support for the following languages. Every language
 
 Do not hesitate to create a ticket on the issues area of the Github repository for any question, problem or inconvenient that you may have about artyom.
 
+# Demostrations
+
+- [Homepage](https://sdkcarlos.github.io/sites/artyom.html)
+- [Continuous mode J.A.R.V.I.S](https://sdkcarlos.github.io/jarvis.html)
+- [Sticky Notes](https://sdkcarlos.github.io/demo-sites/artyom/artyom_sticky_notes.html)
+
 # Basic usage
 
 ```javascript
@@ -120,13 +126,6 @@ artyom.initialize({
 ```
 
 Working with artyom is cool and easy, read the documentation to discover more awesome features.
-
-# Demostrations
-
-- [Homepage](https://sdkcarlos.github.io/jarvis.html)
-- [Continuous mode J.A.R.V.I.S](https://sdkcarlos.github.io/jarvis.html)
-- [Sticky Notes](https://sdkcarlos.github.io/demo-sites/artyom/artyom_sticky_notes.html)
-
 
 Thanks for visit the repository !
 
