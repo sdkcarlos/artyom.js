@@ -554,6 +554,33 @@
         };
 
         /**
+         * Splits a string into an array of strings with a limited size (chunk_length).
+         *
+         * @param {String} input text to split into chunks
+         * @param {Integer} chunk_length limit of characters in every chunk
+         */
+        var splitStringByChunks =  function (input, chunk_length){
+            input = input || "";
+            chunk_length = chunk_length || 100;
+
+            var curr = chunk_length;
+            var prev = 0;
+            var output = [];
+
+            while (input[curr]) {
+                if (input[curr++] == ' ') {
+                    output.push(input.substring(prev,curr));
+                    prev = curr;
+                    curr += chunk_length;
+                }
+            }
+
+            output.push(input.substr(prev));
+
+            return output;
+        }
+
+        /**
          * Process the given text into chunks and execute the private function artyom_talk
          *
          * @tutorial http://ourcodeworld.com/projects/projects-documentation/20/read-doc/artyom-say/artyom-js
@@ -562,21 +589,38 @@
          * @returns {undefined}
          */
         artyom.say = function (message, callbacks) {
+            var artyom_say_max_chunk_length = 115;
+
             if (artyom.speechSupported()) {
                 if (typeof (message) == 'string') {
                     if (message.length > 0) {
-                        var finalTextA = message.split(",");
-                        var finalTextB = message.split(".");
-                        var definitive;
+                        var definitive = [];
 
-                        //Declare final chunk container and clear any empty item !
-                        if ((finalTextA.length) > (finalTextB.length)) {
-                            definitive = finalTextA.filter(function(e){return e;});
-                        } else {
-                            definitive = finalTextB.filter(function(e){return e;});
+                        // If the providen text is long, proceed to split it
+                        if(message.length > artyom_say_max_chunk_length){
+                            // Split the given text by pause reading characters [",",":",";","."] to provide a natural reading feeling.
+                            var naturalReading = message.split(/,|:|\.|;/);
+
+                            naturalReading.forEach(function(chunk, index){
+                                // If the sentence is too long and could block the API, split it to prevent any errors.
+                                if(chunk.length > artyom_say_max_chunk_length){
+                                    // Process the providen string into strings (withing an array) of maximum aprox. 115 characters to prevent any error with the API.
+                                    var temp_processed = splitStringByChunks(chunk, artyom_say_max_chunk_length);
+                                    // Add items of the processed sentence into the definitive chunk.
+                                    definitive.push.apply(definitive, temp_processed);
+                                }else{
+                                    // Otherwise just add the sentence to being spoken.
+                                    definitive.push(chunk);
+                                }
+                            });
+                        }else{
+                            definitive.push(message);
                         }
 
-                        //Process given text into chunks !
+                        // Clean any empty item in array
+                        definitive = definitive.filter(function(e){return e;});
+
+                        // Finally proceed to talk the chunks and assign the callbacks.
                         definitive.forEach(function (chunk, index) {
                             var numberOfChunk = (index + 1);
 
