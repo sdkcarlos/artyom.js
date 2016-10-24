@@ -6,7 +6,7 @@
   * @copyright Carlos Delgado 2016
   * @author Carlos Delgado - www.ourcodeworld.com
   * @param {type} window
-  * @see http://sdkcarlos.github.io/artyom.html
+  * @see https://sdkcarlos.github.io/sites/artyom.html
   * @returns Artyom
   */
 (function(window){

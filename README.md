@@ -25,8 +25,8 @@ Between the most known features of artyom are :
 
 ### Voice Synthesis
 
-- Synthesize large blocks of text without.
-- onStart and onEnd callbacks will be always executed.
+- Synthesize extreme huge blocks of text (+20K words according to the last test).
+- onStart and onEnd callbacks **will be always executed independently of the text length**.
 
 #Installation
 

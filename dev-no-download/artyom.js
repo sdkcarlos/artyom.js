@@ -1,12 +1,13 @@
 /**
- * Artyom uses webkitSpeechRecognition && SpeechSynthesisUtterance property of Google Inc.
+ * Artyom.js requires webkitSpeechRecognition and speechSynthesis APIs
  *
+ * @license MIT
  * @version DEVELOPMENT_DO_NOT_USE
  * @copyright Copyright (c) 2016 Copyright Our Code World All Rights Reserved.
  * @author Carlos Delgado - www.ourcodeworld.com
- * @param {type} window
+ * @param {Object} window
  * @see https://sdkcarlos.github.io/sites/artyom.html
- * @returns Artyom
+ * @returns {Object} artyom
  */
 (function (window) {'use strict';
     // getVoices is an asynchronous native method. At firs time it will ALWAYS return an empty array
