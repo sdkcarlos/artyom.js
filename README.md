@@ -123,6 +123,18 @@ artyom.initialize({
     executionKeyword: "and do it now",
     listen:true // Start to listen commands !
 });
+
+/**
+ * To speech text
+ */
+artyom.say("Hello, this is a demo text.",{
+  onStart: function(){
+    console.log("Reading ...");
+  },
+  onEnd: function(){
+    console.log("No more text to talk");
+  }
+});
 ```
 
 Working with artyom is cool and easy, read the documentation to discover more awesome features.
