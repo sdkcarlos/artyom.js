@@ -5,18 +5,18 @@
 #About Artyom
 
 Artyom.js is a robust and useful wrapper of the webkitSpeechRecognition and speechSynthesis APIs written in Javascript.
-Besides, artyom allow you to add dinamically commands to your web app (website).
+Besides, artyom allows you to add dynamic commands to your web app (website).
 
 Artyom is constantly updated with new gadgets and awesome features, star and watch this repository to be aware of artyom updates.
 
-Between the most known features of artyom are :
+The most known features of artyom are:
 
 ### Speech Recognition
 
 - Quick recognition of voice commands.
 - Add commands easily.
 - Smart commands (usage of wildcards).
-- Create a dictation object to convert easily voice to text.
+- Create a dictation object to convert voice to text easily.
 - Simulate commands without microphone.
 - Execution keyword to execute a command immediately after the use of the keyword.
 - Pause and resume command recognition.
