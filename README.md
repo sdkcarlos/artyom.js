@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/src/images/artyomjs-logo.png" width="256" title="Artyom logo">
+  <img src="https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/public/images/artyomjs-logo.png" width="256" title="Artyom logo">
 </p>
 
 # About Artyom
