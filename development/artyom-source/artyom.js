@@ -1,13 +1,7 @@
 /**
- * Artyom.js requires webkitSpeechRecognition and speechSynthesis APIs
- *
- * @license MIT
- * @version DEVELOPMENT_DO_NOT_USE
- * @copyright Copyright (c) 2016 Copyright Our Code World All Rights Reserved.
- * @author Carlos Delgado - www.ourcodeworld.com
- * @param {Object} window
- * @see https://sdkcarlos.github.io/sites/artyom.html
- * @returns {Object} artyom
+ * DO NOT USE IN PRODUCTION
+ * This file receives constantly commits with changes for the library, it has the latest
+ * features, but it may not work sometimes.
  */
 (function (window) {'use strict';
     // getVoices is an asynchronous native method. At firs time it will ALWAYS return an empty array
@@ -303,10 +297,12 @@
             }
 
             if (artyomProperties.listen === true) {
-                artyom_hey();
+                return new Promise(function(resolve,reject){
+                    artyom_hey(resolve , reject);
+                });
             }
 
-            return true;
+            return Promise.resolve();
         };
 
         /**
@@ -693,7 +689,7 @@
          * @private
          * @returns {undefined}
          */
-        var artyom_hey = function () {
+        var artyom_hey = function (resolve, reject) {
             var start_timestamp;
             var artyom_is_allowed;
 
@@ -706,6 +702,8 @@
                 artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_START);
                 artyomProperties.recognizing = true;
                 artyom_is_allowed = true;
+
+                resolve();
             };
 
             /**
@@ -715,6 +713,8 @@
              * @returns {undefined}
              */
             reconocimiento.onerror = function (event) {
+                // Reject promise on initialization
+                reject(event.error);
                 // Dispath error globally (artyom.when)
                 artyom_triggerEvent(artyom_global_events.ERROR,{
                     code: event.error
@@ -1585,7 +1585,7 @@
          * @returns {String}
          */
         artyom.getVersion = function () {
-            return "DEVELOPMENT_DO_NOT_USE";
+            return "1.0.2";
         };
 
         /**

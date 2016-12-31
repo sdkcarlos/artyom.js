@@ -2,8 +2,7 @@
   * Artyom commands examples. Just add this file after artyom is loaded in your document.
   * You can save all your commands in this file or simply follow the workflow :
   *
-  * @example artyom.addCommands({CommandObject})
-  * @copyright Carlos Delgado 2016
+  * @copyright Carlos Delgado 2017
   * @author Carlos Delgado - www.ourcodeworld.com
   * @param {type} window
   * @see https://sdkcarlos.github.io/sites/artyom.html
@@ -50,11 +49,15 @@
      */
 
     artyom.on(['Good morning']).then(function(i){
-        alert("Good morning ! How are you?");
+        artyom.say("Good morning ! How are you?");
+    });
+
+    artyom.on(['Clean the panel']).then(() => {
+        $("#log-panel").empty();
     });
 
     artyom.on(['Repeat after me *'] , true).then(function(i, wildcard){
-        alert("You've said " + wildcard);
+        artyom.say(wildcard);
     });
 
     console.log(artyom.getAvailableCommands());
