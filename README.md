@@ -1,10 +1,10 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/src/images/artyomjs-logo.png" width="256" title="Artyom logo">
+  <img src="https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/public/images/artyomjs-logo.png" width="256" title="Artyom logo">
 </p>
 
-#About Artyom
+# About Artyom
 
-Artyom.js is a robust and useful wrapper of the webkitSpeechRecognition and speechSynthesis APIs written in Javascript.
+Artyom.js is a robust and useful wrapper of the webkitSpeechRecognition and speechSynthesis APIs written in plain ol' Vanilla Javascript.
 Besides, artyom allows you to add dynamic commands to your web app (website).
 
 Artyom is constantly updated with new gadgets and awesome features, star and watch this repository to be aware of artyom updates.
@@ -28,7 +28,7 @@ The most known features of artyom are:
 - Synthesize extreme huge blocks of text (+20K words according to the last test).
 - onStart and onEnd callbacks **will be always executed independently of the text length**.
 
-#Installation
+# Usage
 
 #### NPM
 
@@ -42,6 +42,48 @@ npm install artyom.js
 bower install artyom.js
 ```
 Or just download a .zip package with the source code, minified file and commands examples : [download .zip file](https://github.com/sdkcarlos/artyom.js/raw/master/public/artyom-source.zip)
+
+# Development
+
+If you're interested in modify, work with Artyom or *you just simply want to test it quickly in your environment* we recommend you to use the little Sandbox utility of Artyom. Using Node.js the Artyom Sandbox creates an HTTPS server accessible at https://localhost:8443, here artyom will be accesible in Continuous mode too.
+
+Start by cloning the repository of artyom:
+
+```bash
+git clone https://github.com/sdkcarlos/artyom.js/
+cd artyom.js
+```
+
+Install the dependencies:
+
+```bash
+npm install
+```
+
+#### Testing
+
+If you only want to test Artyom.js, then you can simply navigate to the  `/development` folder and execute:
+
+```bash
+cd development
+node server.js
+```
+
+#### Programming with Artyom
+
+If you are interested in programming with Artyom, then you need to install [nodemon](https://github.com/remy/nodemon) globally using:
+
+```bash
+npm install -g nodemon
+```
+
+Nodemon will restart the server automatically everytime you make changes in Artyom or any file inside `/development`. Then start the sandbox using:
+
+```bash
+npm run sandbox
+```
+
+With any of the previous methods, navigate to https://localhost:8443 and explore artyom in your browser.
 
 # Languages
 
@@ -80,7 +122,7 @@ Do not hesitate to create a ticket on the issues area of the Github repository f
 
 ```javascript
 // Add command (Short code artisan way)
-artyom.on(['Good morning','Good afternoon']).then(function(i){
+artyom.on(['Good morning','Good afternoon']).then((i) => {
     switch (i) {
         case 0:
             artyom.say("Good morning, how are you?");
@@ -92,7 +134,7 @@ artyom.on(['Good morning','Good afternoon']).then(function(i){
 });
 
 // Smart command (Short code artisan way), set the second parameter of .on to true
-artyom.on(['Repeat after me *'] , true).then(function(i,wildcard){
+artyom.on(['Repeat after me *'] , true).then((i,wildcard) => {
     artyom.say("You've said : " + wildcard);
 });
 
@@ -101,14 +143,14 @@ artyom.on(['Repeat after me *'] , true).then(function(i,wildcard){
 artyom.addCommands([
     {
         indexes: ['Hello','Hi','is someone there'],
-        action: function(i){
+        action: (i) => {
             artyom.say("Hello, it's me");
         }
     },
     {
         indexes: ['Repeat after me *'],
         smart:true,
-        action: function(i,wildcard){
+        action: (i,wildcard) => {
             artyom.say("You've said : "+ wildcard);
         }
     }
@@ -122,18 +164,22 @@ artyom.initialize({
     debug:true, // Show messages in the console
     executionKeyword: "and do it now",
     listen:true // Start to listen commands !
+}).then(() => {
+    console.log("Artyom has been succesfully initialized");
+}).catch((err) => {
+    console.error("Artyom couldn't be initialized: ", err);
 });
 
 /**
  * To speech text
  */
 artyom.say("Hello, this is a demo text.",{
-  onStart: function(){
-    console.log("Reading ...");
-  },
-  onEnd: function(){
-    console.log("No more text to talk");
-  }
+    onStart: () => {
+        console.log("Reading ...");
+    },
+    onEnd: () => {
+        console.log("No more text to talk");
+    }
 });
 ```
 

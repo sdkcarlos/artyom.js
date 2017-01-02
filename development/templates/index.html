@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Artyom.js Sandbox</title>
+        <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/paper/bootstrap.min.css" rel="stylesheet" integrity="sha384-awusxf8AUojygHf2+joICySzB780jVvQaVCAt1clU3QsyAitLGul28Qxb2r1e5g+" crossorigin="anonymous">
+        <script src="/source/artyom.js"></script>
+        <script src="/source/artyomCommands.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="javascript:void(0);" class="navbar-brand">Artyom.js <span class="label label-info">ALPHA</span></a>
+                    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse" id="navbar-main">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" onclick="window.location.reload();" href="javascript:void(0);"> Restart sandbox </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid" style="margin: 46px 0 23px;">
+            <div class="row">
+                <div class="col-md-8 col-lg-8">
+                    <div class="text-center">
+                        <br>
+                        <h2>Welcome to the Artyom Sandbox  <div id="speaking-circle" style="margin: 0 auto;width:30px; height:16px; border-radius:6px; font-size:10px; color:#fff; line-height:500px; text-align:center; background:red"></div></h2>
+                        <p class="lead" id="span-preview">Get started with the basic test areas</p>
+                        <hr>
+                    </div>
+                    <div id="artyom-test-container text-left">
+                        <ul class="nav nav-tabs">
+                          <li class="active"><a href="#home" data-toggle="tab">Speech synthesis</a></li>
+                          <li><a href="#profile" data-toggle="tab">Voice commands</a></li>
+                          <li><a href="#voice-simulation" data-toggle="tab">Voice commands simulation</a></li>
+
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade active in" id="home">
+                                <textarea id="sandbox-speech-synthesis" class="form-control" rows="7">Hello, how are you today?
+
+My name is artyom and you can test the speech synthesis with very long text with a couple of buttons.</textarea>
+                                <input type="button" class="btn btn-info" value="Talk" id="btn-speak"/>
+                                <input type="button" class="btn btn-danger" value="Stop" id="btn-stop"/>
+                            </div>
+                            <div class="tab-pane fade" id="profile">
+                                <p>Loaded commands:</p>
+                                <div class='table-responsive'>
+                                    <table id='command-table' class='table table-hover'>
+                                        <thead>
+                                            <tr>
+                                                <th>Trigger command with</th>
+                                                <th>Description</th>
+                                                <th>Smart</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="voice-simulation">
+                                <input type="text" class="form-control" id="voice-sim-command" placeholder="Text to process as a voice command"/>
+                                <br>
+                                <input type="button" class="btn btn-default" id="voice-sim-trigger" value="Simulate" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-lg-4 text-right" style="margin: 46px 0 23px;">
+                    <div class="alert alert-dismissible alert-danger hidden" id="check-if-loaded">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Source code error: </strong> <a href="#" class="alert-link">Artyom wasn't succesfully loaded, check the console and reload the document.
+                    </div>
+                    <h4>Log Panel</h4>
+                    <div class="list-group" style="max-height:300px;overflow:auto;" id="log-panel" >
+                        <a href="#" class="list-group-item active remove-on-click">
+                            Artyom Sandbox Initializated <b><script>document.write(new Date().toLocaleTimeString())</script></b>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="/source/sandbox-scripts.js"></script>
+        <script>
+            artyom.when("ERROR", (error) => {
+                var mesage = "";
+
+                if(error.code == "network"){
+                    mesage = "An error ocurred, artyom cannot work without internet connection !";
+                }
+
+                if(error.code == "audio-capture"){
+                    mesage = "An error ocurred, artyom cannot work without a microphone";
+                }
+
+                if(error.code == "not-allowed"){
+                    mesage = "An error ocurred, it seems the access to your microphone is denied";
+                }
+
+                if(error.code == "no-speech"){
+                    mesage = "You didn't say anything";
+                }
+
+                SANDBOX.LOG("{"+ error.message + "} " + mesage, "error");
+            });
+
+            artyom.when("COMMAND_MATCHED",function(){
+               SANDBOX.LOG("A command has been found and it will be executed.","info");
+            });
+
+            var timer;
+
+            function endAndStartTimer(callback) {
+                window.clearTimeout(timer);
+                //var millisecBeforeRedirect = 10000;
+                timer = window.setTimeout(callback,1000);
+            }
+
+            artyom.when("TEXT_RECOGNIZED", () => {
+                $("#speaking-circle").css("background","green");
+
+                endAndStartTimer(() => {
+                    $("#speaking-circle").css("background","red");
+                });
+
+                console.log("Hola");
+            });
+
+            artyom.redirectRecognizedTextOutput(function(recognized,isFinal){
+                if(isFinal){
+                    $("#span-preview").text("");//Nothing
+                }else{
+                    $("#span-preview").text(recognized);
+                }
+            });
+
+        </script>
+    </body>
+</html>

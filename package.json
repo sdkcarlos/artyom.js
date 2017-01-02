@@ -1,29 +1,32 @@
 {
-  "name": "artyom.js",
-  "version": "1.0.1",
-  "description": "Artyom is a Robust Wrapper of the Google Chrome SpeechSynthesis and SpeechRecognition that allows you to create a virtual assistent",
-  "main": "artyom.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sdkcarlos/artyom.js.git"
-  },
-  "keywords": [
-    "speech",
-    "recognition",
-    "voice",
-    "commands",
-    "voice",
-    "siri",
-    "cortana",
-    "googleNow"
-  ],
-  "author": "Carlos Delgado",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/sdkcarlos/artyom.js/issues"
-  },
-  "homepage": "https://sdkcarlos.github.io/sites/artyom.html"
+    "name": "artyom.js",
+    "version": "1.0.2",
+    "description": "Artyom is a Robust Wrapper of the Google Chrome SpeechSynthesis and SpeechRecognition that allows you to create a virtual assistent",
+    "main": "artyom.js",
+    "scripts": {
+        "sandbox": "nodemon ./development/server.js localhost 8080"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/sdkcarlos/artyom.js.git"
+    },
+    "keywords": [
+        "speech",
+        "recognition",
+        "voice",
+        "commands",
+        "voice",
+        "siri",
+        "cortana",
+        "googleNow"
+    ],
+    "author": "Carlos Delgado",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/sdkcarlos/artyom.js/issues"
+    },
+    "homepage": "https://sdkcarlos.github.io/sites/artyom.html",
+    "devDependencies": {
+        "express": "^4.14.0"
+    }
 }
