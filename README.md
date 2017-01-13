@@ -2,6 +2,24 @@
   <img src="https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/public/images/artyomjs-logo.png" width="256" title="Artyom logo">
 </p>
 
+# Table of Contents
+- [About Artyom](#about-artyom)
+    * [Speech Recognition](#speech-recognition)
+    * [Voice Synthesis](#voice-synthesis)
+- [Usage](#usage)
+    * [NPM](#npm)
+    * [Bower](#bower)
+- [Development](#development)
+    * [Testing](#testing)
+    * [Programming with Artyom](#programming-with-artyom)
+- [Languages](#languages)
+- [All you need to know about Artyom](#all-you-need-to-know-about-artyom)
+- [Demonstrations](#demostrations)
+- [Basic usage](#basic-usage)
+    * [With just plain JavaScript](#with-just-plain-javascript)
+    * [With Angular2 (TypeScript)](#with-angular2-typescript)
+- [Thank-you note](#thank-you-note)
+
 # About Artyom
 
 Artyom.js is a robust and useful wrapper of the webkitSpeechRecognition and speechSynthesis APIs written in plain ol' Vanilla Javascript.
@@ -120,6 +138,12 @@ Do not hesitate to create a ticket on the issues area of the Github repository f
 
 # Basic usage
 
+In this section we'll show you different examples of use of Artyom.
+
+## With just plain JavaScript
+
+Example of use with JavaScript:
+
 ```javascript
 // Add command (Short code artisan way)
 artyom.on(['Good morning','Good afternoon']).then((i) => {
@@ -138,8 +162,7 @@ artyom.on(['Repeat after me *'] , true).then((i,wildcard) => {
     artyom.say("You've said : " + wildcard);
 });
 
-// or add some commands in the normal way
-
+// or add some commandsDemostrations in the normal way
 artyom.addCommands([
     {
         indexes: ['Hello','Hi','is someone there'],
@@ -158,12 +181,12 @@ artyom.addCommands([
 
 // Start the commands !
 artyom.initialize({
-    lang:"en-GB", // GreatBritain english
-    continuous:true, // Listen forever
-    soundex:true,// Use the soundex algorithm to increase accuracy
-    debug:true, // Show messages in the console
+    lang: "en-GB", // GreatBritain english
+    continuous: true, // Listen forever
+    soundex: true,// Use the soundex algorithm to increase accuracy
+    debug: true, // Show messages in the console
     executionKeyword: "and do it now",
-    listen:true // Start to listen commands !
+    listen: true // Start to listen commands !
 }).then(() => {
     console.log("Artyom has been succesfully initialized");
 }).catch((err) => {
@@ -182,6 +205,19 @@ artyom.say("Hello, this is a demo text.",{
     }
 });
 ```
+
+## With Angular2 (TypeScript)
+
+Example of use with Angular2 & TypeScript:
+
+```javascript
+import artyom = require('artyom.js');
+```
+
+Moreover, you can see another real example in that repository: [Angular2 & WebAudio](https://github.com/semagarcia/poc-angular2-webaudio)
+
+
+# Thank-you note
 
 Working with artyom is cool and easy, read the documentation to discover more awesome features.
 

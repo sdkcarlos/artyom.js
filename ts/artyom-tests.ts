@@ -1,14 +1,13 @@
-///<reference path="index.d.ts"/>
-import artyomjs from './artyom';
+import artyomjs = require('artyom.js');
 
 // Get an unique ArtyomJS instance
-let artyom = artyomjs.Artyom.getInstance();
+let artyom = artyomjs.ArtyomBuilder.getInstance();
 
 // Add a command (not smart)
 artyom.addCommands({
     description: 'Test command',
     indexes: ['hello', 'hi'],
-    action: (i) => {
+    action: (i: number) => {
         console.log('hello action');
     }
 });
@@ -18,7 +17,7 @@ artyom.addCommands({
     description: 'Test command 2',
     smart: true,
     indexes: ['test *'],
-    action: (i, wildcard) => {
+    action: (i: number, wildcard: string) => {
         console.log('wildcard: ', wildcard);
     }
 });
