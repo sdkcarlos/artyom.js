@@ -217,7 +217,7 @@ class ArtyomHelpers {
 
     /**
      * Determine if the current browser is Google Chrome (static method)
-     * @return {boolean} 
+     * @return {boolean}
      */
     static isChrome() {
         return navigator.userAgent.indexOf("Chrome") === -1;
@@ -228,12 +228,12 @@ class ArtyomHelpers {
      * @return {boolean}
      */
     static isMobileDevice() {
-        return (navigator.userAgent.match(/Android/i) || 
-                navigator.userAgent.match(/webOS/i) || 
-                navigator.userAgent.match(/iPhone/i) || 
-                navigator.userAgent.match(/iPad/i) || 
-                navigator.userAgent.match(/iPod/i) || 
-                navigator.userAgent.match(/BlackBerry/i) || 
+        return (navigator.userAgent.match(/Android/i) ||
+                navigator.userAgent.match(/webOS/i) ||
+                navigator.userAgent.match(/iPhone/i) ||
+                navigator.userAgent.match(/iPad/i) ||
+                navigator.userAgent.match(/iPod/i) ||
+                navigator.userAgent.match(/BlackBerry/i) ||
                 navigator.userAgent.match(/Windows Phone/i));
     }
 
@@ -252,7 +252,7 @@ class ArtyomHelpers {
 }
 
 interface ArtyomDevice {
-    isChrome(): boolean; 
+    isChrome(): boolean;
     isMobile(): boolean;
 }
 
@@ -340,19 +340,19 @@ export interface ArtyomJS {
     /**
      * Contains some basic information that artyom needs to know as the type of device and browser
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/6/read-doc/artyom-device/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/device
      * @since 0.5.1
      * @type {Object}
      */
     device: ArtyomDevice;
 
     /**
-     * 
+     *
      */
     artyomProperties: ArtyomConfigProperties;
 
     /**
-     * 
+     *
      */
     artyomWSR: ArtyomRecognizer;
 
@@ -360,7 +360,7 @@ export interface ArtyomJS {
      * Artyom can return inmediately the voices available in your browser.
      *
      * @readonly
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/14/read-doc/artyom-getvoices/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getvoices
      * @returns {Array}
      */
     getVoices(): Array<SpeechSynthesisVoice>;
@@ -368,7 +368,7 @@ export interface ArtyomJS {
     /**
      * Returns an array with all the available commands for artyom.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/10/read-doc/artyom-getavailablecommands/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getavailablecommands
      * @readonly
      * @returns {Array}
      */
@@ -380,7 +380,7 @@ export interface ArtyomJS {
      * This function will set the default language used by artyom
      * or notice the user if artyom is not supported in the actual
      * browser
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/15/read-doc/artyom-initialize/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/initialize
      * @param {Object} config
      * @returns {Boolean}
      */
@@ -389,7 +389,7 @@ export interface ArtyomJS {
     /**
      * Force artyom to stop listen even if is in continuos mode.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/9/read-doc/artyom-fatality/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/fatality
      * @returns {Boolean}
      */
     fatality(): boolean;
@@ -398,17 +398,17 @@ export interface ArtyomJS {
      * Add dinamically commands to artyom using
      * You can even add commands while artyom is active.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/4/read-doc/artyom-addcommands/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/addcommands
      * @since 0.6
      * @param {Object | Array[Objects]} param
      * @returns {undefined}
      */
     addCommands(param: ArtyomCommand | ArtyomCommand[]): boolean;
-    
+
     /**
      * Remove the commands of artyom with indexes that matches with the given text.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/19/read-doc/artyom-removecommands/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/removecommands
      * @param {type} identifier
      * @returns {array}
      */
@@ -417,7 +417,7 @@ export interface ArtyomJS {
     /**
      * Removes all the added commands of artyom.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/7/read-doc/artyom-emptycommands/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/emptycommands
      * @since 0.6
      * @returns {Array}
      */
@@ -426,7 +426,7 @@ export interface ArtyomJS {
     /**
      * Stops the actual and pendings messages that artyom have to say.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/23/read-doc/artyom-shutup/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/shutup
      * @returns {undefined}
      */
     shutUp(): void;
@@ -434,7 +434,7 @@ export interface ArtyomJS {
     /**
      * Returns an object with the actual properties of artyom.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/12/read-doc/artyom-getproperties/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getproperties
      * @returns {object}
      */
     getProperties(): ArtyomConfigProperties;
@@ -442,7 +442,7 @@ export interface ArtyomJS {
     /**
      * Create a listener when an artyom action is called.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/24/read-doc/artyom-when/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/when
      * @param {type} event
      * @param {type} action
      * @returns {undefined}
@@ -453,7 +453,7 @@ export interface ArtyomJS {
      * Returns the code language of artyom according to initialize function.
      * if initialize not used returns english GB.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/11/read-doc/artyom-getlanguage/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getlanguage
      * @returns {String}
      */
     getLanguage(): string;
@@ -480,7 +480,7 @@ export interface ArtyomJS {
     /**
      * Process the given text into chunks and execute the function artyomTalk
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/20/read-doc/artyom-say/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/say
      * @param {String} message Text to be spoken
      * @param {Object} callbacks
      * @returns {undefined}
@@ -491,7 +491,7 @@ export interface ArtyomJS {
      * Repeats the last sentence that artyom said.
      * Useful in noisy environments.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/25/read-doc/artyom-repeatlastsay/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/repeatlastsay
      * @param {Boolean} returnObject If set to true, an object with the text and the timestamp when was executed will be returned.
      * @returns {Object}
      */
@@ -500,7 +500,7 @@ export interface ArtyomJS {
     /**
      * Verify if the browser supports speechSynthesis.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/40/read-doc/artyom-speechsupported/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/speechsupported
      * @returns {Boolean}
      */
     speechSupported(): boolean;
@@ -508,7 +508,7 @@ export interface ArtyomJS {
     /**
      * Verify if the browser supports webkitSpeechRecognition.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/39/read-doc/artyom-recognizingsupported/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/recognizingsupported
      * @returns {Boolean}
      */
     recognizingSupported(): boolean;
@@ -516,7 +516,7 @@ export interface ArtyomJS {
     /**
      * Simulate a voice command via JS
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/22/read-doc/artyom-simulateinstruction/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/simulateinstruction
      * @param {type} sentence
      * @returns {undefined}
      */
@@ -534,7 +534,7 @@ export interface ArtyomJS {
     /**
      * Displays a message in the console if the artyom propery DEBUG is set to true.
      *
-     * @tutorial http://ourcodeworld.com/projects/projects-documentation/38/read-doc/artyom-debug/artyom-js
+     * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/debug
      * @param {type} e
      * @param {type} o
      * @returns {undefined}
@@ -732,15 +732,15 @@ export class ArtyomJsImpl implements ArtyomJS {
 
         // Default voice
         this.artyomVoice = 'Google UK English Male';
-    }    
+    }
 
     device = {
         isChrome: () => { return ArtyomHelpers.isChrome(); },
         isMobile: () => { return !!ArtyomHelpers.isMobileDevice(); }
     };
 
-    getVoices = (): Array<SpeechSynthesisVoice> => { 
-        return (window['speechSynthesis']).getVoices(); 
+    getVoices = (): Array<SpeechSynthesisVoice> => {
+        return (window['speechSynthesis']).getVoices();
     };
 
     getAvailableCommands = (): ArtyomCommand[] => {
@@ -1194,7 +1194,7 @@ export class ArtyomJsImpl implements ArtyomJS {
             let instruction = this.artyomCommands[i];
             let opciones = instruction.indexes;
             let encontrado = -1;
-            const optionsLength = opciones.length; 
+            const optionsLength = opciones.length;
             for (let c = 0; c < optionsLength; c++) {
                 let opcion = opciones[c];
                 if (!instruction.smart) {
@@ -1209,7 +1209,7 @@ export class ArtyomJsImpl implements ArtyomJS {
                         continue;
                     }
 
-                    // Start smart command 
+                    // Start smart command
                     let before = grupo[0];
                     let latter = grupo[1];
 
@@ -1807,7 +1807,7 @@ export class ArtyomJsImpl implements ArtyomJS {
                 });
             }
         }
-    }; 
+    };
 
     getNativeApi = () => {
         return this.artyomWSR;
@@ -1876,7 +1876,7 @@ export class ArtyomJsImpl implements ArtyomJS {
 }
 
 /**
- * Artyom.js - A voice control / voice commands / speech recognition and speech synthesis javascript library. 
+ * Artyom.js - A voice control / voice commands / speech recognition and speech synthesis javascript library.
  * Create your own siri,google now or cortana with Google Chrome within your website.
  * That class requires webkitSpeechRecognition and speechSynthesis APIs.
  */

@@ -238,7 +238,7 @@ declare namespace Artyom {
     export interface ArtyomJS {
         /**
          * Contains some basic information that artyom needs to know as the type of device and browser
-         * @see http://ourcodeworld.com/projects/projects-documentation/6/read-doc/artyom-device/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/device
          */
         device: ArtyomDevice;
 
@@ -249,14 +249,14 @@ declare namespace Artyom {
 
         /**
          * Artyom can return inmediately the voices available in your browser.
-         * @see http://ourcodeworld.com/projects/projects-documentation/14/read-doc/artyom-getvoices/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getvoices
          * @returns {Array}
          */
         getVoices(): SpeechSynthesisVoice[];
 
         /**
          * Returns an array with all the available commands for artyom.
-         * @see http://ourcodeworld.com/projects/projects-documentation/10/read-doc/artyom-getavailablecommands/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getavailablecommands
          * @returns {Array}
          */
         getAvailableCommands(): ArtyomCommand[];
@@ -264,7 +264,7 @@ declare namespace Artyom {
         /**
          * Set up artyom for the application. This function will set the default language used by artyom
          * or notice the user if artyom is not supported in the actual browser.
-         * @see http://ourcodeworld.com/projects/projects-documentation/15/read-doc/artyom-initialize/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/initialize
          * @param {ArtyomConfigProperties} config
          * @returns {Boolean}
          */
@@ -272,14 +272,14 @@ declare namespace Artyom {
 
         /**
          * Force artyom to stop listen even if is in continuos mode.
-         * @see http://ourcodeworld.com/projects/projects-documentation/9/read-doc/artyom-fatality/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/fatality
          * @returns {Boolean}
          */
         fatality(): boolean;
 
         /**
          * Add dinamically commands to artyom using. You can even add commands while artyom is active.
-         * @see http://ourcodeworld.com/projects/projects-documentation/4/read-doc/artyom-addcommands/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/addcommands
          * @param {ArtyomCommand | Array[ArtyomCommand]} newCommand
          * @returns {Boolean}
          */
@@ -287,7 +287,7 @@ declare namespace Artyom {
 
         /**
          * Remove the commands of artyom with indexes that matches with the given text.
-         * @see http://ourcodeworld.com/projects/projects-documentation/19/read-doc/artyom-removecommands/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/removecommands
          * @param {string} identifier
          * @returns {Array}
          */
@@ -295,33 +295,33 @@ declare namespace Artyom {
 
         /**
          * Removes all the added commands of artyom.
-         * @see http://ourcodeworld.com/projects/projects-documentation/7/read-doc/artyom-emptycommands/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/emptycommands
          * @returns {Array}
          */
         emptyCommands(): ArtyomCommand[];
 
         /**
          * Stops the actual and pendings messages that artyom have to say.
-         * @see http://ourcodeworld.com/projects/projects-documentation/23/read-doc/artyom-shutup/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/shutup
          */
         shutUp(): void;
 
         /**
          * Returns an object with the actual properties of artyom.
-         * @see http://ourcodeworld.com/projects/projects-documentation/12/read-doc/artyom-getproperties/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getproperties
          * @returns {ArtyomConfigProperties}
          */
         getProperties(): ArtyomConfigProperties;
 
         /**
          * Create a listener when an artyom action is called.
-         * @see http://ourcodeworld.com/projects/projects-documentation/24/read-doc/artyom-when/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/when
          */
         when(event: any, action: any): any;
 
         /**
          * Returns the code language of artyom according to initialize function.
-         * @see http://ourcodeworld.com/projects/projects-documentation/11/read-doc/artyom-getlanguage/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getlanguage
          * @returns {String} Language
          */
         getLanguage(): string;
@@ -346,34 +346,34 @@ declare namespace Artyom {
          * Process the given text into chunks and execute the private function artyom_talk.
          * @param {String} message Text to be spoken
          * @param {Object} callbacks { onStart, onEnd }
-         * @see http://ourcodeworld.com/projects/projects-documentation/20/read-doc/artyom-say/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/say
          */
         say(message: any, callbacks?: any): void;
 
         /**
          * Repeats the last sentence that artyom said. Useful in noisy environments.
          * @param {Boolean} returnObject If set to true, an object with the text and the timestamp when was executed will be returned.
-         * @see http://ourcodeworld.com/projects/projects-documentation/25/read-doc/artyom-repeatlastsay/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/repeatlastsay
          */
         repeatLastSay(returnObject: any): void;
 
         /**
          * Verify if the browser supports speechSynthesis.
-         * @see http://ourcodeworld.com/projects/projects-documentation/40/read-doc/artyom-speechsupported/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/speechsupported
          * @returns {Boolean}
          */
         speechSupported(): boolean;
 
         /**
          * Verify if the browser supports webkitSpeechRecognition.
-         * @see http://ourcodeworld.com/projects/projects-documentation/39/read-doc/artyom-recognizingsupported/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/recognizingsupported
          * @returns {Boolean}
          */
         recognizingSupported(): boolean;
 
         /**
          * Simulate a voice command via JS.
-         * @see http://ourcodeworld.com/projects/projects-documentation/22/read-doc/artyom-simulateinstruction/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/simulateinstruction
          * @param {string} sentence
          * @returns {Boolean}
          */
@@ -390,7 +390,7 @@ declare namespace Artyom {
          * Displays a message in the console if the artyom propery DEBUG is set to true.
          * @param {string} error The error to be debugged
          * @param {string} traceLevel Error level: { error | warn | info }
-         * @see http://ourcodeworld.com/projects/projects-documentation/38/read-doc/artyom-debug/artyom-js
+         * @see http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/debug
          */
         debug(stringEvent: string, traceLevel: string): void;
 
@@ -403,7 +403,7 @@ declare namespace Artyom {
 
         /**
          * Says a random quote and returns it's object.
-         * @param data 
+         * @param data
          */
         sayRandom(data: any): any;
 
@@ -423,14 +423,14 @@ declare namespace Artyom {
         artyomHey(): any;
 
         /**
-         * This function will return the webkitSpeechRecognition object used by artyom retrieve it only to debug on it or get some 
+         * This function will return the webkitSpeechRecognition object used by artyom retrieve it only to debug on it or get some
          * values, do not make changes directly.
          */
         getNativeApi(): any;
 
         /**
          * This function returns a boolean according to the SpeechRecognition status if artyom is listening, will return true.
-         * Note: This is not a feature of SpeechRecognition, therefore this value hangs on the fiability of the onStart and onEnd 
+         * Note: This is not a feature of SpeechRecognition, therefore this value hangs on the fiability of the onStart and onEnd
          * events of the SpeechRecognition
          * @returns {Boolean}
          */
@@ -438,14 +438,14 @@ declare namespace Artyom {
 
         /**
          * This function returns a boolean according to the speechSynthesis status if artyom is speaking, will return true.
-         * Note: This is not a feature of speechSynthesis, therefore this value hangs on the fiability of the onStart and onEnd 
+         * Note: This is not a feature of speechSynthesis, therefore this value hangs on the fiability of the onStart and onEnd
          * events of the speechSynthesis.
          * @returns {Boolean}
          */
         isSpeaking(): boolean;
 
         /**
-         * The SpeechSynthesisUtterance objects are stored in the artyom_garbage_collector variable to prevent the wrong behaviour 
+         * The SpeechSynthesisUtterance objects are stored in the artyom_garbage_collector variable to prevent the wrong behaviour
          * of artyom.say. Use this method to clear all spoken SpeechSynthesisUtterance unused objects.
          * @returns {Boolean}
          */
@@ -487,7 +487,7 @@ declare namespace Artyom {
         getVersion(): string;
 
         /**
-         * Add commands like an artisan. If you use artyom for simple 
+         * Add commands like an artisan. If you use artyom for simple
          * tasks then probably you don't like to write a lot to achieve it.
          * Use the artisan syntax to write less, but with the same accuracy.
          * @disclaimer Not a promise-based implementation, just syntax.

@@ -167,7 +167,7 @@
         /**
          * Contains some basic information that artyom needs to know as the type of device and browser
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/6/read-doc/artyom-device/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/device
          * @since 0.5.1
          * @type {Object}
          */
@@ -177,7 +177,7 @@
          * Artyom can return inmediately the voices available in your browser.
          *
          * @readonly
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/14/read-doc/artyom-getvoices/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getvoices
          * @returns {Array}
          */
         artyom.getVoices = function() {
@@ -187,7 +187,7 @@
         /**
          * Returns an array with all the available commands for artyom.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/10/read-doc/artyom-getavailablecommands/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getavailablecommands
          * @readonly
          * @returns {Array}
          */
@@ -219,7 +219,7 @@
          * This function will set the default language used by artyom
          * or notice the user if artyom is not supported in the actual
          * browser
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/15/read-doc/artyom-initialize/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/initialize
          * @param {Object} config
          * @returns {Boolean}
          */
@@ -352,7 +352,7 @@
         /**
          * Force artyom to stop listen even if is in continuos mode.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/9/read-doc/artyom-fatality/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/fatality
          * @returns {Boolean}
          */
         artyom.fatality = function() {
@@ -371,7 +371,7 @@
          * Add dinamically commands to artyom using
          * You can even add commands while artyom is active.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/4/read-doc/artyom-addcommands/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/addcommands
          * @since 0.6
          * @param {Object | Array[Objects]} param
          * @returns {undefined}
@@ -400,7 +400,7 @@
         /**
          * Remove the commands of artyom with indexes that matches with the given text.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/19/read-doc/artyom-removecommands/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/removecommands
          * @param {type} identifier
          * @returns {array}
          */
@@ -426,7 +426,7 @@
         /**
          * Removes all the added commands of artyom.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/7/read-doc/artyom-emptycommands/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/emptycommands
          * @since 0.6
          * @returns {Array}
          */
@@ -438,7 +438,7 @@
         /**
          * Stops the actual and pendings messages that artyom have to say.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/23/read-doc/artyom-shutup/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/shutup
          * @returns {undefined}
          */
         artyom.shutUp = function() {
@@ -455,7 +455,7 @@
         /**
          * Returns an object with the actual properties of artyom.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/12/read-doc/artyom-getproperties/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getproperties
          * @returns {object}
          */
         artyom.getProperties = function() {
@@ -479,7 +479,7 @@
         /**
          * Create a listener when an artyom action is called.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/24/read-doc/artyom-when/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/when
          * @param {type} event
          * @param {type} action
          * @returns {undefined}
@@ -494,7 +494,7 @@
          * Returns the code language of artyom according to initialize function.
          * if initialize not used returns english GB.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/11/read-doc/artyom-getlanguage/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/getlanguage
          * @returns {String}
          */
         artyom.getLanguage = function() {
@@ -626,7 +626,7 @@
         /**
          * Process the given text into chunks and execute the private function artyom_talk
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/20/read-doc/artyom-say/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/say
          * @param {String} message Text to be spoken
          * @param {Object} callbacks
          * @returns {undefined}
@@ -692,7 +692,7 @@
          * Repeats the last sentence that artyom said.
          * Useful in noisy environments.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/25/read-doc/artyom-repeatlastsay/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/repeatlastsay
          * @param {Boolean} returnObject If set to true, an object with the text and the timestamp when was executed will be returned.
          * @returns {Object}
          */
@@ -711,7 +711,7 @@
         /**
          * Verify if the browser supports speechSynthesis.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/40/read-doc/artyom-speechsupported/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/speechsupported
          * @returns {Boolean}
          */
         artyom.speechSupported = function() {
@@ -721,7 +721,7 @@
         /**
          * Verify if the browser supports webkitSpeechRecognition.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/39/read-doc/artyom-recognizingsupported/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/recognizingsupported
          * @returns {Boolean}
          */
         artyom.recognizingSupported = function() {
@@ -1041,7 +1041,7 @@
         /**
          * Simulate a voice command via JS
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/22/read-doc/artyom-simulateinstruction/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/simulateinstruction
          * @param {type} sentence
          * @returns {undefined}
          */
@@ -1272,7 +1272,7 @@
         /**
          * Displays a message in the console if the artyom propery DEBUG is set to true.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/38/read-doc/artyom-debug/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/debug
          * @param {type} e
          * @param {type} o
          * @returns {undefined}
@@ -1301,7 +1301,7 @@
          * Artyom have it's own diagnostics.
          * Run this function in order to detect why artyom is not initialized.
          *
-         * @tutorial http://ourcodeworld.com/projects/projects-documentation/5/read-doc/artyom-detecterrors/artyom-js
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/detecterrors
          * @param {type} callback
          * @returns {}
          */
@@ -1352,7 +1352,7 @@
 
         /**
          * Says a random quote and returns it's object
-         *
+         * @tutorial http://docs.ourcodeworld.com/projects/artyom-js/documentation/methods/sayrandom
          * @param {type} data
          * @returns {object}
          */

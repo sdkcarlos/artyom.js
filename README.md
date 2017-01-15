@@ -124,13 +124,11 @@ Artyom provides **complete** support for the following languages. Every language
 
 # All you need to know about Artyom
 
-- [Documentation](http://ourcodeworld.com/projects/projects-documentation/1/list/artyom-js)
-- [Frequently Asked Questions](http://ourcodeworld.com/projects/projects-faq/1/list/artyom-js)
-- [Changelog](http://ourcodeworld.com/projects/projects-documentation/2/read-doc/official-changelog/artyom-js)
+- [Documentation and FAQ](http://docs.ourcodeworld.com/projects/artyom-js)
 
 Do not hesitate to create a ticket on the issues area of the Github repository for any question, problem or inconvenient that you may have about artyom.
 
-# Demostrations
+# Demonstrations
 
 - [Homepage](https://sdkcarlos.github.io/sites/artyom.html)
 - [Continuous mode J.A.R.V.I.S](https://sdkcarlos.github.io/jarvis.html)
@@ -138,7 +136,7 @@ Do not hesitate to create a ticket on the issues area of the Github repository f
 
 # Basic usage
 
-In this section we'll show you different examples of use of Artyom. 
+In this section we'll show you different examples of use of Artyom.
 
 ## With just plain JavaScript
 
@@ -208,7 +206,7 @@ artyom.say("Hello, this is a demo text.",{
 
 ## With Angular2 (TypeScript)
 
-Artyom is also written in TypeScript (.js transpiled from .ts + its definition file -.d.ts) in order to improve the performance in 
+Artyom is also written in TypeScript (.js transpiled from .ts + its definition file -.d.ts) in order to improve the performance in
 some parts of the library. In that case, the module loader used is CommonJS. Example of use with Angular2 & TypeScript:
 
 ```javascript
