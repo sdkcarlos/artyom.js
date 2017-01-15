@@ -1889,10 +1889,6 @@ export class ArtyomBuilder {
         let artyomVoice = 'Google UK English Male';
         let artyom_garbage_collector = [];
         let artyomCommands = [];
-        
-        // Return the recent created instance
-        //ArtyomBuilder.instance = artyom;
-        //return artyom;
     }
 
     static getInstance(): ArtyomJS {

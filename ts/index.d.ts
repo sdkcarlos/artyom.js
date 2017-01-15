@@ -497,11 +497,11 @@ declare namespace Artyom {
     }
 
     /**
-     * ArtyomBuilder bla, bla...
+     * Main class to create the singleton instance of Artyom
      */
     export class ArtyomBuilder {
         /**
-         * Method to bla, bla, bla...
+         * Method to access to the single and unique instance of Artyom engine
          */
         static getInstance(): ArtyomJS
     }
