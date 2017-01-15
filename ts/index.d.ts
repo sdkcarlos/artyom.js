@@ -348,7 +348,7 @@ declare namespace Artyom {
          * @param {Object} callbacks { onStart, onEnd }
          * @see http://ourcodeworld.com/projects/projects-documentation/20/read-doc/artyom-say/artyom-js
          */
-        say(message: any, callbacks: any): void;
+        say(message: any, callbacks?: any): void;
 
         /**
          * Repeats the last sentence that artyom said. Useful in noisy environments.

@@ -198,7 +198,7 @@ class ArtyomInternals {
         r = f +
             a
             .map(function(v, i, a) {
-                return codes[v]
+                return codes[v];
             })
             .filter(function(v, i, a) {
                 return ((i === 0) ? v !== codes[f] : v !== a[i - 1]);
@@ -243,7 +243,7 @@ class ArtyomHelpers {
      * @param {any} param
      * @return {event}
      */
-    static artyomTriggerEvent(name, param?) {
+    static artyomTriggerEvent(name: string, param?: any) {
         let event = new CustomEvent(name, {'detail': param});
         document.dispatchEvent(event);
         return event;
@@ -303,8 +303,8 @@ interface ArtyomRecognizer {
     start(): void;
     stop(): void;
     onstart(): void;
-    onresult(event): void;
-    onerror(event): void;
+    onresult(event: any): void;
+    onerror(event: any): void;
     onend(): void;
 }
 
@@ -336,7 +336,7 @@ const ArtyomLanguages = {
     native: "native"
 }
 
-interface ArtyomJS {
+export interface ArtyomJS {
     /**
      * Contains some basic information that artyom needs to know as the type of device and browser
      *
@@ -345,6 +345,11 @@ interface ArtyomJS {
      * @type {Object}
      */
     device: ArtyomDevice;
+
+    /**
+     * 
+     */
+    artyomProperties: ArtyomConfigProperties;
 
     /**
      * 
@@ -442,7 +447,7 @@ interface ArtyomJS {
      * @param {type} action
      * @returns {undefined}
      */
-    when(event, action);
+    when(event: Event, action: any): any;
 
     /**
      * Returns the code language of artyom according to initialize function.
@@ -462,7 +467,7 @@ interface ArtyomJS {
      * @param {Int} totalChunks
      * @returns {undefined}
      */
-    artyomTalk(text, actualChunk, totalChunks, callbacks);
+    artyomTalk(text: string, actualChunk: number, totalChunks: number, callbacks: any): any;
 
     /**
      * Splits a string into an array of strings with a limited size (chunk_length).
@@ -470,17 +475,17 @@ interface ArtyomJS {
      * @param {String} input text to split into chunks
      * @param {Integer} chunk_length limit of characters in every chunk
      */
-    splitStringByChunks(input, chunk_length): string[];
+    splitStringByChunks(input: string, chunkLength: number): string[];
 
     /**
-     * Process the given text into chunks and execute the private function artyom_talk
+     * Process the given text into chunks and execute the function artyomTalk
      *
      * @tutorial http://ourcodeworld.com/projects/projects-documentation/20/read-doc/artyom-say/artyom-js
      * @param {String} message Text to be spoken
      * @param {Object} callbacks
      * @returns {undefined}
      */
-    say(message, callbacks): void;
+    say(message: string, callbacks?: any): void;
 
     /**
      * Repeats the last sentence that artyom said.
@@ -490,7 +495,7 @@ interface ArtyomJS {
      * @param {Boolean} returnObject If set to true, an object with the text and the timestamp when was executed will be returned.
      * @returns {Object}
      */
-    repeatLastSay(returnObject): void;
+    repeatLastSay(returnObject: any): void;
 
     /**
      * Verify if the browser supports speechSynthesis.
@@ -620,7 +625,7 @@ interface ArtyomJS {
     isSpeaking(): boolean;
 
     /**
-     * The SpeechSynthesisUtterance objects are stored in the artyom_garbage_collector variable
+     * The SpeechSynthesisUtterance objects are stored in the artyomGarbageCollector variable
      * to prevent the wrong behaviour of artyom.say.
      * Use this method to clear all spoken SpeechSynthesisUtterance unused objects.
      *
@@ -686,17 +691,47 @@ interface ArtyomJS {
 
 export class ArtyomJsImpl implements ArtyomJS {
     artyomCommands: ArtyomCommand[] = [];
+    artyomGarbageCollector: SpeechSynthesisUtterance[] = [];
     artyomVoice: string;
     artyomProperties: ArtyomConfigProperties;
     artyomFlags: ArtyomFlags;
     artyomWSR: ArtyomRecognizer;
-    artyomGarbageCollector: SpeechSynthesisUtterance[] = [];
 
     constructor() {
         if (window.hasOwnProperty('webkitSpeechRecognition')) {
             const { webkitSpeechRecognition } : ArtyomWindow = <ArtyomWindow>window;
             this.artyomWSR = new webkitSpeechRecognition();
         }
+
+        // Default values
+        this.artyomProperties = {
+            lang: 'en-GB',
+            recognizing: false,
+            continuous: false,
+            speed: 1,
+            volume: 1,
+            listen: false,
+            mode: 'normal',
+            debug: false,
+            helpers: {
+                redirectRecognizedTextOutput: null,
+                remoteProcessorHandler: null,
+                lastSay: null
+            },
+            executionKeyword: null,
+            obeyKeyword: null,
+            speaking: false,
+            obeying: true,
+            soundex: false
+        };
+
+        // Recognition
+        this.artyomFlags = {
+            restartRecognition: false
+        };
+
+        // Default voice
+        this.artyomVoice = 'Google UK English Male';
     }    
 
     device = {
@@ -708,8 +743,8 @@ export class ArtyomJsImpl implements ArtyomJS {
         return (window['speechSynthesis']).getVoices(); 
     };
 
-    getAvailableCommands = () => {
-        const commandsLength = this.artyomCommands.length;
+    getAvailableCommands = (): ArtyomCommand[] => {
+        /*const commandsLength = this.artyomCommands.length;
         let availables = [];
         for (let i = 0; i < commandsLength; i++) {
             let command = this.artyomCommands[i];
@@ -726,7 +761,8 @@ export class ArtyomJsImpl implements ArtyomJS {
 
             availables.push(aval);
         }
-        return availables;
+        return availables;*/
+        return this.artyomCommands;
     };
 
     initialize = (config: ArtyomConfigProperties): boolean => {
@@ -1675,7 +1711,7 @@ export class ArtyomJsImpl implements ArtyomJS {
                     } else {
                         let comando = this.artyomExecute(identificated.trim());
                         // Redirect output when necesary
-                        if (typeof (this.artyomProperties.helpers.redirectRecognizedTextOutput) === "function") {
+                        if (this.artyomProperties.helpers && typeof (this.artyomProperties.helpers.redirectRecognizedTextOutput) === "function") {
                             this.artyomProperties.helpers.redirectRecognizedTextOutput(identificated, false);
                         }
 
@@ -1686,9 +1722,13 @@ export class ArtyomJsImpl implements ArtyomJS {
 
                             // Executing Command Action
                             if (comando.wildcard) {
-                                comando.objeto.action(comando.indice, comando.wildcard.item);
+                                if(comando.objeto && typeof(comando.indice) === 'number') {
+                                    comando.objeto.action(comando.indice, comando.wildcard.item);
+                                }
                             } else {
-                                comando.objeto.action(comando.indice);
+                                if(comando.objeto && typeof(comando.indice) === 'number') {
+                                    comando.objeto.action(comando.indice);
+                                }
                             }
 
                             break;
@@ -1702,19 +1742,21 @@ export class ArtyomJsImpl implements ArtyomJS {
 
         // Process the recognition in remote mode
         if(this.artyomProperties.mode == "remote"){
-            onResultProcessor = (event) => {
+            onResultProcessor = (event: any) => {
                 ArtyomHelpers.artyomTriggerEvent(ArtyomGlobalEvents.TEXT_RECOGNIZED);
                 let cantidadResultados = event.results.length;
-                if (typeof (this.artyomProperties.helpers.remoteProcessorHandler) !== "function") {
+                if (this.artyomProperties.helpers && typeof (this.artyomProperties.helpers.remoteProcessorHandler) !== "function") {
                     return this.debug("The remoteProcessorService is undefined.", "warn");
                 }
 
                 for (let i = event.resultIndex; i < cantidadResultados; ++i) {
                     let identificated = event.results[i][0].transcript;
-                    this.artyomProperties.helpers.remoteProcessorHandler({
-                        text: identificated,
-                        isFinal: event.results[i].isFinal
-                    });
+                    if(this.artyomProperties.helpers) {
+                        this.artyomProperties.helpers.remoteProcessorHandler({
+                            text: identificated,
+                            isFinal: event.results[i].isFinal
+                        });
+                    }
                 }
             }
         }
@@ -1772,11 +1814,11 @@ export class ArtyomJsImpl implements ArtyomJS {
     };
 
     isRecognizing = (): boolean => {
-        return this.artyomProperties.recognizing;
+        return !!this.artyomProperties.recognizing;
     };
 
     isSpeaking = (): boolean => {
-        return this.artyomProperties.speaking;
+        return !!this.artyomProperties.speaking;
     };
 
     clearGarbageCollection = () => {
@@ -1799,23 +1841,24 @@ export class ArtyomJsImpl implements ArtyomJS {
     };
 
     isObeying = (): boolean => {
-        return this.artyomProperties.obeying;
+        return !!this.artyomProperties.obeying;
     };
 
     getVersion = () => {
         return "1.0.2";
     };
 
-    on = (indexes, smart): any => {
+    on = (indexes: any, smart: boolean): any => {
         return {
-            then: (action) => {
+            then: (action: any) => {
                 var command = {
                     indexes: indexes,
-                    action: action
+                    action: action,
+                    smart: false
                 };
 
                 if (smart) {
-                    command['smart'] = true;
+                    command.smart = true;
                 }
 
                 this.addCommands(command);
@@ -1823,8 +1866,10 @@ export class ArtyomJsImpl implements ArtyomJS {
         };
     };
 
-    remoteProcessorService = (action) => {
-        this.artyomProperties.helpers.remoteProcessorHandler = action;
+    remoteProcessorService = (action: any): boolean => {
+        if(this.artyomProperties.helpers) {
+            this.artyomProperties.helpers.remoteProcessorHandler = action;
+        }
         return true;
     };
 
@@ -1846,8 +1891,8 @@ export class ArtyomBuilder {
         let artyomCommands = [];
         
         // Return the recent created instance
-        ArtyomBuilder.instance = artyom;
-        return artyom;
+        //ArtyomBuilder.instance = artyom;
+        //return artyom;
     }
 
     static getInstance(): ArtyomJS {

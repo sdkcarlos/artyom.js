@@ -6,7 +6,7 @@
 - [About Artyom](#about-artyom)
     * [Speech Recognition](#speech-recognition)
     * [Voice Synthesis](#voice-synthesis)
-- [Usage](#usage)
+- [Installation](#installation)
     * [NPM](#npm)
     * [Bower](#bower)
 - [Development](#development)
@@ -46,7 +46,7 @@ The most known features of artyom are:
 - Synthesize extreme huge blocks of text (+20K words according to the last test).
 - onStart and onEnd callbacks **will be always executed independently of the text length**.
 
-# Usage
+# Installation
 
 #### NPM
 
@@ -138,11 +138,11 @@ Do not hesitate to create a ticket on the issues area of the Github repository f
 
 # Basic usage
 
-In this section we'll show you different examples of use of Artyom.
+In this section we'll show you different examples of use of Artyom. 
 
 ## With just plain JavaScript
 
-Example of use with JavaScript:
+Artyom is built from plain JavaScript (old-fashion way), where all logic is wrapped with an IIFE without any module loader. Example of use with JavaScript:
 
 ```javascript
 // Add command (Short code artisan way)
@@ -208,11 +208,43 @@ artyom.say("Hello, this is a demo text.",{
 
 ## With Angular2 (TypeScript)
 
-Example of use with Angular2 & TypeScript:
+Artyom is also written in TypeScript (.js transpiled from .ts + its definition file -.d.ts) in order to improve the performance in 
+some parts of the library. In that case, the module loader used is CommonJS. Example of use with Angular2 & TypeScript:
 
 ```javascript
-import artyom = require('artyom.js');
+import * as Artyom from 'artyom.js';
+let artyom = Artyom.ArtyomBuilder.getInstance();
+
+// Add a command (not smart)
+artyom.addCommands({
+    description: 'Test command',
+    indexes: ['hello', 'hi'],
+    action: (i) => {
+        console.log('hello action');
+    }
+});
 ```
+
+or
+
+```javascript
+import { ArtyomBuilder } from 'artyom.js';
+let artyom = ArtyomBuilder.getInstance();
+
+// Add a smart command
+artyom.addCommands({
+    description: 'Test command 2',
+    smart: true,
+    indexes: ['test *'],
+    action: (i, wildcard) => {
+        console.log('wildcard: ', wildcard);
+    }
+});
+```
+
+Ather that import, you can follow the rest of the snippet in the previous section (artyom.addCommands({...}, artyom.initialize({...}), ...)). The
+typescript definition file (.d.ts) is also published in [that PR](https://github.com/DefinitelyTyped/DefinitelyTyped/pull/13947) to install it from
+DefinitelyTyped (npm install --save-dev @types/artyom.js) and reference it from tsconfig.json.
 
 Moreover, you can see another real example in that repository: [Angular2 & WebAudio](https://github.com/semagarcia/poc-angular2-webaudio)
 

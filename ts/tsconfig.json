@@ -2,9 +2,9 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es6",
-        "noImplicitAny": true,
-        "strictNullChecks": true,
-        "noImplicitThis": true,
+        "noImplicitAny": false,
+        "strictNullChecks": false,
+        "noImplicitThis": false,
         "baseUrl": "../",
         "typeRoots": [
             "../"
@@ -15,6 +15,6 @@
     },
     "files": [
         "index.d.ts",
-        "artyom.js-tests.ts"
+        "artyom-tests.ts"
     ]
 }

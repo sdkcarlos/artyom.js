@@ -1,4 +1,4 @@
-import artyomjs = require('artyom.js');
+import artyomjs = require('./artyom');
 
 // Get an unique ArtyomJS instance
 let artyom = artyomjs.ArtyomBuilder.getInstance();
