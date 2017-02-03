@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/public/images/artyomjs-logo.png" width="256" title="Artyom logo">
+    <img src="https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/public/images/artyomjs-logo.png" width="256" title="Artyom logo">
 </p>
 
 # Table of Contents
@@ -22,8 +22,7 @@
 
 # About Artyom
 
-Artyom.js is a robust and useful wrapper of the webkitSpeechRecognition and speechSynthesis APIs written in plain ol' Vanilla Javascript.
-Besides, artyom allows you to add dynamic commands to your web app (website).
+Artyom.js is a robust and useful wrapper of the webkitSpeechRecognition and speechSynthesis APIs. Besides, artyom allows you to add dynamic commands to your web app (website).
 
 Artyom is constantly updated with new gadgets and awesome features, star and watch this repository to be aware of artyom updates.
 
@@ -40,11 +39,13 @@ The most known features of artyom are:
 - Pause and resume command recognition.
 - Artyom has available the soundex algorithm to increase the accuracy of the recognition of commands (disabled by default).
 - Use a remote command processor service instead of local processing with Javascript.
+- Works both in desktop browser and mobile device.
 
 ### Voice Synthesis
 
 - Synthesize extreme huge blocks of text (+20K words according to the last test).
 - onStart and onEnd callbacks **will be always executed independently of the text length**.
+- Works both in desktop browser and mobile device.
 
 # Installation
 
@@ -107,19 +108,19 @@ With any of the previous methods, navigate to https://localhost:8443 and explore
 
 Artyom provides **complete** support for the following languages. Every language needs an initialization code that needs to be provided in the lang property at the initialization.
 
-| |Description |Codes for initialization|
+| |Description |Code for initialization|
 ------------- | ------------- | ------------- |
-|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-usa.png" alt="Supported language"/>| English (USA)<br/>English (Great Britain) Great Britain <br/> United States of America | en-US<br/>en-GB<br/>en |
-|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-spanish.png" alt="Supported language"/>| Español |es-CO<br/>es-ES<br/>es |
-|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-german.png" alt="Supported language"/>| Deutsch | de-DE<br/>de |
+|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-usa.png" alt="Supported language"/>| English (USA)<br/>English (Great Britain) Great Britain| en-US<br/>en-GB |
+|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-spanish.png" alt="Supported language"/>| Español | es-ES |
+|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-german.png" alt="Supported language"/>| Deutsch | de-DE |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-italy.png" alt="Supported language"/> | Italiano |it-IT |
-| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-france.png" alt="Supported language"/> | Français |fr-FR<br/>fr |
-| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-japan.png" alt="Supported language"/> | Japanese 日本人 | ja-JP<br/>jp |
-| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-russia.png" alt="Supported language"/> | Russian | ru-RU<br/>ru |
-| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-brasil.png" alt="Supported language"/> | Brazil | pt-PT<br/>pt |
-| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-netherlands.png" alt="Supported language"/> | Dutch (netherlands)| nl-NL<br/>nl |
-| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-poland.png" alt="Supported language"/> | Polski (polonia)| pl-PL<br/>pl |
-| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-indonesia.png" alt="Supported language"/> | Indonesian (Indonesia)| id-ID<br/>id |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-france.png" alt="Supported language"/> | Français |fr-FR |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-japan.png" alt="Supported language"/> | Japanese 日本人 | ja-JP |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-russia.png" alt="Supported language"/> | Russian | ru-RU |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-brasil.png" alt="Supported language"/> | Brazil | pt-PT |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-netherlands.png" alt="Supported language"/> | Dutch (netherlands)| nl-NL |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-poland.png" alt="Supported language"/> | Polski (polonia)| pl-PL |
+| <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-indonesia.png" alt="Supported language"/> | Indonesian (Indonesia)| id-ID |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-china.png" alt="Supported language"/> | Chinese (Cantonese[ 粤語（香港）] <br/> Mandarin[普通话（中国大陆）])| Cantonese<br/>zh-HK<br/> Mandarin<br />zh-CN|
 
 # All you need to know about Artyom
@@ -136,7 +137,7 @@ Do not hesitate to create a ticket on the issues area of the Github repository f
 
 # Basic usage
 
-In this section we'll show you different examples of use of Artyom.
+Artyom it's written in Vanilla JS and TypeScript (Angular2):
 
 ## With just plain JavaScript
 
@@ -194,12 +195,17 @@ artyom.initialize({
 /**
  * To speech text
  */
-artyom.say("Hello, this is a demo text.",{
+artyom.say("Hello, this is a demo text. The next text will be spoken in Spanish",{
     onStart: () => {
         console.log("Reading ...");
     },
     onEnd: () => {
         console.log("No more text to talk");
+
+        // Force the language of a single speechSynthesis
+        artyom.say("Hola, esto está en Español", {
+            lang:"es-ES"
+        });
     }
 });
 ```

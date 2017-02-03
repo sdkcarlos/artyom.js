@@ -1,7 +1,7 @@
 interface ArtyomWindow extends Window {
-  webkitSpeechRecognition: any;
-  SpeechRecognition: any;
-  SpeechSynthesisUtterance: any;
+    webkitSpeechRecognition: any;
+    SpeechRecognition: any;
+    SpeechSynthesisUtterance: any;
 }
 
 interface SpeechRecognition extends EventTarget {
@@ -156,9 +156,88 @@ interface SpeechSynthesisVoice {
 }
 
 /**
- * Internal class to provie an implementation of soudex
+ * Internal class to provie an implementation of soundex
  */
 class ArtyomInternals {
+
+    /**
+     * Retrieve a single voice of the browser by it's language code.
+     * It will return the first voice available for the language on every device.
+     * 
+     * @param {languageCode} String Language code
+     * @returns {Voice}
+     */
+    static getVoice(languageCode: string) {
+        let voiceIdentifiersArray = [];
+
+        switch (languageCode) {
+            case 'de-DE':
+                voiceIdentifiersArray = ArtyomLanguages.german;
+                break;
+            case 'en-GB':
+                voiceIdentifiersArray = ArtyomLanguages.englishGB;
+                break;
+            case "pt-BR":case "pt-PT":
+                voiceIdentifiersArray = ArtyomLanguages.brasilian;
+                break;
+            case "ru-RU":
+                voiceIdentifiersArray = ArtyomLanguages.russia;
+                break;
+            case "nl-NL":
+                voiceIdentifiersArray = ArtyomLanguages.holand;
+                break;
+            case 'es-ES':
+                voiceIdentifiersArray = ArtyomLanguages.spanish;
+                break;
+            case 'en-US':
+                voiceIdentifiersArray = ArtyomLanguages.englishUSA;
+                break;
+            case 'fr-FR':
+                voiceIdentifiersArray = ArtyomLanguages.france;
+                break;
+            case 'it-IT':
+                voiceIdentifiersArray = ArtyomLanguages.italian;
+                break;
+            case 'ja-JP':
+                voiceIdentifiersArray = ArtyomLanguages.japanese;
+                break;
+            case 'id-ID':
+                voiceIdentifiersArray = ArtyomLanguages.indonesia;
+                break;
+            case 'pl-PL':
+                voiceIdentifiersArray = ArtyomLanguages.polski;
+                break;
+            case 'zh-CN':
+                voiceIdentifiersArray = ArtyomLanguages.mandarinChinese;
+                break;
+            case 'zh-HK':
+                voiceIdentifiersArray = ArtyomLanguages.cantoneseChinese;
+                break;
+            case 'native':
+                voiceIdentifiersArray = ArtyomLanguages.native;
+                break;
+            default:
+                console.warn("The given language '"+ languageCode +"' for artyom is not supported yet. Using native voice instead");
+            break;
+        }
+
+        let voice = undefined;
+        let voices = speechSynthesis.getVoices();
+        let voicesLength = voiceIdentifiersArray.length;
+
+        for(var i = 0;i < voicesLength; i++){ 
+            var foundVoice = voices.filter(function (voice) {
+                return ( (voice.name == voiceIdentifiersArray[i]) || (voice.lang == voiceIdentifiersArray[i]));
+            })[0];
+ 
+            if(foundVoice){
+                voice = foundVoice;
+                break;
+            }
+        }
+
+        return voice;
+    };
 
     /**
      * Soundex algorithm implementation
@@ -220,7 +299,7 @@ class ArtyomHelpers {
      * @return {boolean}
      */
     static isChrome() {
-        return navigator.userAgent.indexOf("Chrome") === -1;
+        return navigator.userAgent.indexOf("Chrome") !== -1;
     }
 
     /**
@@ -319,21 +398,21 @@ const ArtyomGlobalEvents = {
 };
 
 const ArtyomLanguages = {
-    german: "Google Deutsch",
-    spanish: "Google español",
-    italian: "Google italiano",
-    japanese: "Google 日本人",
-    englishUSA: "Google US English",
-    englishGB: "Google UK English Male",
-    brasilian: "Google português do Brasil",
-    russia: "Google русский",
-    holand: "Google Nederlands",
-    france: "Google français",
-    polski: "Google polski",
-    indonesia: "Google Bahasa Indonesia",
-    mandarinChinese: "Google 普通话（中国大陆）",
-    cantoneseChinese: "Google 粤語（香港）",
-    native: "native"
+    german: ["Google Deutsch","de-DE","de_DE"],
+    spanish: ["Google español","es-ES", "es_ES","es-MX","es_MX"],
+    italian: ["Google italiano","it-IT","it_IT"],
+    japanese: ["Google 日本人","ja-JP","ja_JP"],
+    englishUSA: ["Google US English","en-US","en_US"],
+    englishGB: ["Google UK English Male","Google UK English Female","en-GB","en_GB"],
+    brasilian: ["Google português do Brasil","pt-PT","pt-BR","pt_PT","pt_BR"],
+    russia: ["Google русский","ru-RU","ru_RU"],
+    holand: ["Google Nederlands","nl-NL","nl_NL"],
+    france: ["Google français","fr-FR","fr_FR"],
+    polski: ["Google polski","pl-PL","pl_PL"],
+    indonesia: ["Google Bahasa Indonesia","id-ID","id_ID"],
+    mandarinChinese: ["Google 普通话（中国大陆）","zh-CN","zh_CN"],
+    cantoneseChinese: ["Google 粤語（香港）","zh-HK","zh_HK"],
+    native: ["native"]
 }
 
 export interface ArtyomJS {
@@ -384,7 +463,7 @@ export interface ArtyomJS {
      * @param {Object} config
      * @returns {Boolean}
      */
-    initialize(config: ArtyomConfigProperties): boolean;
+    initialize(config: ArtyomConfigProperties): Promise<void>;
 
     /**
      * Force artyom to stop listen even if is in continuos mode.
@@ -585,7 +664,7 @@ export interface ArtyomJS {
      * @private
      * @returns {undefined}
      */
-    artyomHey();
+    artyomHey(resolve: any, reject: any);
 
     /**
      * This function will return the webkitSpeechRecognition object used by artyom
@@ -689,15 +768,20 @@ export interface ArtyomJS {
 
 }
 
-export class ArtyomJsImpl implements ArtyomJS {
+export class ArtyomJsImpl implements ArtyomJS { 
     artyomCommands: ArtyomCommand[] = [];
     artyomGarbageCollector: SpeechSynthesisUtterance[] = [];
-    artyomVoice: string;
+    artyomVoice: Object;
     artyomProperties: ArtyomConfigProperties;
     artyomFlags: ArtyomFlags;
     artyomWSR: ArtyomRecognizer;
 
     constructor() {
+        // Load browser voices as soon as possible
+        if (window.hasOwnProperty('speechSynthesis')) {
+            speechSynthesis.getVoices();
+        }
+
         if (window.hasOwnProperty('webkitSpeechRecognition')) {
             const { webkitSpeechRecognition } : ArtyomWindow = <ArtyomWindow>window;
             this.artyomWSR = new webkitSpeechRecognition();
@@ -731,7 +815,13 @@ export class ArtyomJsImpl implements ArtyomJS {
         };
 
         // Default voice
-        this.artyomVoice = 'Google UK English Male';
+        this.artyomVoice = {
+            default:false,
+            lang: "en-GB",
+            localService: false,
+            name: "Google UK English Male",
+            voiceURI: "Google UK English Male"
+        };
     }
 
     device = {
@@ -744,97 +834,16 @@ export class ArtyomJsImpl implements ArtyomJS {
     };
 
     getAvailableCommands = (): ArtyomCommand[] => {
-        /*const commandsLength = this.artyomCommands.length;
-        let availables = [];
-        for (let i = 0; i < commandsLength; i++) {
-            let command = this.artyomCommands[i];
-            let aval = {};
-            aval['indexes'] = command.indexes;
-
-            if (command.smart) {
-                aval['smart'] = true;
-            }
-
-            if (command.description) {
-                aval['description'] = command.description;
-            }
-
-            availables.push(aval);
-        }
-        return availables;*/
         return this.artyomCommands;
     };
 
-    initialize = (config: ArtyomConfigProperties): boolean => {
+    initialize = (config: ArtyomConfigProperties): Promise<void> => {
         if (typeof (config) !== "object") {
-            console.error("You must give the configuration for start artyom properly.");
-            return false;
+            return Promise.reject("You must give the configuration for start artyom properly.");
         }
 
         if (config.hasOwnProperty("lang")) {
-            switch (config.lang) {
-                case 'de':
-                case 'de-DE':
-                    this.artyomVoice = ArtyomLanguages.german;
-                    break;
-                case 'en-GB':
-                    this.artyomVoice = ArtyomLanguages.englishGB;
-                    break;
-                case "pt":
-                case "pt-br":
-                case "pt-PT":
-                    this.artyomVoice = ArtyomLanguages.brasilian;
-                    break;
-                case "ru":
-                case "ru-RU":
-                    this.artyomVoice = ArtyomLanguages.russia;
-                    break;
-                case "nl":
-                case "nl-NL":
-                    this.artyomVoice = ArtyomLanguages.holand;
-                    break;
-                case 'es':
-                case 'es-CO':
-                case 'es-ES':
-                    this.artyomVoice = ArtyomLanguages.spanish;
-                    break;
-                case "en":
-                case 'en-US':
-                    this.artyomVoice = ArtyomLanguages.englishUSA;
-                    break;
-                case 'fr':
-                case 'fr-FR':
-                    this.artyomVoice = ArtyomLanguages.france;
-                    break;
-                case 'it':
-                case 'it-IT':
-                    this.artyomVoice = ArtyomLanguages.italian;
-                    break;
-                case 'jp':
-                case 'ja-JP':
-                    this.artyomVoice = ArtyomLanguages.japanese;
-                    break;
-                case 'id':
-                case 'id-ID':
-                    this.artyomVoice = ArtyomLanguages.indonesia;
-                    break;
-                case 'pl':
-                case 'pl-PL':
-                    this.artyomVoice = ArtyomLanguages.polski;
-                    break;
-                case 'zh-CN':
-                    this.artyomVoice = ArtyomLanguages.mandarinChinese;
-                    break;
-                case 'zh-HK':
-                    this.artyomVoice = ArtyomLanguages.cantoneseChinese;
-                    break;
-                case 'native':
-                    this.artyomVoice = ArtyomLanguages.native;
-                    break;
-                default:
-                    console.warn("The given language for artyom is not supported yet. English has been set to default");
-                    break;
-            }
+            this.artyomVoice = ArtyomInternals.getVoice(config.lang);
             this.artyomProperties.lang = config.lang;
         }
 
@@ -883,10 +892,14 @@ export class ArtyomJsImpl implements ArtyomJS {
         }
 
         if (this.artyomProperties.listen === true) {
-            this.artyomHey();
+            let hey = this.artyomHey;
+
+            return new Promise<void>((resolve: any, reject: any) => {
+                hey(resolve, reject);
+            });
         }
 
-        return true;
+        return Promise.resolve(undefined);
     };
 
     fatality = (): boolean => {
@@ -969,38 +982,7 @@ export class ArtyomJsImpl implements ArtyomJS {
     };
 
     getLanguage = (): string => {
-        switch (this.artyomVoice) {
-            case 'Google UK English Male':
-                return "en-GB";
-            case 'Google español':
-                return "es-CO";
-            case 'Google Deutsch':
-                return "de-DE";
-            case 'Google français':
-                return "fr-FR";
-            case 'Google italiano':
-                return "it-IT";
-            case 'Google 日本人':
-                return "ja-JP";
-            case 'Google US English':
-                return "en-US";
-            case 'Google português do Brasil':
-                return "pt-BR";
-            case 'Google русский':
-                return "ru-RU";
-            case 'Google Nederlands':
-                return "nl-NL";
-            case 'Google polski':
-                return "pl-PL";
-            case 'Google Bahasa Indonesia':
-                return "id-ID";
-            case 'Google 普通话（中国大陆）':
-                return "zh-CN";
-            case 'Google 粤語（香港）':
-                return "zh-HK";
-            case 'native':
-                return "native";
-        }
+        return this.artyomProperties.lang;
     };
 
     artyomTalk = (text, actualChunk, totalChunks, callbacks) => {
@@ -1008,13 +990,44 @@ export class ArtyomJsImpl implements ArtyomJS {
         msg.text = text;
         msg.volume = this.artyomProperties.volume;
         msg.rate = this.artyomProperties.speed;
-
+        
         // Select the voice according to the selected
-        if (this.artyomVoice) {
-            msg.voice = (window['speechSynthesis']).getVoices().filter((voice) => {
-                return voice.name == this.artyomVoice;
-            })[0];
+        if (typeof(this.artyomVoice) != "undefined") {
+            var availableVoice = undefined;
+
+            if(callbacks){
+                // If the language to speak has been forced, use it
+                if(callbacks.hasOwnProperty("lang")){
+                    availableVoice = ArtyomInternals.getVoice(callbacks.lang);
+                // Otherwise speak in the language of the initialization
+                }else{
+                    availableVoice = ArtyomInternals.getVoice(this.artyomProperties.lang);
+                }
+            }else{
+                // Otherwise speak in the language of the initialization
+                availableVoice = ArtyomInternals.getVoice(this.artyomProperties.lang);
+            }
+             
+            // If is a mobile device, provide only the language code in the lang property i.e "es_ES"
+            if(this.device.isMobile()){
+
+                // Try to set the voice only if exists, otherwise don't use anything to use the native voice
+                if(availableVoice){
+                    msg.lang = availableVoice.lang;
+                }
+
+            // If browser provide the entire object
+            }else{
+                msg.voice = availableVoice;
+            }
+
+            console.log("Usando voz ", availableVoice);
+        }else{
+            console.warn("Using default voice because no voice was selected during the initialization probably because there were no voices available. Initialize artyom after the onload event of the window.");
         }
+
+       
+
 
         // If is first text chunk (onStart)
         if (actualChunk == 1) {
@@ -1533,7 +1546,7 @@ export class ArtyomJsImpl implements ArtyomJS {
         });
     };
 
-    artyomHey = (): void => {
+    artyomHey = (resolve: any, reject: any): any => {
         let start_timestamp;
         let artyom_is_allowed;
 
@@ -1545,6 +1558,8 @@ export class ArtyomJsImpl implements ArtyomJS {
             ArtyomHelpers.artyomTriggerEvent(ArtyomGlobalEvents.COMMAND_RECOGNITION_START);
             this.artyomProperties.recognizing = true;
             artyom_is_allowed = true;
+
+            resolve();
         };
 
         /**
@@ -1553,6 +1568,8 @@ export class ArtyomJsImpl implements ArtyomJS {
         * @returns {undefined}
         */
         this.artyomWSR.onerror = (event) => {
+            reject(event.error);
+
             // Dispath error globally (artyom.when)
             ArtyomHelpers.artyomTriggerEvent(ArtyomGlobalEvents.ERROR, {
                 code: event.error
@@ -1836,7 +1853,7 @@ export class ArtyomJsImpl implements ArtyomJS {
     };
 
     obey = () => {
-        // Comprobar tipo devuelto -> siempre true?
+        // Check returned type ? alway true
         return this.artyomProperties.obeying = true;
     };
 
@@ -1845,7 +1862,7 @@ export class ArtyomJsImpl implements ArtyomJS {
     };
 
     getVersion = () => {
-        return "1.0.2";
+        return "1.0.3";
     };
 
     on = (indexes: any, smart: boolean): any => {
@@ -1876,9 +1893,14 @@ export class ArtyomJsImpl implements ArtyomJS {
 }
 
 /**
- * Artyom.js - A voice control / voice commands / speech recognition and speech synthesis javascript library.
- * Create your own siri,google now or cortana with Google Chrome within your website.
- * That class requires webkitSpeechRecognition and speechSynthesis APIs.
+ * Artyom.js requires webkitSpeechRecognition and speechSynthesis APIs
+ *
+ * @license MIT
+ * @version 1.0.3
+ * @copyright 2017 Our Code World All Rights Reserved.
+ * @author semagarcia - https://github.com/semagarcia
+ * @see https://sdkcarlos.github.io/sites/artyom.html
+ * @see http://docs.ourcodeworld.com/projects/artyom-js
  */
 export class ArtyomBuilder {
 

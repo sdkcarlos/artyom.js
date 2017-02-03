@@ -1,11 +1,12 @@
 {
     "name": "artyom.js",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "Artyom is a Robust Wrapper of the Google Chrome SpeechSynthesis and SpeechRecognition that allows you to create a virtual assistent",
     "main": "ts/artyom.js",
     "typings": "ts/index.d.ts",
     "scripts": {
-        "sandbox": "nodemon ./development/server.js localhost 8080"
+        "sandbox": "nodemon ./development/server.js localhost 8080",
+        "build-ts": "tsc ./ts/artyom.ts"
     },
     "repository": {
         "type": "git",
@@ -28,6 +29,7 @@
     },
     "homepage": "https://sdkcarlos.github.io/sites/artyom.html",
     "devDependencies": {
+        "@types/core-js": "^0.9.35",
         "express": "^4.14.0"
     }
 }

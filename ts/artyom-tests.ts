@@ -8,7 +8,15 @@ artyom.addCommands({
     description: 'Test command',
     indexes: ['hello', 'hi'],
     action: (i: number) => {
-        console.log('hello action');
+        console.log('Hello action');
+
+        artyom.say("Hello World", {
+            onEnd: () => {
+                artyom.say("Hola Mundo", {
+                    lang:"es-ES",
+                });
+            }
+        });
     }
 });
 

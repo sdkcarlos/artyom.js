@@ -420,7 +420,7 @@ declare namespace Artyom {
         /**
          * Artyom awaits for orders when this function is executed. If artyom gets a first parameter the instance will be stopped.
          */
-        artyomHey(): any;
+        artyomHey(resolve: any, reject: any): any;
 
         /**
          * This function will return the webkitSpeechRecognition object used by artyom retrieve it only to debug on it or get some
