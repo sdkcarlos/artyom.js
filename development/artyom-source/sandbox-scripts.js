@@ -61,7 +61,6 @@
         SANDBOX.loadCommands();
 
         if(status){
-            /*
             artyom.initialize({
                 lang:"en-GB",
                 continuous:true,
@@ -72,7 +71,7 @@
                 console.log("Artyom succesfully initialized");
             }).catch((err) => {
                 console.error("Artyom couldn't be initialized: ", err);
-            });*/
+            }); 
         }
 
         $("#btn-speak").click(() => {

@@ -394,7 +394,8 @@ const ArtyomGlobalEvents = {
     TEXT_RECOGNIZED: "TEXT_RECOGNIZED",
     COMMAND_RECOGNITION_START : "COMMAND_RECOGNITION_START",
     COMMAND_RECOGNITION_END: "COMMAND_RECOGNITION_END",
-    COMMAND_MATCHED: "COMMAND_MATCHED"
+    COMMAND_MATCHED: "COMMAND_MATCHED",
+    NOT_COMMAND_MATCHED: "NOT_COMMAND_MATCHED"
 };
 
 const ArtyomLanguages = {
@@ -1021,7 +1022,6 @@ export class ArtyomJsImpl implements ArtyomJS {
                 msg.voice = availableVoice;
             }
 
-            console.log("Usando voz ", availableVoice);
         }else{
             console.warn("Using default voice because no voice was selected during the initialization probably because there were no voices available. Initialize artyom after the onload event of the window.");
         }
@@ -1381,6 +1381,9 @@ export class ArtyomJsImpl implements ArtyomJS {
                 }
             }
         }
+
+        this.debug("Event reached : " + ArtyomGlobalEvents.NOT_COMMAND_MATCHED);
+        ArtyomHelpers.artyomTriggerEvent(ArtyomGlobalEvents.NOT_COMMAND_MATCHED);
 
         return {
             result: false,
@@ -1862,7 +1865,7 @@ export class ArtyomJsImpl implements ArtyomJS {
     };
 
     getVersion = () => {
-        return "1.0.3";
+        return "1.0.4";
     };
 
     on = (indexes: any, smart: boolean): any => {
@@ -1896,9 +1899,9 @@ export class ArtyomJsImpl implements ArtyomJS {
  * Artyom.js requires webkitSpeechRecognition and speechSynthesis APIs
  *
  * @license MIT
- * @version 1.0.3
+ * @version 1.0.4
  * @copyright 2017 Our Code World All Rights Reserved.
- * @author semagarcia - https://github.com/semagarcia
+ * @author semagarcia (TypeScript version) - https://github.com/semagarcia
  * @see https://sdkcarlos.github.io/sites/artyom.html
  * @see http://docs.ourcodeworld.com/projects/artyom-js
  */

@@ -171,7 +171,8 @@ var ArtyomGlobalEvents = {
     TEXT_RECOGNIZED: "TEXT_RECOGNIZED",
     COMMAND_RECOGNITION_START: "COMMAND_RECOGNITION_START",
     COMMAND_RECOGNITION_END: "COMMAND_RECOGNITION_END",
-    COMMAND_MATCHED: "COMMAND_MATCHED"
+    COMMAND_MATCHED: "COMMAND_MATCHED",
+    NOT_COMMAND_MATCHED: "NOT_COMMAND_MATCHED"
 };
 var ArtyomLanguages = {
     german: ["Google Deutsch", "de-DE", "de_DE"],
@@ -362,7 +363,6 @@ var ArtyomJsImpl = (function () {
                 else {
                     msg.voice = availableVoice;
                 }
-                console.log("Usando voz ", availableVoice);
             }
             else {
                 console.warn("Using default voice because no voice was selected during the initialization probably because there were no voices available. Initialize artyom after the onload event of the window.");
@@ -697,6 +697,8 @@ var ArtyomJsImpl = (function () {
                     }
                 }
             }
+            _this.debug("Event reached : " + ArtyomGlobalEvents.NOT_COMMAND_MATCHED);
+            ArtyomHelpers.artyomTriggerEvent(ArtyomGlobalEvents.NOT_COMMAND_MATCHED);
             return {
                 result: false,
                 indice: null,
@@ -1129,7 +1131,7 @@ var ArtyomJsImpl = (function () {
             return !!_this.artyomProperties.obeying;
         };
         this.getVersion = function () {
-            return "1.0.3";
+            return "1.0.4";
         };
         this.on = function (indexes, smart) {
             return {

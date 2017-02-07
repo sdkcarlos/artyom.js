@@ -47,6 +47,8 @@ The most known features of artyom are:
 - onStart and onEnd callbacks **will be always executed independently of the text length**.
 - Works both in desktop browser and mobile device.
 
+Read [the changelog to be informed about changes and additions in Artyom.js](http://docs.ourcodeworld.com/projects/artyom-js/documentation/getting-started/official-changelog)
+
 # Installation
 
 #### NPM

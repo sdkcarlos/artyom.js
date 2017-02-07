@@ -86,7 +86,8 @@
         TEXT_RECOGNIZED: "TEXT_RECOGNIZED",
         COMMAND_RECOGNITION_START : "COMMAND_RECOGNITION_START",
         COMMAND_RECOGNITION_END: "COMMAND_RECOGNITION_END",
-        COMMAND_MATCHED: "COMMAND_MATCHED"
+        COMMAND_MATCHED: "COMMAND_MATCHED",
+        NOT_COMMAND_MATCHED: "NOT_COMMAND_MATCHED"
     };
 
     /**
@@ -1236,6 +1237,9 @@
                 }
             }
 
+            artyom.debug("Event reached : " + artyom_global_events.NOT_COMMAND_MATCHED);
+            artyom_triggerEvent(artyom_global_events.NOT_COMMAND_MATCHED);
+
             return false;
         };
 
@@ -1603,7 +1607,7 @@
          * @returns {String}
          */
         artyom.getVersion = function () {
-            return "1.0.2";
+            return "1.0.4";
         };
 
         /**
