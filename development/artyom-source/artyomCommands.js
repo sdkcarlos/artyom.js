@@ -60,5 +60,10 @@
         artyom.say(wildcard);
     });
 
+    // Matches "regular expressions" case insensitive
+    artyom.on([/regular expressions/i], true).then(function(){
+        artyom.say("The usage of regular expressions is allowed in the smart commands");
+    });
+
     console.log(artyom.getAvailableCommands());
 })(window);

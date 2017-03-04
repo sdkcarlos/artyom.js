@@ -204,6 +204,9 @@ class ArtyomInternals {
             case 'id-ID':
                 voiceIdentifiersArray = ArtyomLanguages.indonesia;
                 break;
+            case 'hi-IN':
+                voiceIdentifiersArray = ArtyomLanguages.hindi;
+                break;
             case 'pl-PL':
                 voiceIdentifiersArray = ArtyomLanguages.polski;
                 break;
@@ -379,6 +382,7 @@ interface ArtyomRecognizer {
     lang: string;
     continuous: boolean;
     interimResults: boolean;
+    maxAlternatives: number;
     start(): void;
     stop(): void;
     onstart(): void;
@@ -411,6 +415,7 @@ const ArtyomLanguages = {
     france: ["Google français","fr-FR","fr_FR"],
     polski: ["Google polski","pl-PL","pl_PL"],
     indonesia: ["Google Bahasa Indonesia","id-ID","id_ID"],
+    hindi: ["Google हिन्दी","hi-IN", "hi_IN"],
     mandarinChinese: ["Google 普通话（中国大陆）","zh-CN","zh_CN"],
     cantoneseChinese: ["Google 粤語（香港）","zh-HK","zh_HK"],
     native: ["native"]
@@ -1203,53 +1208,64 @@ export class ArtyomJsImpl implements ArtyomJS {
 
         // @3 Artyom needs time to think that
         let artyomCommandsLength = this.artyomCommands.length;
+
         for (let i = 0; i < artyomCommandsLength; i++) {
             let instruction = this.artyomCommands[i];
             let opciones = instruction.indexes;
             let encontrado = -1;
             const optionsLength = opciones.length;
             for (let c = 0; c < optionsLength; c++) {
-                let opcion = opciones[c];
+                let opcion:any = opciones[c];
+
                 if (!instruction.smart) {
                     continue;  // Jump if is not smart command
                 }
 
-                if (opcion.indexOf("*") !== -1) {
-                    // Logic here
-                    let grupo = opcion.split("*");
-                    if (grupo.length > 2) {
-                        console.warn("Artyom found a smart command with " + (grupo.length - 1) + " wildcards. Artyom only support 1 wildcard for each command. Sorry");
-                        continue;
+                if(opcion instanceof RegExp){
+                    // If RegExp matches 
+                    if(opcion.test(voice)){
+                        this.debug(">> REGEX "+ opcion.toString() + " MATCHED AGAINST " + voice + " WITH INDEX " + c + " IN COMMAND ", "info");
+                        encontrado = c;
                     }
-
-                    // Start smart command
-                    let before = grupo[0];
-                    let latter = grupo[1];
-
-                    // Wildcard in the end
-                    //if ((latter === "") || (latter === " ")) {
-                    if(latter.trim() === "") {
-                        if ((voice.indexOf(before) !== -1) || ((voice.toLowerCase()).indexOf(before.toLowerCase()) !== -1)) {
-                            let wildy = voice.replace(before, '');
-                            wildy = (wildy.toLowerCase()).replace(before.toLowerCase(), '');
-                            wildcard = wildy;
-                            encontrado = c;
+                    // Otherwise just wildcards
+                }else{
+                    if (opcion.indexOf("*") !== -1) {
+                        // Logic here
+                        let grupo = opcion.split("*");
+                        if (grupo.length > 2) {
+                            console.warn("Artyom found a smart command with " + (grupo.length - 1) + " wildcards. Artyom only support 1 wildcard for each command. Sorry");
+                            continue;
                         }
-                    } else {
-                        if ((voice.indexOf(before) != -1) || ((voice.toLowerCase()).indexOf(before.toLowerCase()) != -1)) {
-                            if ((voice.indexOf(latter) != -1) || ((voice.toLowerCase()).indexOf(latter.toLowerCase()) != -1)) {
-                                let wildy = voice.replace(before, '').replace(latter, '');
-                                wildy = (wildy.toLowerCase())
-                                        .replace(before.toLowerCase(), '')
-                                        .replace(latter.toLowerCase(), '');
-                                wildy = (wildy.toLowerCase()).replace(latter.toLowerCase(), '');
+
+                        // Start smart command
+                        let before = grupo[0];
+                        let latter = grupo[1];
+
+                        // Wildcard in the end
+                        //if ((latter === "") || (latter === " ")) {
+                        if(latter.trim() === "") {
+                            if ((voice.indexOf(before) !== -1) || ((voice.toLowerCase()).indexOf(before.toLowerCase()) !== -1)) {
+                                let wildy = voice.replace(before, '');
+                                wildy = (wildy.toLowerCase()).replace(before.toLowerCase(), '');
                                 wildcard = wildy;
                                 encontrado = c;
                             }
+                        } else {
+                            if ((voice.indexOf(before) != -1) || ((voice.toLowerCase()).indexOf(before.toLowerCase()) != -1)) {
+                                if ((voice.indexOf(latter) != -1) || ((voice.toLowerCase()).indexOf(latter.toLowerCase()) != -1)) {
+                                    let wildy = voice.replace(before, '').replace(latter, '');
+                                    wildy = (wildy.toLowerCase())
+                                            .replace(before.toLowerCase(), '')
+                                            .replace(latter.toLowerCase(), '');
+                                    wildy = (wildy.toLowerCase()).replace(latter.toLowerCase(), '');
+                                    wildcard = wildy;
+                                    encontrado = c;
+                                }
+                            }
                         }
+                    } else {
+                        console.warn("Founded command marked as SMART but have no wildcard in the indexes, remove the SMART for prevent extensive memory consuming or add the wildcard *");
                     }
-                } else {
-                    console.warn("Founded command marked as SMART but have no wildcard in the indexes, remove the SMART for prevent extensive memory consuming or add the wildcard *");
                 }
 
                 if ((encontrado >= 0)) {
@@ -1553,8 +1569,19 @@ export class ArtyomJsImpl implements ArtyomJS {
         let start_timestamp;
         let artyom_is_allowed;
 
-        this.artyomWSR.continuous = true;
-        this.artyomWSR.interimResults = true;
+        /**
+         * On mobile devices the recognized text is always thrown twice.
+         * By setting the following configuration, fixes the issue 
+         */
+        if(ArtyomHelpers.isMobileDevice){
+            this.artyomWSR.continuous = false;
+            this.artyomWSR.interimResults = false;
+            this.artyomWSR.maxAlternatives = 1;
+        }else{
+            this.artyomWSR.continuous = true;
+            this.artyomWSR.interimResults = true;
+        }
+
         this.artyomWSR.lang = this.artyomProperties.lang;
         this.artyomWSR.onstart = () => {
             this.debug("Event reached : " + ArtyomGlobalEvents.COMMAND_RECOGNITION_START);
@@ -1865,7 +1892,7 @@ export class ArtyomJsImpl implements ArtyomJS {
     };
 
     getVersion = () => {
-        return "1.0.4";
+        return "1.0.5";
     };
 
     on = (indexes: any, smart: boolean): any => {

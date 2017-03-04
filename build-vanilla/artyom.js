@@ -2,7 +2,7 @@
  * Artyom.js requires webkitSpeechRecognition and speechSynthesis APIs
  *
  * @license MIT
- * @version 1.0.4
+ * @version 1.0.5
  * @copyright 2017 Our Code World All Rights Reserved.
  * @author Carlos Delgado - www.ourcodeworld.com
  * @param {Object} window
@@ -81,6 +81,7 @@
         france: ["Google français","fr-FR","fr_FR"],
         polski: ["Google polski","pl-PL","pl_PL"],
         indonesia: ["Google Bahasa Indonesia","id-ID","id_ID"],
+        hindi: ["Google हिन्दी","hi-IN", "hi_IN"],
         mandarinChinese: ["Google 普通话（中国大陆）","zh-CN","zh_CN"],
         cantoneseChinese: ["Google 粤語（香港）","zh-HK","zh_HK"],
         native: ["native"]
@@ -166,6 +167,9 @@
                     break;
                 case 'id-ID':
                     voiceIdentifiersArray = artyomLanguages.indonesia;
+                    break;
+                case 'hi-IN':
+                    voiceIdentifiersArray = artyomLanguages.hindi;
                     break;
                 case 'pl-PL':
                     voiceIdentifiersArray = artyomLanguages.polski;
@@ -718,11 +722,22 @@
         var artyom_hey = function (resolve, reject) {
             var start_timestamp;
             var artyom_is_allowed;
+            
+            /**
+             * On mobile devices the recognized text is always thrown twice.
+             * By setting the following configuration, fixes the issue 
+             */
+            if(artyom.device.isMobile){
+                reconocimiento.continuous = false;
+                reconocimiento.interimResults = false;
+                reconocimiento.maxAlternatives = 1;
+            }else{
+                reconocimiento.continuous = true;
+                reconocimiento.interimResults = true;
+            }
 
-            reconocimiento.continuous = true;
-            reconocimiento.interimResults = true;
             reconocimiento.lang = artyomProperties.lang;
-
+            
             reconocimiento.onstart = function () {
                 artyom.debug("Event reached : " + artyom_global_events.COMMAND_RECOGNITION_START);
                 artyom_triggerEvent(artyom_global_events.COMMAND_RECOGNITION_START);
@@ -1078,39 +1093,49 @@
                         continue;//Jump if is not smart command
                     }
 
-                    if (opcion.indexOf("*") != -1) {
-                        ///LOGIC HERE
-                        var grupo = opcion.split("*");
-
-                        if (grupo.length > 2) {
-                            console.warn("Artyom found a smart command with " + (grupo.length - 1) + " wildcards. Artyom only support 1 wildcard for each command. Sorry");
-                            continue;
+                    // Process RegExp
+                    if(opcion instanceof RegExp){
+                        // If RegExp matches 
+                        if(opcion.test(voz)){
+                            artyom.debug(">> REGEX "+ opcion.toString() + " MATCHED AGAINST " + voz + " WITH INDEX " + c + " IN COMMAND ", "info");
+                            encontrado = parseInt(c);
                         }
-                        //START SMART COMMAND
+                    // Otherwise just wildcards
+                    }else{
+                        if (opcion.indexOf("*") != -1) {
+                            ///LOGIC HERE
+                            var grupo = opcion.split("*");
 
-                        var before = grupo[0];
-                        var later = grupo[1];
-
-                        //Wildcard in the end
-                        if ((later == "") || (later == " ")) {
-                            if ((voz.indexOf(before) != -1) || ((voz.toLowerCase()).indexOf(before.toLowerCase()) != -1)) {
-                                var wildy = voz.replace(before, '');
-                                wildy = (wildy.toLowerCase()).replace(before.toLowerCase(), '');
-                                encontrado = parseInt(c);
+                            if (grupo.length > 2) {
+                                console.warn("Artyom found a smart command with " + (grupo.length - 1) + " wildcards. Artyom only support 1 wildcard for each command. Sorry");
+                                continue;
                             }
-                        } else {
-                            if ((voz.indexOf(before) != -1) || ((voz.toLowerCase()).indexOf(before.toLowerCase()) != -1)) {
-                                if ((voz.indexOf(later) != -1) || ((voz.toLowerCase()).indexOf(later.toLowerCase()) != -1)) {
-                                    var wildy = voz.replace(before, '').replace(later, '');
-                                    wildy = (wildy.toLowerCase()).replace(before.toLowerCase(), '').replace(later.toLowerCase(), '');
+                            //START SMART COMMAND
 
-                                    wildy = (wildy.toLowerCase()).replace(later.toLowerCase(), '');
+                            var before = grupo[0];
+                            var later = grupo[1];
+
+                            //Wildcard in the end
+                            if ((later == "") || (later == " ")) {
+                                if ((voz.indexOf(before) != -1) || ((voz.toLowerCase()).indexOf(before.toLowerCase()) != -1)) {
+                                    var wildy = voz.replace(before, '');
+                                    wildy = (wildy.toLowerCase()).replace(before.toLowerCase(), '');
                                     encontrado = parseInt(c);
                                 }
+                            } else {
+                                if ((voz.indexOf(before) != -1) || ((voz.toLowerCase()).indexOf(before.toLowerCase()) != -1)) {
+                                    if ((voz.indexOf(later) != -1) || ((voz.toLowerCase()).indexOf(later.toLowerCase()) != -1)) {
+                                        var wildy = voz.replace(before, '').replace(later, '');
+                                        wildy = (wildy.toLowerCase()).replace(before.toLowerCase(), '').replace(later.toLowerCase(), '');
+
+                                        wildy = (wildy.toLowerCase()).replace(later.toLowerCase(), '');
+                                        encontrado = parseInt(c);
+                                    }
+                                }
                             }
+                        } else {
+                            console.warn("Founded command marked as SMART but have no wildcard in the indexes, remove the SMART for prevent extensive memory consuming or add the wildcard *");
                         }
-                    } else {
-                        console.warn("Founded command marked as SMART but have no wildcard in the indexes, remove the SMART for prevent extensive memory consuming or add the wildcard *");
                     }
 
                     if ((encontrado >= 0)) {
@@ -1614,7 +1639,7 @@
          * @returns {String}
          */
         artyom.getVersion = function () {
-            return "1.0.4";
+            return "1.0.5";
         };
 
         /**

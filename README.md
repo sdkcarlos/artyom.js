@@ -104,7 +104,7 @@ Nodemon will restart the server automatically everytime you make changes in Arty
 npm run sandbox
 ```
 
-With any of the previous methods, navigate to https://localhost:8443 and explore artyom in your browser.
+With any of the previous methods, navigate to `https://localhost:8443` and explore artyom in your browser. You can directly debug the sandbox from mobile devices in the Local Area Network ([read this article for more information](http://ourcodeworld.com/articles/read/404/how-to-use-the-artyom-js-sandbox-on-lan-connected-devices)).
 
 # Languages
 
@@ -114,7 +114,7 @@ Artyom provides **complete** support for the following languages. Every language
 ------------- | ------------- | ------------- |
 |<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-usa.png" alt="Supported language"/>| English (USA)<br/>English (Great Britain) Great Britain| en-US<br/>en-GB |
 |<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-spanish.png" alt="Supported language"/>| Español | es-ES |
-|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-german.png" alt="Supported language"/>| Deutsch | de-DE |
+|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-german.png" alt="Supported language"/>| Deutsch (German) | de-DE |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-italy.png" alt="Supported language"/> | Italiano |it-IT |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-france.png" alt="Supported language"/> | Français |fr-FR |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-japan.png" alt="Supported language"/> | Japanese 日本人 | ja-JP |
@@ -124,6 +124,7 @@ Artyom provides **complete** support for the following languages. Every language
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-poland.png" alt="Supported language"/> | Polski (polonia)| pl-PL |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-indonesia.png" alt="Supported language"/> | Indonesian (Indonesia)| id-ID |
 | <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-china.png" alt="Supported language"/> | Chinese (Cantonese[ 粤語（香港）] <br/> Mandarin[普通话（中国大陆）])| Cantonese<br/>zh-HK<br/> Mandarin<br />zh-CN|
+|<img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/flag-hindi.png" alt="Supported language" />| Hindi (India) | hi-IN |
 
 # All you need to know about Artyom
 
@@ -173,6 +174,14 @@ artyom.addCommands([
     },
     {
         indexes: ['Repeat after me *'],
+        smart:true,
+        action: (i,wildcard) => {
+            artyom.say("You've said : "+ wildcard);
+        }
+    },
+    // The smart commands support regular expressions
+    {
+        indexes: [/Good Morning/i],
         smart:true,
         action: (i,wildcard) => {
             artyom.say("You've said : "+ wildcard);
