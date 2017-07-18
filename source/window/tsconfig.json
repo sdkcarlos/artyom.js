@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "none",
+        "target": "es5",
+        "noImplicitAny": false,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "outFile":"../../build/artyom.window.js",
+        "baseUrl": "../../source",
+        "lib": [
+            "es5",
+            "es2015",
+            "dom",
+            "scripthost"
+        ]
+    },
+    "files" :[
+        "../artyom.ts",
+        "../artyom.d.ts"
+    ]
+}

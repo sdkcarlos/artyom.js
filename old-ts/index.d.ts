@@ -7,9 +7,9 @@
  * Extension of Window interface
  */
 interface ArtyomWindow extends Window {
-  webkitSpeechRecognition: any;
-  SpeechRecognition: any;
-  SpeechSynthesisUtterance: any;
+    webkitSpeechRecognition: any;
+    SpeechRecognition: any;
+    SpeechSynthesisUtterance: any;
 }
 
 interface SpeechRecognition extends EventTarget {

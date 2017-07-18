@@ -1,4 +1,6 @@
 development
 node_modules
 public
+old-ts
+sandbox
 .gitignore

@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "noImplicitAny": false,
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "outDir":"../../build",
+        "lib": [
+            "es5",
+            "es2015",
+            "dom",
+            "scripthost"
+        ]
+    },
+    "files" :[
+        "../artyom.ts",
+        "../artyom.d.ts"
+    ]
+}

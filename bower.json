@@ -5,7 +5,7 @@
     "authors": [
         "Carlos Delgado"
     ],
-    "license": "ISC",
+    "license": "MIT",
     "keywords": [
         "speech",
         "recognition",
@@ -23,6 +23,7 @@
         "node_modules",
         "bower_components",
         "development",
-        "public"
+        "public",
+        "old-ts"
     ]
 }
