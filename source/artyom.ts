@@ -74,7 +74,7 @@ export default class Artyom {
             // Italian
             "it-IT" : ["Google italiano","it-IT","it_IT"],
             // Japanese
-            "jp-JP": ["Google 日本人","ja-JP","ja_JP"],
+            "ja-JP": ["Google 日本人","ja-JP","ja_JP"],
             // English USA
             "en-US": ["Google US English","en-US","en_US"],
             // English UK
