@@ -1,3 +1,25 @@
+# Update for Chrome 71
+
+Due to abuse of users with the Speech Synthesis API (ADS, Fake system warnings), Google decided to remove the usage of the API in the browser when it's not triggered by an user gesture (click, touch etc.). This means that calling for example <code>artyom.say("Hello")</code> if it's not wrapped inside an user event won't work.
+
+So on every page load, the user will need to click at least once time per page to allow the usage of the API in the website, otherwise the following exception will be raised: "[Deprecation] speechSynthesis.speak() without user activation is no longer allowed since M71, around December 2018. See https://www.chromestatus.com/feature/5687444770914304 for more details"
+
+For more information, visit the bug or [this entry in the forum](https://groups.google.com/a/chromium.org/forum/#!topic/blink-dev/WsnBm53M4Pc). To bypass this error, the user will need to interact manually with the website at least once, for example with a click:
+
+```html
+<button id="btn">Allow Voice Synthesis</button>
+<script src="artyom.window.js"></script>
+<script>
+    var Jarvis = new Artyom();
+    
+    // Needed user interaction at least once in the website to make
+    // it work automatically without user interaction later... thanks google .i.
+    document.getElementById("btn").addEventListener("click", function(){
+        Jarvis.say("Hello World !");
+    }, false);
+</script>
+```
+
 <p align="center">
     <img src="https://raw.githubusercontent.com/sdkcarlos/artyom.js/master/public/images/artyomjs-logo.png" width="256" title="Artyom logo">
 </p>
