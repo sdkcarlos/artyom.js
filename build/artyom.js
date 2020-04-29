@@ -1077,9 +1077,15 @@ var Artyom = (function () {
         var voices = speechSynthesis.getVoices();
         var voicesLength = voiceIdentifiersArray.length;
         var _loop_1 = function (i) {
-            var foundVoice = voices.filter(function (voice) {
-                return ((voice.name == voiceIdentifiersArray[i]) || (voice.lang == voiceIdentifiersArray[i]));
-            })[0];
+            if (voices._list) {
+                var foundVoice = voices._list.filter(function (voice) {
+                    return ((voice.name == voiceIdentifiersArray[i]) || (voice.lang == voiceIdentifiersArray[i]));
+                })[0];
+            } else {
+                var foundVoice = voices.filter(function (voice) {
+                    return ((voice.name == voiceIdentifiersArray[i]) || (voice.lang == voiceIdentifiersArray[i]));
+                })[0];
+            }
             if (foundVoice) {
                 voice = foundVoice;
                 return "break";
