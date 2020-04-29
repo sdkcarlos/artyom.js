@@ -239,7 +239,7 @@ npm run build-artyom-module
 
 ## Testing
 
-If you're interested in modify, work with Artyom or *you just simply want to test it quickly in your environment* we recommend you to use the little Sandbox utility of Artyom. Using Webpack the Artyom Sandbox creates an HTTPS server accessible at https://localhost:3000, here artyom will be accesible in Continuous mode too.
+If you're interested in modifying or working with Artyom, or *you just simply want to test it quickly in your environment*, we recommend you to use the little Sandbox utility of Artyom. Using Webpack, the Artyom Sandbox creates an HTTPS server accessible at https://localhost:3000, here Artyom will be accesible in Continuous mode too.
 
 Start by cloning the repository of artyom:
 
@@ -298,7 +298,7 @@ Artyom provides **complete** support for the following languages. Every language
 
 Working with artyom is cool and easy, read the documentation to discover more awesome features.
 
-Thanks for visit the repository !
+Thanks for visiting the repository !
 
 <p align="center">
     <img src="https://raw.githubusercontent.com/sdkcarlos/sdkcarlos.github.io/master/sites/artyom-resources/images/artyom_make_sandwich.jpg" alt="Artyom example use" width="256"/>
