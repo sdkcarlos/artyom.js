@@ -1,6 +1,6 @@
 # Update for Chrome 71
 
-Due to abuse of users with the Speech Synthesis API (ADS, Fake system warnings), Google decided to remove the usage of the API in the browser when it's not triggered by an user gesture (click, touch etc.). This means that calling for example <code>artyom.say("Hello")</code> if it's not wrapped inside an user event won't work.
+Due to abuse of users with the Speech Synthesis API (ADS, Fake system warnings), Google decided to remove the usage of the API in the browser when it's not triggered by an user gesture (click, touch etc.). This means that calling for example <code>artyom.say("Hello")</code> if it's not wrapped inside an user event it won't work.
 
 So on every page load, the user will need to click at least once time per page to allow the usage of the API in the website, otherwise the following exception will be raised: "[Deprecation] speechSynthesis.speak() without user activation is no longer allowed since M71, around December 2018. See https://www.chromestatus.com/feature/5687444770914304 for more details"
 
