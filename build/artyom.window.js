@@ -11,7 +11,7 @@
  */
 /// <reference path="artyom.d.ts" />
 // Remove "export default " keywords if willing to build with `npm run artyom-build-window`
-var Artyom = (function () {
+var Artyom = /** @class */ (function () {
     // Triggered at the declaration of 
     function Artyom() {
         this.ArtyomCommands = [];
@@ -23,7 +23,7 @@ var Artyom = (function () {
             // Italian
             "it-IT": ["Google italiano", "it-IT", "it_IT"],
             // Japanese
-            "jp-JP": ["Google 日本人", "ja-JP", "ja_JP"],
+            "ja-JP": ["Google 日本人", "ja-JP", "ja_JP"],
             // English USA
             "en-US": ["Google US English", "en-US", "en_US"],
             // English UK
@@ -87,7 +87,8 @@ var Artyom = (function () {
             speaking: false,
             obeying: true,
             soundex: false,
-            name: null
+            name: null,
+            voice: null,
         };
         this.ArtyomGarbageCollection = [];
         this.ArtyomFlags = {
@@ -899,6 +900,9 @@ var Artyom = (function () {
                 _this.hey(resolve, reject);
             });
         }
+        if (config.hasOwnProperty("voice")) {
+            _this.setVoice(config.voice);
+        }
         return Promise.resolve(true);
     };
     /**
@@ -1058,6 +1062,23 @@ var Artyom = (function () {
      */
     Artyom.prototype.getGarbageCollection = function () {
         return this.ArtyomGarbageCollection;
+    };
+    /**
+     *  Set a voice of the browser by it's voice name
+     *  You can find a list of available voices using .getVoices()
+     *
+     * @param voiceName
+     */
+    Artyom.prototype.setVoice = function (voiceName) {
+        this.debug('Setting voice to ' + voiceName);
+        var availableVoices = this.getVoices();
+        var newVoice = availableVoices.filter(function (v) { return v.name === voiceName; })[0];
+        if (!newVoice) {
+            console.warn("The provided voice " + voiceName + " isn't available, ignoring setVoice command");
+            return;
+        }
+        this.ArtyomProperties.voice = voiceName;
+        this.ArtyomVoice = newVoice;
     };
     /**
      *  Retrieve a single voice of the browser by it's language code.
@@ -1355,6 +1376,7 @@ var Artyom = (function () {
      * @returns {undefined}
      */
     Artyom.prototype.talk = function (text, actualChunk, totalChunks, callbacks) {
+        var _this_1 = this;
         var _this = this;
         var msg = new SpeechSynthesisUtterance();
         msg.text = text;
@@ -1367,6 +1389,15 @@ var Artyom = (function () {
             if (callbacks.hasOwnProperty("lang")) {
                 availableVoice = _this.getVoice(callbacks.lang);
             }
+        }
+        if (this.ArtyomProperties.voice) {
+            var availableVoices = this.getVoices();
+            var newVoice = availableVoices.filter(function (v) { return v.name === _this_1.ArtyomProperties.voice; })[0];
+            if (!newVoice) {
+                console.warn("The provided voice " + this.ArtyomProperties.voice + " isn't available, using default for " + _this.ArtyomProperties.lang);
+                return;
+            }
+            availableVoice = newVoice;
         }
         // If is a mobile device, provide only the language code in the lang property i.e "es_ES"
         if (this.Device.isMobile) {

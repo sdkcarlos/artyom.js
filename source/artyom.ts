@@ -140,7 +140,8 @@ export default class Artyom {
             speaking: false,
             obeying: true,
             soundex: false,
-            name: null
+            name: null,
+            voice: null,
         };
 
         this.ArtyomGarbageCollection = [];
@@ -1095,6 +1096,10 @@ export default class Artyom {
             });
         }
 
+        if (config.hasOwnProperty("voice")) {
+            _this.setVoice(config.voice)
+        }
+
         return Promise.resolve(true);
     }
 
@@ -1273,6 +1278,26 @@ export default class Artyom {
      */
     getGarbageCollection() {
         return this.ArtyomGarbageCollection;
+    }
+
+
+
+    /**
+     *  Set a voice of the browser by it's voice name
+     *  You can find a list of available voices using .getVoices()
+     *
+     * @param voiceName
+     */
+    setVoice(voiceName: string) {
+        this.debug('Setting voice to ' + voiceName)
+        const availableVoices = this.getVoices()
+        const newVoice = availableVoices.filter(v => v.name === voiceName)[0]
+        if (!newVoice) {
+            console.warn(`The provided voice ${voiceName} isn't available, ignoring setVoice command` );
+            return
+        }
+        this.ArtyomProperties.voice = voiceName
+        this.ArtyomVoice = newVoice;
     }
 
     /**
@@ -1620,7 +1645,7 @@ export default class Artyom {
         msg.text = text;
         msg.volume = this.ArtyomProperties.volume;
         msg.rate = this.ArtyomProperties.speed;
-
+        
         // Select the voice according to the selected
         let availableVoice = _this.getVoice(_this.ArtyomProperties.lang);
 
@@ -1629,6 +1654,16 @@ export default class Artyom {
             if(callbacks.hasOwnProperty("lang")){
                 availableVoice = _this.getVoice(callbacks.lang);
             }
+        }
+
+        if (this.ArtyomProperties.voice) {
+            const availableVoices = this.getVoices()
+            const newVoice = availableVoices.filter(v => v.name === this.ArtyomProperties.voice)[0]
+            if (!newVoice) {
+                console.warn(`The provided voice ${this.ArtyomProperties.voice} isn't available, using default for ${_this.ArtyomProperties.lang}` );
+                return
+            }
+            availableVoice = newVoice
         }
         
         // If is a mobile device, provide only the language code in the lang property i.e "es_ES"

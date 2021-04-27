@@ -55,6 +55,7 @@ interface ArtyomProperties {
     obeying?: boolean;
     soundex?: boolean;
     name?: string;
+    voice?: string;
 }
 
 interface PromptOptions {
