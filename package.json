@@ -27,5 +27,8 @@
     "bugs": {
         "url": "https://github.com/sdkcarlos/artyom.js/issues"
     },
-    "homepage": "https://sdkcarlos.github.io/sites/artyom.html"
+    "homepage": "https://sdkcarlos.github.io/sites/artyom.html",
+    "dependencies": {
+        "typescript": "^4.4.3"
+    }
 }

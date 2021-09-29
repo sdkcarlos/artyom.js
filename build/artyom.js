@@ -13,7 +13,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference path="artyom.d.ts" />
 // Remove "export default " keywords if willing to build with `npm run artyom-build-window`
-var Artyom = (function () {
+var Artyom = /** @class */ (function () {
     // Triggered at the declaration of 
     function Artyom() {
         this.ArtyomCommands = [];
@@ -25,7 +25,7 @@ var Artyom = (function () {
             // Italian
             "it-IT": ["Google italiano", "it-IT", "it_IT"],
             // Japanese
-            "jp-JP": ["Google 日本人", "ja-JP", "ja_JP"],
+            "ja-JP": ["Google 日本人", "ja-JP", "ja_JP"],
             // English USA
             "en-US": ["Google US English", "en-US", "en_US"],
             // English UK
@@ -273,8 +273,11 @@ var Artyom = (function () {
                 // Process RegExp
                 if (opcion instanceof RegExp) {
                     // If RegExp matches 
+                    // Example for a smart Regex command with different values that are passed to function:
+                    // indexes: [/[set]*[a-z ]*timer for ([\S]*) (seconds|minutes)/i]
                     if (opcion.test(voz)) {
                         _this.debug(">> REGEX " + opcion.toString() + " MATCHED AGAINST " + voz + " WITH INDEX " + c + " IN COMMAND ", "info");
+                        wildy = voz.match(opcion);
                         encontrado = parseInt(c.toString());
                     }
                     // Otherwise just wildcards
