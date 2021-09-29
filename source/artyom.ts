@@ -368,8 +368,11 @@ export default class Artyom {
                 // Process RegExp
                 if(opcion instanceof RegExp){
                     // If RegExp matches 
+                    // Example for a smart Regex command with different values that are passed to function:
+                    // indexes: [/[set]*[a-z ]*timer for ([\S]*) (seconds|minutes)/i]
                     if(opcion.test(voz)){
                         _this.debug(">> REGEX "+ opcion.toString() + " MATCHED AGAINST " + voz + " WITH INDEX " + c + " IN COMMAND ", "info");
+                        wildy = voz.match(opcion);
                         encontrado = parseInt(c.toString());
                     }
                 // Otherwise just wildcards
